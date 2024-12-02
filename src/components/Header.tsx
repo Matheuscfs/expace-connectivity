@@ -1,5 +1,6 @@
 import { Search, User, ShoppingCart } from "lucide-react";
 import { Button } from "./ui/button";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
@@ -7,14 +8,14 @@ const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
-            <h1 className="text-2xl font-bold text-primary">
+            <Link to="/" className="text-2xl font-bold text-primary">
               EX<span className="text-secondary">pace</span>
-            </h1>
+            </Link>
             <nav className="hidden md:flex ml-10 space-x-8">
-              <a href="#" className="text-gray-700 hover:text-primary">Início</a>
-              <a href="#" className="text-gray-700 hover:text-primary">Categorias</a>
-              <a href="#" className="text-gray-700 hover:text-primary">Sobre</a>
-              <a href="#" className="text-gray-700 hover:text-primary">Ajuda</a>
+              <Link to="/" className="text-gray-700 hover:text-primary">Início</Link>
+              <Link to="/companies" className="text-gray-700 hover:text-primary">Empresas</Link>
+              <Link to="#" className="text-gray-700 hover:text-primary">Sobre</Link>
+              <Link to="#" className="text-gray-700 hover:text-primary">Ajuda</Link>
             </nav>
           </div>
           
