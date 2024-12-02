@@ -5,19 +5,16 @@ const Hero = () => {
   const ads = [
     {
       id: 1,
-      image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&q=80",
       title: "Serviços de Limpeza",
       description: "Profissionais qualificados para sua casa",
     },
     {
       id: 2,
-      image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&q=80",
       title: "Consultoria em TI",
       description: "Soluções tecnológicas para seu negócio",
     },
     {
       id: 3,
-      image: "https://images.unsplash.com/photo-1590650153855-d9e808231d41?auto=format&fit=crop&q=80",
       title: "Serviços de Beleza",
       description: "Profissionais especializados em beleza e bem-estar",
     },
@@ -28,12 +25,7 @@ const Hero = () => {
       <Carousel className="w-full h-full">
         <CarouselContent>
           {ads.map((ad) => (
-            <CarouselItem key={ad.id} className="relative h-full">
-              <img
-                src={ad.image}
-                alt={ad.title}
-                className="w-full h-full object-cover"
-              />
+            <CarouselItem key={ad.id} className="relative h-full bg-accent">
             </CarouselItem>
           ))}
         </CarouselContent>
