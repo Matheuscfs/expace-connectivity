@@ -18,9 +18,6 @@ const Header = () => {
               EX<span className="text-secondary">pace</span>
             </Link>
             <nav className="hidden md:flex ml-10 space-x-8">
-              <Link to="/" className="text-gray-700 hover:text-primary">
-                Início
-              </Link>
               <Link to="/companies" className="text-gray-700 hover:text-primary">
                 Empresas
               </Link>
