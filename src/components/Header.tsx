@@ -1,6 +1,7 @@
-import { Search, User, ShoppingCart } from "lucide-react";
+import { Search, User } from "lucide-react";
 import { Button } from "./ui/button";
 import { Link } from "react-router-dom";
+import Cart from "./Cart";
 
 const Header = () => {
   return (
@@ -12,13 +13,21 @@ const Header = () => {
               EX<span className="text-secondary">pace</span>
             </Link>
             <nav className="hidden md:flex ml-10 space-x-8">
-              <Link to="/" className="text-gray-700 hover:text-primary">Início</Link>
-              <Link to="/companies" className="text-gray-700 hover:text-primary">Empresas</Link>
-              <Link to="#" className="text-gray-700 hover:text-primary">Sobre</Link>
-              <Link to="#" className="text-gray-700 hover:text-primary">Ajuda</Link>
+              <Link to="/" className="text-gray-700 hover:text-primary">
+                Início
+              </Link>
+              <Link to="/companies" className="text-gray-700 hover:text-primary">
+                Empresas
+              </Link>
+              <Link to="#" className="text-gray-700 hover:text-primary">
+                Sobre
+              </Link>
+              <Link to="#" className="text-gray-700 hover:text-primary">
+                Ajuda
+              </Link>
             </nav>
           </div>
-          
+
           <div className="flex items-center space-x-4">
             <div className="hidden md:flex relative">
               <input
@@ -31,9 +40,7 @@ const Header = () => {
             <Button variant="ghost" size="icon">
               <User className="h-5 w-5" />
             </Button>
-            <Button variant="ghost" size="icon">
-              <ShoppingCart className="h-5 w-5" />
-            </Button>
+            <Cart />
           </div>
         </div>
       </div>
