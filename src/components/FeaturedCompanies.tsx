@@ -98,19 +98,21 @@ const FeaturedCompanies = () => {
               {sectorCompanies.map((company) => (
                 <div
                   key={company.id}
-                  className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow"
+                  className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow flex items-start space-x-4"
                 >
                   <img
                     src={company.logo}
                     alt={company.name}
-                    className="w-24 h-24 mx-auto mb-4 rounded-full"
+                    className="w-16 h-16 rounded-lg object-cover flex-shrink-0"
                   />
-                  <h3 className="text-xl font-semibold text-center mb-2">
-                    {company.name}
-                  </h3>
-                  <div className="flex items-center justify-center">
-                    <Star className="w-5 h-5 text-yellow-400 fill-current" />
-                    <span className="ml-1 text-gray-600">{company.rating}</span>
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-lg">{company.name}</h3>
+                    <p className="text-sm text-gray-600 mb-1">{sector}</p>
+                    <p className="text-sm text-gray-500 mb-2">São Paulo, SP</p>
+                    <div className="flex items-center">
+                      <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                      <span className="ml-1 text-sm text-gray-600">{company.rating}</span>
+                    </div>
                   </div>
                 </div>
               ))}
