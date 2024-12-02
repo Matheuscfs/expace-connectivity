@@ -21,11 +21,16 @@ const Hero = () => {
   ];
 
   return (
-    <div className="relative h-[600px] mt-16">
+    <div className="relative h-[300px] mt-16">
       <Carousel className="w-full h-full">
         <CarouselContent>
           {ads.map((ad) => (
-            <CarouselItem key={ad.id} className="relative h-full bg-accent">
+            <CarouselItem key={ad.id} className="relative h-full bg-accent flex items-center justify-center">
+              <div className="text-center space-y-4">
+                <h2 className="text-2xl font-bold">{ad.title}</h2>
+                <p className="text-gray-600">{ad.description}</p>
+                <Button variant="default">Saiba mais</Button>
+              </div>
             </CarouselItem>
           ))}
         </CarouselContent>
