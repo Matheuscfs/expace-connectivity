@@ -34,15 +34,6 @@ const Hero = () => {
                 alt={ad.title}
                 className="w-full h-full object-cover"
               />
-              <div className="absolute bottom-0 left-0 p-8 text-left">
-                <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-                  {ad.title}
-                </h2>
-                <p className="text-xl text-white mb-6">{ad.description}</p>
-                <Button size="lg" className="bg-secondary hover:bg-secondary/90">
-                  Explorar agora
-                </Button>
-              </div>
             </CarouselItem>
           ))}
         </CarouselContent>
