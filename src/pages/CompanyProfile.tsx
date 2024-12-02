@@ -61,7 +61,7 @@ const CompanyProfile = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       
-      <main className="flex-1 container mx-auto px-4 py-8">
+      <main className="flex-1 container mx-auto px-4 pt-24 pb-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Company Info - Left Sidebar */}
           <div className="lg:col-span-1">
