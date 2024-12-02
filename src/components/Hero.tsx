@@ -34,7 +34,6 @@ const Hero = () => {
                 alt={ad.title}
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent" />
               <div className="absolute bottom-0 left-0 p-8 text-left">
                 <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
                   {ad.title}
