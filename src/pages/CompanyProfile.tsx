@@ -14,42 +14,58 @@ const companyData = {
   category: "Tecnologia",
   rating: 4.8,
   reviews: 156,
-  services: [
-    {
-      id: 1,
-      name: "Desenvolvimento de Website",
-      description: "Criação de sites modernos e responsivos",
-      price: "A partir de R$ 5.000",
-    },
-    {
-      id: 2,
-      name: "Consultoria em TI",
-      description: "Análise e planejamento de infraestrutura",
-      price: "R$ 200/hora",
-    },
-    {
-      id: 3,
-      name: "Suporte Técnico",
-      description: "Atendimento remoto ou presencial",
-      price: "R$ 150/hora",
-    },
-  ],
+  services: {
+    desenvolvimento: [
+      {
+        id: 1,
+        name: "Desenvolvimento de Website",
+        description: "Criação de sites modernos e responsivos",
+        price: "A partir de R$ 5.000",
+      },
+      {
+        id: 2,
+        name: "Desenvolvimento de Aplicativos",
+        description: "Apps nativos para iOS e Android",
+        price: "A partir de R$ 10.000",
+      },
+    ],
+    consultoria: [
+      {
+        id: 3,
+        name: "Consultoria em TI",
+        description: "Análise e planejamento de infraestrutura",
+        price: "R$ 200/hora",
+      },
+      {
+        id: 4,
+        name: "Consultoria em Segurança",
+        description: "Análise de vulnerabilidades e recomendações",
+        price: "R$ 250/hora",
+      },
+    ],
+    suporte: [
+      {
+        id: 5,
+        name: "Suporte Técnico",
+        description: "Atendimento remoto ou presencial",
+        price: "R$ 150/hora",
+      },
+    ],
+  },
 };
 
 const CompanyProfile = () => {
   const { id } = useParams();
-  // Em um caso real, buscaríamos os dados da empresa usando o ID
-  // const { data: company } = useQuery(['company', id], () => fetchCompany(id))
 
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
       
-      <main className="flex-grow container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Company Info */}
+      <main className="flex-1 container mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          {/* Company Info - Left Sidebar */}
           <div className="lg:col-span-1">
-            <Card>
+            <Card className="sticky top-24">
               <CardContent className="p-6">
                 <img
                   src={companyData.logo}
@@ -72,34 +88,94 @@ const CompanyProfile = () => {
             </Card>
           </div>
 
-          {/* Services */}
-          <div className="lg:col-span-2">
+          {/* Services - Right Content */}
+          <div className="lg:col-span-3">
             <Card>
               <CardHeader>
                 <CardTitle>Serviços Disponíveis</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid gap-6">
-                  {companyData.services.map((service) => (
-                    <Card key={service.id}>
-                      <CardContent className="p-6">
-                        <div className="flex justify-between items-start">
-                          <div>
-                            <h3 className="font-semibold text-lg mb-2">
-                              {service.name}
-                            </h3>
-                            <p className="text-gray-600 mb-2">
-                              {service.description}
-                            </p>
-                            <p className="text-primary font-medium">
-                              {service.price}
-                            </p>
-                          </div>
-                          <Button>Solicitar Orçamento</Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
+                <div className="space-y-8">
+                  {/* Desenvolvimento */}
+                  <div>
+                    <h3 className="text-lg font-semibold mb-4">Desenvolvimento</h3>
+                    <div className="grid gap-4">
+                      {companyData.services.desenvolvimento.map((service) => (
+                        <Card key={service.id} className="bg-accent/50">
+                          <CardContent className="p-4">
+                            <div className="flex justify-between items-start">
+                              <div>
+                                <h4 className="font-semibold text-base mb-1">
+                                  {service.name}
+                                </h4>
+                                <p className="text-sm text-gray-600 mb-2">
+                                  {service.description}
+                                </p>
+                                <p className="text-primary font-medium text-sm">
+                                  {service.price}
+                                </p>
+                              </div>
+                              <Button size="sm">Solicitar Orçamento</Button>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Consultoria */}
+                  <div>
+                    <h3 className="text-lg font-semibold mb-4">Consultoria</h3>
+                    <div className="grid gap-4">
+                      {companyData.services.consultoria.map((service) => (
+                        <Card key={service.id} className="bg-accent/50">
+                          <CardContent className="p-4">
+                            <div className="flex justify-between items-start">
+                              <div>
+                                <h4 className="font-semibold text-base mb-1">
+                                  {service.name}
+                                </h4>
+                                <p className="text-sm text-gray-600 mb-2">
+                                  {service.description}
+                                </p>
+                                <p className="text-primary font-medium text-sm">
+                                  {service.price}
+                                </p>
+                              </div>
+                              <Button size="sm">Solicitar Orçamento</Button>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Suporte */}
+                  <div>
+                    <h3 className="text-lg font-semibold mb-4">Suporte</h3>
+                    <div className="grid gap-4">
+                      {companyData.services.suporte.map((service) => (
+                        <Card key={service.id} className="bg-accent/50">
+                          <CardContent className="p-4">
+                            <div className="flex justify-between items-start">
+                              <div>
+                                <h4 className="font-semibold text-base mb-1">
+                                  {service.name}
+                                </h4>
+                                <p className="text-sm text-gray-600 mb-2">
+                                  {service.description}
+                                </p>
+                                <p className="text-primary font-medium text-sm">
+                                  {service.price}
+                                </p>
+                              </div>
+                              <Button size="sm">Solicitar Orçamento</Button>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </Card>
