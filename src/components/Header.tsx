@@ -2,6 +2,11 @@ import { Search, User } from "lucide-react";
 import { Button } from "./ui/button";
 import { Link } from "react-router-dom";
 import Cart from "./Cart";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 const Header = () => {
   return (
@@ -37,9 +42,31 @@ const Header = () => {
               />
               <Search className="absolute right-3 top-2.5 text-gray-400" />
             </div>
-            <Button variant="ghost" size="icon">
-              <User className="h-5 w-5" />
-            </Button>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="ghost" size="icon">
+                  <User className="h-5 w-5" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-56">
+                <div className="grid gap-4">
+                  <div className="grid gap-2">
+                    <Link
+                      to="/login"
+                      className="flex w-full items-center gap-2 rounded-md bg-primary px-4 py-2 text-white hover:bg-primary/90"
+                    >
+                      Entrar
+                    </Link>
+                    <Link
+                      to="/register"
+                      className="flex w-full items-center gap-2 rounded-md border border-input bg-background px-4 py-2 hover:bg-accent hover:text-accent-foreground"
+                    >
+                      Criar conta
+                    </Link>
+                  </div>
+                </div>
+              </PopoverContent>
+            </Popover>
             <Cart />
           </div>
         </div>
