@@ -1,4 +1,6 @@
 import { Star } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const companies = [
   // Tecnologia
@@ -84,7 +86,14 @@ const FeaturedCompanies = () => {
         <h2 className="text-3xl font-bold mb-8">Empresas em Destaque</h2>
         {Object.entries(companiesBySector).map(([sector, sectorCompanies]) => (
           <div key={sector} className="mb-12">
-            <h3 className="text-2xl font-semibold mb-6 text-primary">{sector}</h3>
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-2xl font-semibold text-primary">{sector}</h3>
+              <Link to={`/companies?sector=${encodeURIComponent(sector)}`}>
+                <Button variant="secondary" size="sm">
+                  Ver mais
+                </Button>
+              </Link>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {sectorCompanies.map((company) => (
                 <div
@@ -96,7 +105,9 @@ const FeaturedCompanies = () => {
                     alt={company.name}
                     className="w-24 h-24 mx-auto mb-4 rounded-full"
                   />
-                  <h3 className="text-xl font-semibold text-center mb-2">{company.name}</h3>
+                  <h3 className="text-xl font-semibold text-center mb-2">
+                    {company.name}
+                  </h3>
                   <div className="flex items-center justify-center">
                     <Star className="w-5 h-5 text-yellow-400 fill-current" />
                     <span className="ml-1 text-gray-600">{company.rating}</span>
