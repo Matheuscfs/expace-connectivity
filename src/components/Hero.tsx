@@ -5,7 +5,7 @@ const Hero = () => {
     {
       id: 1,
       title: "Serviços de Limpeza",
-      description: "Profissionais qualificados para sua casa",
+      description: "Serviços de Limpeza",
     },
     {
       id: 2,
