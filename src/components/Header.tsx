@@ -28,18 +28,18 @@ const Header = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 bg-white shadow-sm z-50">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-2">
         <div className="flex items-center h-16 justify-between">
           {/* Left section: Logo and Navigation */}
-          <div className="flex items-center space-x-8">
-            <Link to="/">
+          <div className="flex items-center space-x-4">
+            <Link to="/" className="pl-2">
               <span className="text-2xl font-bold bg-gradient-to-r from-blue-700 to-white bg-clip-text text-transparent">
                 Expace
               </span>
             </Link>
 
             {/* Navigation Menu */}
-            <nav className="hidden lg:flex space-x-6">
+            <nav className="hidden lg:flex space-x-4">
               {menuItems.map((item) => (
                 <Link
                   key={item.path}
