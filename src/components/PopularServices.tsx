@@ -1,30 +1,38 @@
-import { Calculator, Code, Utensils, Heart, Scissors } from "lucide-react";
+import { Calculator, Code, Utensils, Heart, Scissors, Briefcase, Palette, LineChart } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const services = [
-  { id: 1, name: "Contabilidade", icon: Calculator },
-  { id: 2, name: "Tecnologia", icon: Code },
-  { id: 3, name: "Alimentação", icon: Utensils },
-  { id: 4, name: "Saúde", icon: Heart },
-  { id: 5, name: "Beleza", icon: Scissors },
+  { id: 1, name: "Contabilidade", icon: Calculator, description: "Gestão financeira profissional" },
+  { id: 2, name: "Tecnologia", icon: Code, description: "Soluções digitais inovadoras" },
+  { id: 3, name: "Alimentação", icon: Utensils, description: "Serviços gastronômicos" },
+  { id: 4, name: "Saúde", icon: Heart, description: "Cuidados especializados" },
+  { id: 5, name: "Beleza", icon: Scissors, description: "Serviços estéticos" },
+  { id: 6, name: "Consultoria", icon: Briefcase, description: "Assessoria empresarial" },
+  { id: 7, name: "Design", icon: Palette, description: "Criação visual profissional" },
+  { id: 8, name: "Marketing", icon: LineChart, description: "Estratégias de crescimento" },
 ];
 
 const PopularServices = () => {
   return (
-    <section className="py-8 sm:py-16 mt-16 sm:mt-24 flex items-center justify-center">
-      <div className="container mx-auto px-2 sm:px-4">
-        <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-center">Serviços Populares</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-4 max-w-5xl mx-auto">
+    <section className="py-16 bg-white">
+      <div className="container mx-auto px-4">
+        <h2 className="text-2xl sm:text-3xl font-bold mb-8 text-center">
+          Serviços Populares
+        </h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 max-w-6xl mx-auto">
           {services.map((service) => {
             const Icon = service.icon;
             return (
               <Link
                 key={service.id}
                 to={`/companies?category=${service.name}`}
-                className="flex flex-col items-center p-3 sm:p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+                className="flex flex-col items-center p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-all cursor-pointer group"
               >
-                <Icon className="w-8 h-8 sm:w-10 sm:h-10 text-primary mb-2 sm:mb-4" />
-                <h3 className="text-sm sm:text-lg font-semibold text-center">{service.name}</h3>
+                <div className="w-16 h-16 flex items-center justify-center rounded-full bg-primary/10 mb-4 group-hover:bg-primary/20 transition-colors">
+                  <Icon className="w-8 h-8 text-primary" />
+                </div>
+                <h3 className="text-lg font-semibold text-center mb-2">{service.name}</h3>
+                <p className="text-sm text-gray-600 text-center">{service.description}</p>
               </Link>
             );
           })}
