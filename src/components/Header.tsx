@@ -140,8 +140,24 @@ const Header = () => {
                       to="/login"
                       className="flex w-full items-center gap-2 rounded-md bg-primary px-4 py-2 text-white hover:bg-primary/90"
                     >
-                      Entrar
+                      Entrar como Cliente
                     </Link>
+                    <Link
+                      to="/company-login"
+                      className="flex w-full items-center gap-2 rounded-md border border-input bg-background px-4 py-2 hover:bg-accent hover:text-accent-foreground"
+                    >
+                      Entrar como Empresa
+                    </Link>
+                    <div className="relative my-2">
+                      <div className="absolute inset-0 flex items-center">
+                        <span className="w-full border-t" />
+                      </div>
+                      <div className="relative flex justify-center text-xs uppercase">
+                        <span className="bg-background px-2 text-muted-foreground">
+                          ou
+                        </span>
+                      </div>
+                    </div>
                     <Link
                       to="/register"
                       className="flex w-full items-center gap-2 rounded-md border border-input bg-background px-4 py-2 hover:bg-accent hover:text-accent-foreground"
