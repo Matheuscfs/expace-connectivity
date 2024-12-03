@@ -1,6 +1,6 @@
 import { Search, User } from "lucide-react";
 import { Button } from "./ui/button";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Cart from "./Cart";
 import {
   Popover,
@@ -9,30 +9,53 @@ import {
 } from "@/components/ui/popover";
 
 const Header = () => {
+  const location = useLocation();
+
+  const isActive = (path: string) => {
+    return location.pathname === path;
+  };
+
+  const menuItems = [
+    { path: "/", label: "Início" },
+    { path: "/services", label: "Serviços" },
+    { path: "/professionals", label: "Profissionais" },
+    { path: "/companies", label: "Empresas" },
+    { path: "/technology", label: "Tecnologia" },
+    { path: "/beauty", label: "Beleza" },
+    { path: "/consulting", label: "Consultoria" },
+    { path: "/construction", label: "Construção" },
+  ];
+
   return (
     <header className="fixed top-0 left-0 right-0 bg-white shadow-sm z-50">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          <div className="flex items-center">
-            <Link to="/" className="text-2xl font-bold">
-              <span className="bg-gradient-to-r from-blue-700 via-blue-500 to-white bg-clip-text text-transparent">
-                Expace
-              </span>
-            </Link>
-            <nav className="hidden md:flex ml-10 space-x-8">
-              <Link to="/companies" className="text-gray-700 hover:text-primary">
-                Empresas
-              </Link>
-              <Link to="#" className="text-gray-700 hover:text-primary">
-                Sobre
-              </Link>
-              <Link to="#" className="text-gray-700 hover:text-primary">
-                Ajuda
-              </Link>
-            </nav>
-          </div>
+        <div className="flex items-center h-16">
+          {/* Logo */}
+          <Link to="/" className="mr-8">
+            <span className="text-2xl font-bold bg-gradient-to-r from-blue-700 to-white bg-clip-text text-transparent">
+              Expace
+            </span>
+          </Link>
 
-          <div className="flex items-center space-x-4">
+          {/* Navigation Menu */}
+          <nav className="hidden lg:flex flex-1 space-x-6">
+            {menuItems.map((item) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`text-sm font-medium transition-colors hover:text-primary relative py-4 ${
+                  isActive(item.path)
+                    ? "text-primary after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-primary"
+                    : "text-gray-600"
+                }`}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+
+          {/* Right side items */}
+          <div className="flex items-center space-x-4 ml-auto">
             <div className="hidden md:flex relative">
               <input
                 type="text"
