@@ -118,7 +118,7 @@ const CompanyFilters = ({ categories, priceRange, setPriceRange }: CompanyFilter
                 <Search className="absolute right-3 top-2.5 text-gray-400 w-5 h-5" />
               </div>
             </PopoverTrigger>
-            <PopoverContent className="w-[calc(100%-2rem)] p-0" align="start">
+            <PopoverContent className="w-full p-0" align="start" sideOffset={5}>
               <div className="max-h-[200px] overflow-y-auto">
                 {filteredCities.map((city) => (
                   <button
