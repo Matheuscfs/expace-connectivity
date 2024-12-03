@@ -1,4 +1,4 @@
-import { MapPin, Search, User } from "lucide-react";
+import { MapPin, Search, User, LogOut } from "lucide-react";
 import { Button } from "./ui/button";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Cart from "./Cart";
@@ -7,12 +7,27 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    const userStr = localStorage.getItem('user');
+    if (userStr) {
+      setUser(JSON.parse(userStr));
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    setUser(null);
+    navigate('/');
+  };
 
   const isActive = (path: string) => {
     return location.pathname === path;
@@ -23,19 +38,10 @@ const Header = () => {
     { path: "/professionals", label: "Profissionais" },
   ];
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      // Redirect to companies page with search query
-      navigate(`/companies?search=${encodeURIComponent(searchQuery.trim())}`);
-    }
-  };
-
   return (
     <header className="fixed top-0 left-0 right-0 bg-white shadow-sm z-50">
       <div className="container mx-auto px-2">
         <div className="flex items-center h-16 justify-between">
-          {/* Left section: Logo and Navigation */}
           <div className="flex items-center space-x-4">
             <Link to="/" className="pl-2">
               <span className="text-2xl font-bold bg-gradient-to-r from-blue-700 via-blue-700 to-blue-200 bg-clip-text text-transparent">
@@ -43,7 +49,6 @@ const Header = () => {
               </span>
             </Link>
 
-            {/* Navigation Menu */}
             <nav className="hidden lg:flex space-x-4">
               {menuItems.map((item) => (
                 <Link
@@ -61,8 +66,7 @@ const Header = () => {
             </nav>
           </div>
 
-          {/* Center section: Search */}
-          <form onSubmit={handleSearch} className="hidden md:flex relative max-w-md w-full mx-4">
+          <form onSubmit={(e) => e.preventDefault()} className="hidden md:flex relative max-w-md w-full mx-4">
             <input
               type="text"
               value={searchQuery}
@@ -75,34 +79,61 @@ const Header = () => {
             </button>
           </form>
 
-          {/* Right section: Location, Profile, Cart */}
           <div className="flex items-center space-x-4">
             <Button variant="ghost" size="icon" className="hidden md:flex items-center gap-2">
               <MapPin className="h-5 w-5" />
               <span className="text-sm">São Paulo</span>
             </Button>
+            
             <Popover>
               <PopoverTrigger asChild>
                 <Button variant="ghost" size="icon">
-                  <User className="h-5 w-5" />
+                  {user ? (
+                    <Avatar className="h-8 w-8">
+                      <AvatarImage src={user.avatar} alt={user.name} />
+                      <AvatarFallback>{user.name.charAt(0).toUpperCase()}</AvatarFallback>
+                    </Avatar>
+                  ) : (
+                    <User className="h-5 w-5" />
+                  )}
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-56">
                 <div className="grid gap-4">
-                  <div className="grid gap-2">
-                    <Link
-                      to="/login"
-                      className="flex w-full items-center gap-2 rounded-md bg-primary px-4 py-2 text-white hover:bg-primary/90"
-                    >
-                      Entrar
-                    </Link>
-                    <Link
-                      to="/register"
-                      className="flex w-full items-center gap-2 rounded-md border border-input bg-background px-4 py-2 hover:bg-accent hover:text-accent-foreground"
-                    >
-                      Criar conta
-                    </Link>
-                  </div>
+                  {user ? (
+                    <div className="grid gap-2">
+                      <div className="flex items-center gap-2">
+                        <Avatar className="h-8 w-8">
+                          <AvatarImage src={user.avatar} alt={user.name} />
+                          <AvatarFallback>{user.name.charAt(0).toUpperCase()}</AvatarFallback>
+                        </Avatar>
+                        <div className="text-sm font-medium">{user.name}</div>
+                      </div>
+                      <Button
+                        variant="destructive"
+                        className="w-full"
+                        onClick={handleLogout}
+                      >
+                        <LogOut className="mr-2 h-4 w-4" />
+                        Sair
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="grid gap-2">
+                      <Link
+                        to="/login"
+                        className="flex w-full items-center gap-2 rounded-md bg-primary px-4 py-2 text-white hover:bg-primary/90"
+                      >
+                        Entrar
+                      </Link>
+                      <Link
+                        to="/register"
+                        className="flex w-full items-center gap-2 rounded-md border border-input bg-background px-4 py-2 hover:bg-accent hover:text-accent-foreground"
+                      >
+                        Criar conta
+                      </Link>
+                    </div>
+                  )}
                 </div>
               </PopoverContent>
             </Popover>

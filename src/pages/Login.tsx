@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
 import { Separator } from "@/components/ui/separator";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -14,7 +15,12 @@ const Login = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement actual login logic
+    // Simulate login success
+    localStorage.setItem('user', JSON.stringify({ 
+      email, 
+      name: email.split('@')[0],
+      avatar: `https://api.dicebear.com/7.x/avatars/svg?seed=${email}` 
+    }));
     toast({
       title: "Login realizado com sucesso!",
       description: "Você será redirecionado para a página inicial.",
