@@ -1,6 +1,8 @@
 import { Search, Star } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { Card, CardContent } from "@/components/ui/card";
+import { useSearchParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 interface CompanyFiltersProps {
   categories: string[];
@@ -9,6 +11,37 @@ interface CompanyFiltersProps {
 }
 
 const CompanyFilters = ({ categories, priceRange, setPriceRange }: CompanyFiltersProps) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+
+  // Initialize selected categories from URL params
+  useEffect(() => {
+    const categoryParam = searchParams.get("category");
+    if (categoryParam) {
+      setSelectedCategories([categoryParam]);
+    }
+  }, [searchParams]);
+
+  const handleCategoryChange = (category: string, checked: boolean) => {
+    let newCategories: string[];
+    
+    if (checked) {
+      newCategories = [...selectedCategories, category];
+    } else {
+      newCategories = selectedCategories.filter(c => c !== category);
+    }
+    
+    setSelectedCategories(newCategories);
+    
+    // Update URL params
+    if (newCategories.length > 0) {
+      searchParams.set("category", newCategories[0]);
+    } else {
+      searchParams.delete("category");
+    }
+    setSearchParams(searchParams);
+  };
+
   return (
     <Card className="sticky top-24">
       <CardContent className="p-6">
@@ -20,7 +53,12 @@ const CompanyFilters = ({ categories, priceRange, setPriceRange }: CompanyFilter
           <div className="space-y-2">
             {categories.map((category) => (
               <label key={category} className="flex items-center">
-                <input type="checkbox" className="mr-2" />
+                <input
+                  type="checkbox"
+                  className="mr-2"
+                  checked={selectedCategories.includes(category)}
+                  onChange={(e) => handleCategoryChange(category, e.target.checked)}
+                />
                 <span>{category}</span>
               </label>
             ))}
