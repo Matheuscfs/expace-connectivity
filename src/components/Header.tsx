@@ -16,13 +16,8 @@ const Header = () => {
   };
 
   const menuItems = [
-    { path: "/services", label: "Serviços" },
-    { path: "/professionals", label: "Profissionais" },
     { path: "/companies", label: "Empresas" },
-    { path: "/technology", label: "Tecnologia" },
-    { path: "/beauty", label: "Beleza" },
-    { path: "/consulting", label: "Consultoria" },
-    { path: "/construction", label: "Construção" },
+    { path: "/professionals", label: "Profissionais" },
   ];
 
   return (
