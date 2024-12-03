@@ -11,10 +11,10 @@ const services = [
 
 const PopularServices = () => {
   return (
-    <section className="py-16 mt-24">
+    <section className="py-16 mt-24 flex items-center justify-center">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold mb-8">Serviços Populares</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        <h2 className="text-3xl font-bold mb-8 text-center">Serviços Populares</h2>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 max-w-5xl mx-auto">
           {services.map((service) => {
             const Icon = service.icon;
             return (
