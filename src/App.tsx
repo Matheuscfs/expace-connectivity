@@ -1,32 +1,39 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 import Index from "./pages/Index";
 import Companies from "./pages/Companies";
 import CompanyProfile from "./pages/CompanyProfile";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
 import Professionals from "./pages/Professionals";
 import ProfessionalsByRegion from "./pages/ProfessionalsByRegion";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 import Profile from "./pages/Profile";
-
-const queryClient = new QueryClient();
+import CompanyRegister from "./pages/CompanyRegister";
+import { Toaster } from "./components/ui/toaster";
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/companies" element={<Companies />} />
-          <Route path="/companies/:id" element={<CompanyProfile />} />
-          <Route path="/professionals" element={<Professionals />} />
-          <Route path="/professionals/:region" element={<ProfessionalsByRegion />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/profile" element={<Profile />} />
-        </Routes>
-      </BrowserRouter>
-    </QueryClientProvider>
+    <Router>
+      <div className="flex flex-col min-h-screen">
+        <Header />
+        <main className="flex-grow pt-16">
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/companies" element={<Companies />} />
+            <Route path="/company/:id" element={<CompanyProfile />} />
+            <Route path="/professionals" element={<Professionals />} />
+            <Route path="/professionals/:region" element={<ProfessionalsByRegion />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/company-register" element={<CompanyRegister />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
+      <Toaster />
+    </Router>
   );
 }
 
