@@ -26,7 +26,6 @@ const Hero = () => {
           {ads.map((ad) => (
             <CarouselItem key={ad.id} className="relative h-full bg-accent flex items-center justify-center">
               <div className="text-center space-y-4">
-                <h2>{ad.title}</h2>
                 <p className="text-gray-600">{ad.description}</p>
               </div>
             </CarouselItem>
