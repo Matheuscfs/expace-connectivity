@@ -16,7 +16,7 @@ type CompaniesListProps = {
   onPageChange: (page: number) => void
 }
 
-const ITEMS_PER_PAGE = 12
+const ITEMS_PER_PAGE = 8
 
 export const CompaniesList = ({ companies, currentPage, onPageChange }: CompaniesListProps) => {
   const totalItems = companies.length
@@ -31,17 +31,13 @@ export const CompaniesList = ({ companies, currentPage, onPageChange }: Companie
   }
 
   return (
-    <div>
-      <h2 className="text-xl font-semibold mb-4">
+    <div className="space-y-6 animate-fade-in">
+      <h2 className="text-2xl font-semibold">
         Todas as Empresas
       </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="space-y-4">
         {currentCompanies.map((company) => (
-          <Card key={company.id}>
-            <CardContent className="p-6">
-              <CompanyCard company={company} />
-            </CardContent>
-          </Card>
+          <CompanyCard key={company.id} company={company} />
         ))}
       </div>
 
