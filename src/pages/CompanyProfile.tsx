@@ -73,39 +73,7 @@ const CompanyProfile = () => {
       
       <main className="flex-1 container mx-auto px-4 pt-24 pb-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Company Info - Left Sidebar */}
-          <div className="lg:col-span-1">
-            <Card className="sticky top-24">
-              <CardContent className="p-6 space-y-4">
-                <img
-                  src={companyData.logo}
-                  alt={companyData.name}
-                  className="w-full aspect-video object-cover rounded-lg"
-                />
-                <div className="space-y-2">
-                  <h1 className="text-xl font-semibold">{companyData.name}</h1>
-                  <p className="text-sm text-gray-600">{companyData.description}</p>
-                  <div className="flex items-center text-sm">
-                    <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                    <span className="ml-1 font-medium">{companyData.rating}</span>
-                    <span className="text-gray-500 ml-1">
-                      ({companyData.reviews} avaliações)
-                    </span>
-                  </div>
-                  <div className="pt-2 border-t">
-                    <p className="text-sm text-gray-600">
-                      <span className="font-medium">Categoria:</span> {companyData.category}
-                    </p>
-                    <p className="text-sm text-gray-600">
-                      <span className="font-medium">Localização:</span> {companyData.location}
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Services - Right Content */}
+          {/* Services - Left Content */}
           <div className="lg:col-span-3">
             <Card>
               <CardHeader className="border-b">
@@ -144,6 +112,38 @@ const CompanyProfile = () => {
                       </div>
                     </div>
                   ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Company Info - Right Sidebar */}
+          <div className="lg:col-span-1">
+            <Card className="sticky top-24">
+              <CardContent className="p-6 space-y-4">
+                <img
+                  src={companyData.logo}
+                  alt={companyData.name}
+                  className="w-full aspect-video object-cover rounded-lg"
+                />
+                <div className="space-y-2">
+                  <h1 className="text-xl font-semibold">{companyData.name}</h1>
+                  <p className="text-sm text-gray-600">{companyData.description}</p>
+                  <div className="flex items-center text-sm">
+                    <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                    <span className="ml-1 font-medium">{companyData.rating}</span>
+                    <span className="text-gray-500 ml-1">
+                      ({companyData.reviews} avaliações)
+                    </span>
+                  </div>
+                  <div className="pt-2 border-t">
+                    <p className="text-sm text-gray-600">
+                      <span className="font-medium">Categoria:</span> {companyData.category}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      <span className="font-medium">Localização:</span> {companyData.location}
+                    </p>
+                  </div>
                 </div>
               </CardContent>
             </Card>
