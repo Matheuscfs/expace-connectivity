@@ -93,9 +93,10 @@ export default function CompanyRegister() {
     console.log(values);
     toast({
       title: "Cadastro enviado com sucesso!",
-      description: "Em breve entraremos em contato para validar suas informações.",
+      description: "Redirecionando para seu perfil privado.",
     });
-    navigate("/");
+    // Redirect to the new company profile page
+    navigate("/companies/profile");
   }
 
   return (

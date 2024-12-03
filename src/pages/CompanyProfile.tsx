@@ -4,32 +4,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/components/ui/use-toast";
 import { CompanyHeader } from "@/components/company/CompanyHeader";
 import { CompanyAbout } from "@/components/company/CompanyAbout";
-
-// Mock data for development - In production, this would come from an API
-const companyData = {
-  id: 1,
-  name: "TechSolutions Brasil LTDA",
-  tradingName: "TechSolutions",
-  logo: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d",
-  shortDescription: "Soluções tecnológicas inovadoras para empresas em crescimento",
-  location: "São Paulo, SP",
-  about: `TechSolutions é líder em soluções tecnológicas corporativas, 
-          oferecendo serviços de alta qualidade desde 2010. Nossa missão 
-          é transformar desafios em oportunidades através da tecnologia.`,
-  sector: "Tecnologia da Informação",
-  socialMedia: {
-    website: "https://techsolutions.com.br",
-    instagram: "techsolutions_br",
-    facebook: "techsolutionsbr",
-    linkedin: "techsolutions-brasil"
-  },
-  contact: {
-    phone: "(11) 3456-7890",
-    email: "contato@techsolutions.com.br",
-    address: "Av. Paulista, 1000 - Bela Vista, São Paulo - SP"
-  },
-  status: "Verificada"
-};
+import { CompanyPortfolio } from "@/components/company/CompanyPortfolio";
+import { CompanyServices } from "@/components/company/CompanyServices";
+import { CompanyReviews } from "@/components/company/CompanyReviews";
+import { CompanyTeam } from "@/components/company/CompanyTeam";
+import { CompanyStats } from "@/components/company/CompanyStats";
+import { CompanyMarketing } from "@/components/company/CompanyMarketing";
+import { CompanySEO } from "@/components/company/CompanySEO";
+import { CompanyNotifications } from "@/components/company/CompanyNotifications";
 
 const CompanyProfile = () => {
   const { id } = useParams();
@@ -43,6 +25,33 @@ const CompanyProfile = () => {
     });
   };
 
+  // Mock data for development
+  const companyData = {
+    id: 1,
+    name: "TechSolutions Brasil LTDA",
+    tradingName: "TechSolutions",
+    logo: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d",
+    shortDescription: "Soluções tecnológicas inovadoras para empresas em crescimento",
+    location: "São Paulo, SP",
+    about: `TechSolutions é líder em soluções tecnológicas corporativas, 
+            oferecendo serviços de alta qualidade desde 2010. Nossa missão 
+            é transformar desafios em oportunidades através da tecnologia.`,
+    sector: "Tecnologia da Informação",
+    socialMedia: {
+      website: "https://techsolutions.com.br",
+      instagram: "techsolutions_br",
+      facebook: "techsolutionsbr",
+      linkedin: "techsolutions-brasil"
+    },
+    contact: {
+      phone: "(11) 3456-7890",
+      email: "contato@techsolutions.com.br",
+      address: "Av. Paulista, 1000 - Bela Vista, São Paulo - SP"
+    },
+    workingHours: "Segunda à Sexta, 9h às 18h",
+    status: "Verificada"
+  };
+
   return (
     <div className="min-h-screen bg-background pb-8">
       <CompanyHeader
@@ -51,6 +60,7 @@ const CompanyProfile = () => {
         description={companyData.shortDescription}
         status={companyData.status}
         onContact={handleContact}
+        isOwner={true}
       />
 
       <div className="container mx-auto px-4 mt-8">
@@ -62,54 +72,51 @@ const CompanyProfile = () => {
             <TabsTrigger value="reviews">Avaliações</TabsTrigger>
             <TabsTrigger value="team">Equipe</TabsTrigger>
             <TabsTrigger value="stats">Estatísticas</TabsTrigger>
+            <TabsTrigger value="marketing">Marketing</TabsTrigger>
+            <TabsTrigger value="seo">SEO</TabsTrigger>
+            <TabsTrigger value="notifications">Notificações</TabsTrigger>
           </TabsList>
 
           <TabsContent value="about">
             <CompanyAbout
               description={companyData.about}
               address={companyData.contact.address}
-              workingHours="Segunda à Sexta, 9h às 18h"
-              contact={{
-                phone: companyData.contact.phone,
-                email: companyData.contact.email,
-              }}
+              workingHours={companyData.workingHours}
+              contact={companyData.contact}
               socialMedia={companyData.socialMedia}
             />
           </TabsContent>
 
           <TabsContent value="portfolio">
-            {/* Portfolio content will be implemented in the next iteration */}
-            <div className="text-center py-8 text-gray-500">
-              Portfólio em desenvolvimento
-            </div>
+            <CompanyPortfolio />
           </TabsContent>
 
           <TabsContent value="services">
-            {/* Services content will be implemented in the next iteration */}
-            <div className="text-center py-8 text-gray-500">
-              Serviços em desenvolvimento
-            </div>
+            <CompanyServices />
           </TabsContent>
 
           <TabsContent value="reviews">
-            {/* Reviews content will be implemented in the next iteration */}
-            <div className="text-center py-8 text-gray-500">
-              Avaliações em desenvolvimento
-            </div>
+            <CompanyReviews />
           </TabsContent>
 
           <TabsContent value="team">
-            {/* Team content will be implemented in the next iteration */}
-            <div className="text-center py-8 text-gray-500">
-              Equipe em desenvolvimento
-            </div>
+            <CompanyTeam />
           </TabsContent>
 
           <TabsContent value="stats">
-            {/* Stats content will be implemented in the next iteration */}
-            <div className="text-center py-8 text-gray-500">
-              Estatísticas em desenvolvimento
-            </div>
+            <CompanyStats />
+          </TabsContent>
+
+          <TabsContent value="marketing">
+            <CompanyMarketing />
+          </TabsContent>
+
+          <TabsContent value="seo">
+            <CompanySEO />
+          </TabsContent>
+
+          <TabsContent value="notifications">
+            <CompanyNotifications />
           </TabsContent>
         </Tabs>
       </div>
