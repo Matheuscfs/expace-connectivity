@@ -14,8 +14,10 @@ const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
-            <Link to="/" className="text-2xl font-bold text-primary">
-              EX<span className="text-secondary">pace</span>
+            <Link to="/" className="text-2xl font-bold">
+              <span className="bg-gradient-to-r from-blue-700 via-blue-500 to-white bg-clip-text text-transparent">
+                Expace
+              </span>
             </Link>
             <nav className="hidden md:flex ml-10 space-x-8">
               <Link to="/companies" className="text-gray-700 hover:text-primary">
