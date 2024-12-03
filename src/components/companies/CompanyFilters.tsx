@@ -16,26 +16,26 @@ interface CompanyFiltersProps {
 }
 
 const brazilianCities = [
-  "São Paulo",
-  "Rio de Janeiro",
-  "Belo Horizonte",
-  "Brasília",
-  "Salvador",
-  "Curitiba",
-  "Fortaleza",
-  "Recife",
-  "Porto Alegre",
-  "Manaus",
-  "Belém",
-  "Goiânia",
-  "Guarulhos",
-  "Campinas",
-  "São Luís",
-  "São Gonçalo",
-  "Maceió",
-  "Duque de Caxias",
-  "Campo Grande",
-  "Natal",
+  "São Paulo-SP",
+  "Rio de Janeiro-RJ",
+  "Belo Horizonte-MG",
+  "Brasília-DF",
+  "Salvador-BA",
+  "Curitiba-PR",
+  "Fortaleza-CE",
+  "Recife-PE",
+  "Porto Alegre-RS",
+  "Manaus-AM",
+  "Belém-PA",
+  "Goiânia-GO",
+  "Guarulhos-SP",
+  "Campinas-SP",
+  "São Luís-MA",
+  "São Gonçalo-RJ",
+  "Maceió-AL",
+  "Duque de Caxias-RJ",
+  "Campo Grande-MS",
+  "Natal-RN",
 ];
 
 const CompanyFilters = ({ categories, priceRange, setPriceRange }: CompanyFiltersProps) => {
@@ -118,7 +118,7 @@ const CompanyFilters = ({ categories, priceRange, setPriceRange }: CompanyFilter
                 <Search className="absolute right-3 top-2.5 text-gray-400 w-5 h-5" />
               </div>
             </PopoverTrigger>
-            <PopoverContent className="w-[calc(100%-2rem)] p-0">
+            <PopoverContent className="w-[calc(100%-2rem)] p-0" align="start">
               <div className="max-h-[200px] overflow-y-auto">
                 {filteredCities.map((city) => (
                   <button
