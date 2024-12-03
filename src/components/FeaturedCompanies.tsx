@@ -32,6 +32,8 @@ const FeaturedCompanies = () => {
                         className="w-24 h-24 mx-auto mb-4 rounded-full object-cover"
                       />
                       <h3 className="text-xl font-semibold text-center mb-2">{company.name}</h3>
+                      <p className="text-sm text-gray-600 text-center mb-2">{company.category}</p>
+                      <p className="text-sm text-gray-500 text-center mb-3">{company.location}</p>
                       <div className="flex items-center justify-center">
                         <Star className="w-5 h-5 text-yellow-400 fill-current" />
                         <span className="ml-1 text-gray-600">{company.rating}</span>
