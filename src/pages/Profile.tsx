@@ -28,7 +28,7 @@ const Profile = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       <SidebarProvider>
-        <div className="flex-1 container mx-auto px-4 py-8 flex w-full">
+        <div className="flex-1 container mx-auto px-4 pt-24 pb-8 flex w-full">
           <div className="w-64 overflow-y-auto">
             <ProfileSidebar />
           </div>
