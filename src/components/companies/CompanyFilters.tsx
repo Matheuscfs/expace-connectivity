@@ -1,5 +1,4 @@
-import { Search, Star } from "lucide-react";
-import { Slider } from "@/components/ui/slider";
+import { Search } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -8,6 +7,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { CategoryFilter } from "./filters/CategoryFilter";
+import { RatingFilter } from "./filters/RatingFilter";
+import { PriceFilter } from "./filters/PriceFilter";
+import { DiscountFilter } from "./filters/DiscountFilter";
 
 interface CompanyFiltersProps {
   categories: string[];
@@ -44,14 +47,15 @@ const CompanyFilters = ({ categories, priceRange, setPriceRange }: CompanyFilter
   const [citySearch, setCitySearch] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [selectedRating, setSelectedRating] = useState<number>(0);
+  const [selectedDiscount, setSelectedDiscount] = useState<number>(0);
 
-  // Initialize selected categories from URL params
   useEffect(() => {
     const categoryParam = searchParams.get("category");
     const cityParam = searchParams.get("city");
     const ratingParam = searchParams.get("rating");
     const minPriceParam = searchParams.get("minPrice");
     const maxPriceParam = searchParams.get("maxPrice");
+    const discountParam = searchParams.get("discount");
 
     if (categoryParam) {
       setSelectedCategories([categoryParam]);
@@ -65,17 +69,23 @@ const CompanyFilters = ({ categories, priceRange, setPriceRange }: CompanyFilter
     if (minPriceParam && maxPriceParam) {
       setPriceRange([Number(minPriceParam), Number(maxPriceParam)]);
     }
+    if (discountParam) {
+      setSelectedDiscount(Number(discountParam));
+    }
   }, [searchParams]);
 
   const handleCategoryChange = (category: string, checked: boolean) => {
-    let newCategories: string[];
+    if (category === "") {
+      setSelectedCategories([]);
+      return;
+    }
     
+    let newCategories: string[];
     if (checked) {
-      newCategories = [...selectedCategories, category];
+      newCategories = [category];
     } else {
       newCategories = selectedCategories.filter(c => c !== category);
     }
-    
     setSelectedCategories(newCategories);
   };
 
@@ -84,29 +94,26 @@ const CompanyFilters = ({ categories, priceRange, setPriceRange }: CompanyFilter
   );
 
   const handleApplyFilters = () => {
-    // Clear existing params
-    searchParams.delete("category");
-    searchParams.delete("city");
-    searchParams.delete("rating");
-    searchParams.delete("minPrice");
-    searchParams.delete("maxPrice");
+    const params = new URLSearchParams();
 
-    // Add new params if they have values
     if (selectedCategories.length > 0) {
-      searchParams.set("category", selectedCategories[0]);
+      params.set("category", selectedCategories[0]);
     }
     if (citySearch) {
-      searchParams.set("city", citySearch);
+      params.set("city", citySearch);
     }
     if (selectedRating > 0) {
-      searchParams.set("rating", selectedRating.toString());
+      params.set("rating", selectedRating.toString());
     }
     if (priceRange[0] > 0 || priceRange[1] < 1000) {
-      searchParams.set("minPrice", priceRange[0].toString());
-      searchParams.set("maxPrice", priceRange[1].toString());
+      params.set("minPrice", priceRange[0].toString());
+      params.set("maxPrice", priceRange[1].toString());
+    }
+    if (selectedDiscount > 0) {
+      params.set("discount", selectedDiscount.toString());
     }
 
-    setSearchParams(searchParams);
+    setSearchParams(params);
   };
 
   return (
@@ -114,25 +121,12 @@ const CompanyFilters = ({ categories, priceRange, setPriceRange }: CompanyFilter
       <CardContent className="p-6">
         <h2 className="text-xl font-semibold mb-4">Filtros</h2>
         
-        {/* Categories */}
-        <div className="mb-6">
-          <h3 className="font-medium mb-2">Categorias</h3>
-          <div className="space-y-2">
-            {categories.map((category) => (
-              <label key={category} className="flex items-center">
-                <input
-                  type="checkbox"
-                  className="mr-2"
-                  checked={selectedCategories.includes(category)}
-                  onChange={(e) => handleCategoryChange(category, e.target.checked)}
-                />
-                <span>{category}</span>
-              </label>
-            ))}
-          </div>
-        </div>
+        <CategoryFilter
+          categories={categories}
+          selectedCategories={selectedCategories}
+          onCategoryChange={handleCategoryChange}
+        />
 
-        {/* Location */}
         <div className="mb-6">
           <h3 className="font-medium mb-2">Localização</h3>
           <Popover open={showSuggestions && filteredCities.length > 0} onOpenChange={setShowSuggestions}>
@@ -170,39 +164,20 @@ const CompanyFilters = ({ categories, priceRange, setPriceRange }: CompanyFilter
           </Popover>
         </div>
 
-        {/* Rating */}
-        <div className="mb-6">
-          <h3 className="font-medium mb-2">Avaliação mínima</h3>
-          <div className="flex items-center space-x-1">
-            {[1, 2, 3, 4, 5].map((star) => (
-              <Star
-                key={star}
-                className={`w-6 h-6 cursor-pointer ${
-                  star <= selectedRating
-                    ? "text-yellow-400 fill-current"
-                    : "text-gray-300"
-                }`}
-                onClick={() => setSelectedRating(star)}
-              />
-            ))}
-          </div>
-        </div>
+        <RatingFilter
+          selectedRating={selectedRating}
+          onRatingChange={setSelectedRating}
+        />
 
-        {/* Price Range */}
-        <div className="mb-6">
-          <h3 className="font-medium mb-2">Faixa de preço</h3>
-          <Slider
-            defaultValue={[0, 1000]}
-            max={1000}
-            step={50}
-            className="my-4"
-            onValueChange={setPriceRange}
-          />
-          <div className="flex justify-between text-sm text-gray-600">
-            <span>R$ {priceRange[0]}</span>
-            <span>R$ {priceRange[1]}</span>
-          </div>
-        </div>
+        <PriceFilter
+          priceRange={priceRange}
+          onPriceRangeChange={setPriceRange}
+        />
+
+        <DiscountFilter
+          selectedDiscount={selectedDiscount}
+          onDiscountChange={setSelectedDiscount}
+        />
 
         <button
           onClick={handleApplyFilters}
