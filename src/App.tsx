@@ -8,6 +8,7 @@ import Companies from "./pages/Companies";
 import CompanyProfile from "./pages/CompanyProfile";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Professionals from "./pages/Professionals";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/companies" element={<Companies />} />
           <Route path="/companies/:id" element={<CompanyProfile />} />
+          <Route path="/professionals" element={<Professionals />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Routes>
