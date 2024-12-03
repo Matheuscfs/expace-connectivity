@@ -11,20 +11,20 @@ const services = [
 
 const PopularServices = () => {
   return (
-    <section className="py-16 mt-24 flex items-center justify-center">
-      <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold mb-8 text-center">Serviços Populares</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 max-w-5xl mx-auto">
+    <section className="py-8 sm:py-16 mt-16 sm:mt-24 flex items-center justify-center">
+      <div className="container mx-auto px-2 sm:px-4">
+        <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-center">Serviços Populares</h2>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-4 max-w-5xl mx-auto">
           {services.map((service) => {
             const Icon = service.icon;
             return (
               <Link
                 key={service.id}
                 to={`/companies?category=${service.name}`}
-                className="flex flex-col items-center p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+                className="flex flex-col items-center p-3 sm:p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer"
               >
-                <Icon className="w-10 h-10 text-primary mb-4" />
-                <h3 className="text-lg font-semibold">{service.name}</h3>
+                <Icon className="w-8 h-8 sm:w-10 sm:h-10 text-primary mb-2 sm:mb-4" />
+                <h3 className="text-sm sm:text-lg font-semibold text-center">{service.name}</h3>
               </Link>
             );
           })}
