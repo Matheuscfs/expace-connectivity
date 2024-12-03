@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
+import { Separator } from "@/components/ui/separator";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -21,6 +22,14 @@ const Login = () => {
     navigate("/");
   };
 
+  const handleGovLogin = () => {
+    // TODO: Implement actual Gov.br login logic
+    toast({
+      title: "Login Gov.br",
+      description: "Funcionalidade em desenvolvimento.",
+    });
+  };
+
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="w-full max-w-md space-y-8 bg-white p-8 rounded-lg shadow-lg animate-fade-in">
@@ -34,6 +43,31 @@ const Login = () => {
           <p className="mt-2 text-sm text-muted-foreground">
             Entre com sua conta para continuar
           </p>
+        </div>
+
+        <Button
+          variant="outline"
+          type="button"
+          className="w-full bg-[#1351B4] hover:bg-[#1351B4]/90 text-white border-none"
+          onClick={handleGovLogin}
+        >
+          <img
+            src="https://www.gov.br/governodigital/pt-br/transformacao-digital/identidade-digital-do-governo/gov.br-logo.png"
+            alt="Gov.br"
+            className="mr-2 h-5 w-5 rounded-sm"
+          />
+          Entrar com Gov.br
+        </Button>
+
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <Separator />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-white px-2 text-muted-foreground">
+              Ou entre com email
+            </span>
+          </div>
         </div>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-6">
