@@ -1,13 +1,12 @@
-import { Briefcase, Scissors, Home, Code, Camera, Car } from "lucide-react";
+import { Calculator, Code, Utensils, Heart, Scissors } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const services = [
-  { id: 1, name: "Tecnologia", icon: Code },
-  { id: 2, name: "Beleza", icon: Scissors },
-  { id: 3, name: "Reformas", icon: Home },
-  { id: 4, name: "Negócios", icon: Briefcase },
-  { id: 5, name: "Fotografia", icon: Camera },
-  { id: 6, name: "Transporte", icon: Car },
+  { id: 1, name: "Contabilidade", icon: Calculator },
+  { id: 2, name: "Tecnologia", icon: Code },
+  { id: 3, name: "Alimentação", icon: Utensils },
+  { id: 4, name: "Saúde", icon: Heart },
+  { id: 5, name: "Beleza", icon: Scissors },
 ];
 
 const PopularServices = () => {
@@ -15,7 +14,7 @@ const PopularServices = () => {
     <section className="py-16 mt-24">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold mb-8">Serviços Populares</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
           {services.map((service) => {
             const Icon = service.icon;
             return (

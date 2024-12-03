@@ -35,22 +35,20 @@ const getRandomLocation = () => locations[Math.floor(Math.random() * locations.l
 // Generate 50 test companies
 export const companies: Company[] = Array.from({ length: 50 }, (_, index) => {
   const categories = [
+    "Contabilidade",
     "Tecnologia",
     "Alimentação",
     "Saúde",
-    "Beleza",
-    "Educação",
-    "Serviços Domésticos",
-    "Construção",
-    "Marketing Digital",
-    "Consultoria Financeira",
-    "Design"
+    "Beleza"
   ];
   const category = categories[index % categories.length];
   
   // Generate company name based on category
   let name = "";
   switch (category) {
+    case "Contabilidade":
+      name = ["ContaFácil", "ContaExpress", "ContaMaster", "ContaDigital", "ContaPro"][index % 5];
+      break;
     case "Tecnologia":
       name = ["TechSolutions", "DataTech", "CloudMaster", "WebDev Pro", "AppCreators"][index % 5];
       break;
@@ -63,28 +61,15 @@ export const companies: Company[] = Array.from({ length: 50 }, (_, index) => {
     case "Beleza":
       name = ["BeautySpace", "GlamourStyle", "EleganceSpa", "BeautyZone", "StyleStudio"][index % 5];
       break;
-    case "Educação":
-      name = ["EduTech", "LearnMore", "SmartStudy", "BrainBoost", "SkillsHub"][index % 5];
-      break;
-    case "Serviços Domésticos":
-      name = ["HomeServices", "CleanPro", "HandyFix", "HomeCare", "ServiceMaster"][index % 5];
-      break;
-    case "Construção":
-      name = ["BuildMaster", "ConstructPro", "EngenhariaPrime", "Arquitetos Unidos", "ReformaMais"][index % 5];
-      break;
-    case "Marketing Digital":
-      name = ["DigitalPro", "SocialMaster", "WebMarketing", "LeadGenius", "ConversãoPlus"][index % 5];
-      break;
-    case "Consultoria Financeira":
-      name = ["FinanceWise", "InvestPro", "MoneyMaster", "WealthGuide", "FinancePrime"][index % 5];
-      break;
-    case "Design":
-      name = ["DesignMaster", "CreativePro", "ArtStudio", "VisualGenius", "DesignWorks"][index % 5];
-      break;
   }
 
   // Generate appropriate logo URL based on category
   const logoUrls = {
+    "Contabilidade": [
+      "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c",
+      "https://images.unsplash.com/photo-1554224154-26032ffc0d07",
+      "https://images.unsplash.com/photo-1450101499163-c8848c66ca85"
+    ],
     "Tecnologia": [
       "https://images.unsplash.com/photo-1518770660439-4636190af475",
       "https://images.unsplash.com/photo-1461749280684-dccba630e2f6",
@@ -104,36 +89,6 @@ export const companies: Company[] = Array.from({ length: 50 }, (_, index) => {
       "https://images.unsplash.com/photo-1560750588-73207b1ef5b8",
       "https://images.unsplash.com/photo-1562322140-8baeececf3df",
       "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9"
-    ],
-    "Educação": [
-      "https://images.unsplash.com/photo-1503676260728-1c00da094a0b",
-      "https://images.unsplash.com/photo-1507838153414-b4b713384a76",
-      "https://images.unsplash.com/photo-1513364776144-60967b0f800f"
-    ],
-    "Serviços Domésticos": [
-      "https://images.unsplash.com/photo-1581578731548-c64695cc6952",
-      "https://images.unsplash.com/photo-1527515545081-5db817172677",
-      "https://images.unsplash.com/photo-1584622650111-993a426fbf0a"
-    ],
-    "Construção": [
-      "https://images.unsplash.com/photo-1504307651254-35680f356dfd",
-      "https://images.unsplash.com/photo-1503387762-592deb58ef4e",
-      "https://images.unsplash.com/photo-1521790797524-b2497295b8a0"
-    ],
-    "Marketing Digital": [
-      "https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a",
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f",
-      "https://images.unsplash.com/photo-1533750349088-cd871a92f312"
-    ],
-    "Consultoria Financeira": [
-      "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40",
-      "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c",
-      "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f"
-    ],
-    "Design": [
-      "https://images.unsplash.com/photo-1561070791-2526d30994b5",
-      "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e",
-      "https://images.unsplash.com/photo-1613979813687-1cad02a99a8e"
     ]
   };
 
@@ -154,14 +109,9 @@ export const companies: Company[] = Array.from({ length: 50 }, (_, index) => {
 });
 
 export const categories = [
+  "Contabilidade",
   "Tecnologia",
   "Alimentação",
   "Saúde",
-  "Beleza",
-  "Educação",
-  "Serviços Domésticos",
-  "Construção",
-  "Marketing Digital",
-  "Consultoria Financeira",
-  "Design"
+  "Beleza"
 ];
