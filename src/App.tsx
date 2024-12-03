@@ -5,7 +5,6 @@ import Index from "./pages/Index";
 import Companies from "./pages/Companies";
 import CompanyProfile from "./pages/CompanyProfile";
 import Professionals from "./pages/Professionals";
-import ProfessionalsByRegion from "./pages/ProfessionalsByRegion";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
@@ -24,7 +23,6 @@ function App() {
             <Route path="/companies" element={<Companies />} />
             <Route path="/company/:id" element={<CompanyProfile />} />
             <Route path="/professionals" element={<Professionals />} />
-            <Route path="/professionals/:region" element={<ProfessionalsByRegion />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/profile" element={<Profile />} />
