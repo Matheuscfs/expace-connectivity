@@ -1,4 +1,4 @@
-import { MapPin, Search, User, LogOut } from "lucide-react";
+import { MapPin, Search, User, LogOut, Settings, List } from "lucide-react";
 import { Button } from "./ui/button";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Cart from "./Cart";
@@ -36,6 +36,12 @@ const Header = () => {
   const menuItems = [
     { path: "/companies", label: "Empresas" },
     { path: "/professionals", label: "Profissionais" },
+  ];
+
+  const profileMenuItems = [
+    { icon: User, label: "Perfil", path: "/profile" },
+    { icon: Settings, label: "Configurações", path: "/settings" },
+    { icon: List, label: "Pedidos", path: "/orders" },
   ];
 
   return (
@@ -98,43 +104,52 @@ const Header = () => {
                   )}
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-56">
-                <div className="grid gap-4">
-                  {user ? (
-                    <div className="grid gap-2">
-                      <div className="flex items-center gap-2">
-                        <Avatar className="h-8 w-8">
-                          <AvatarImage src={user.avatar} alt={user.name} />
-                          <AvatarFallback>{user.name.charAt(0).toUpperCase()}</AvatarFallback>
-                        </Avatar>
-                        <div className="text-sm font-medium">{user.name}</div>
-                      </div>
-                      <Button
-                        variant="destructive"
-                        className="w-full"
-                        onClick={handleLogout}
-                      >
-                        <LogOut className="mr-2 h-4 w-4" />
-                        Sair
-                      </Button>
+              <PopoverContent className="w-56 p-2">
+                {user ? (
+                  <div className="grid gap-2">
+                    <div className="flex items-center gap-2 p-2">
+                      <Avatar className="h-8 w-8">
+                        <AvatarImage src={user.avatar} alt={user.name} />
+                        <AvatarFallback>{user.name.charAt(0).toUpperCase()}</AvatarFallback>
+                      </Avatar>
+                      <div className="text-sm font-medium">{user.name}</div>
                     </div>
-                  ) : (
-                    <div className="grid gap-2">
+                    <div className="border-t my-1" />
+                    {profileMenuItems.map((item) => (
                       <Link
-                        to="/login"
-                        className="flex w-full items-center gap-2 rounded-md bg-primary px-4 py-2 text-white hover:bg-primary/90"
+                        key={item.path}
+                        to={item.path}
+                        className="flex items-center gap-2 p-2 text-sm hover:bg-accent rounded-md transition-colors"
                       >
-                        Entrar
+                        <item.icon className="h-4 w-4" />
+                        {item.label}
                       </Link>
-                      <Link
-                        to="/register"
-                        className="flex w-full items-center gap-2 rounded-md border border-input bg-background px-4 py-2 hover:bg-accent hover:text-accent-foreground"
-                      >
-                        Criar conta
-                      </Link>
-                    </div>
-                  )}
-                </div>
+                    ))}
+                    <div className="border-t my-1" />
+                    <button
+                      onClick={handleLogout}
+                      className="flex w-full items-center gap-2 p-2 text-sm text-red-600 hover:bg-red-50 rounded-md transition-colors"
+                    >
+                      <LogOut className="h-4 w-4" />
+                      Sair
+                    </button>
+                  </div>
+                ) : (
+                  <div className="grid gap-2">
+                    <Link
+                      to="/login"
+                      className="flex w-full items-center gap-2 rounded-md bg-primary px-4 py-2 text-white hover:bg-primary/90"
+                    >
+                      Entrar
+                    </Link>
+                    <Link
+                      to="/register"
+                      className="flex w-full items-center gap-2 rounded-md border border-input bg-background px-4 py-2 hover:bg-accent hover:text-accent-foreground"
+                    >
+                      Criar conta
+                    </Link>
+                  </div>
+                )}
               </PopoverContent>
             </Popover>
             <Cart />
