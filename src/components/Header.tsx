@@ -16,7 +16,7 @@ const Header = () => {
           <div className="flex items-center">
             <Link to="/" className="text-2xl font-bold">
               <span className="bg-gradient-to-r from-blue-700 via-blue-500 to-white bg-clip-text text-transparent">
-                Xplace
+                Expace
               </span>
             </Link>
             <nav className="hidden md:flex ml-10 space-x-8">
