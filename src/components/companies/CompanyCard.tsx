@@ -11,6 +11,7 @@ interface CompanyCardProps {
     rating: number;
     reviews: number;
     featured?: boolean;
+    location: string;
   };
   featured?: boolean;
 }
@@ -49,6 +50,9 @@ const CompanyCard = ({ company, featured = false }: CompanyCardProps) => {
             </div>
             <span className="text-sm text-gray-500 ml-2">
               ({company.reviews} avaliações)
+            </span>
+            <span className="text-sm text-gray-500 ml-4">
+              {company.location}
             </span>
           </div>
         </div>
