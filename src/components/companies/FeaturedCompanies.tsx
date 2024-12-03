@@ -16,7 +16,7 @@ export const FeaturedCompanies = ({ companies }: FeaturedCompaniesProps) => {
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {featuredCompanies.map((company) => (
-          <Card key={company.id} className="border-2 border-primary">
+          <Card key={company.id} className="backdrop-blur-sm bg-white/30 shadow-lg hover:shadow-xl transition-all">
             <CardContent className="p-6">
               <CompanyCard company={company} featured />
             </CardContent>
