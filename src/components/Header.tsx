@@ -1,15 +1,18 @@
 import { MapPin, Search, User } from "lucide-react";
 import { Button } from "./ui/button";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Cart from "./Cart";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useState } from "react";
 
 const Header = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
 
   const isActive = (path: string) => {
     return location.pathname === path;
@@ -19,6 +22,14 @@ const Header = () => {
     { path: "/companies", label: "Empresas" },
     { path: "/professionals", label: "Profissionais" },
   ];
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      // Redirect to companies page with search query
+      navigate(`/companies?search=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 bg-white shadow-sm z-50">
@@ -51,14 +62,18 @@ const Header = () => {
           </div>
 
           {/* Center section: Search */}
-          <div className="hidden md:flex relative max-w-md w-full mx-4">
+          <form onSubmit={handleSearch} className="hidden md:flex relative max-w-md w-full mx-4">
             <input
               type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Encontre serviços, empresas ou produtos..."
               className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary"
             />
-            <Search className="absolute right-3 top-2.5 text-gray-400" />
-          </div>
+            <button type="submit" className="absolute right-3 top-2.5">
+              <Search className="text-gray-400" />
+            </button>
+          </form>
 
           {/* Right section: Location, Profile, Cart */}
           <div className="flex items-center space-x-4">
