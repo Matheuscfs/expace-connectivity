@@ -26,7 +26,7 @@ export function ProfileSidebar() {
 
   return (
     <Sidebar>
-      <SidebarContent className="pt-8">
+      <SidebarContent className="pt-20">
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
