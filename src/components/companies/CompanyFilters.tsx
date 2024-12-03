@@ -43,12 +43,27 @@ const CompanyFilters = ({ categories, priceRange, setPriceRange }: CompanyFilter
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [citySearch, setCitySearch] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [selectedRating, setSelectedRating] = useState<number>(0);
 
   // Initialize selected categories from URL params
   useEffect(() => {
     const categoryParam = searchParams.get("category");
+    const cityParam = searchParams.get("city");
+    const ratingParam = searchParams.get("rating");
+    const minPriceParam = searchParams.get("minPrice");
+    const maxPriceParam = searchParams.get("maxPrice");
+
     if (categoryParam) {
       setSelectedCategories([categoryParam]);
+    }
+    if (cityParam) {
+      setCitySearch(cityParam);
+    }
+    if (ratingParam) {
+      setSelectedRating(Number(ratingParam));
+    }
+    if (minPriceParam && maxPriceParam) {
+      setPriceRange([Number(minPriceParam), Number(maxPriceParam)]);
     }
   }, [searchParams]);
 
@@ -62,19 +77,37 @@ const CompanyFilters = ({ categories, priceRange, setPriceRange }: CompanyFilter
     }
     
     setSelectedCategories(newCategories);
-    
-    // Update URL params
-    if (newCategories.length > 0) {
-      searchParams.set("category", newCategories[0]);
-    } else {
-      searchParams.delete("category");
-    }
-    setSearchParams(searchParams);
   };
 
   const filteredCities = brazilianCities.filter(city =>
     city.toLowerCase().includes(citySearch.toLowerCase())
   );
+
+  const handleApplyFilters = () => {
+    // Clear existing params
+    searchParams.delete("category");
+    searchParams.delete("city");
+    searchParams.delete("rating");
+    searchParams.delete("minPrice");
+    searchParams.delete("maxPrice");
+
+    // Add new params if they have values
+    if (selectedCategories.length > 0) {
+      searchParams.set("category", selectedCategories[0]);
+    }
+    if (citySearch) {
+      searchParams.set("city", citySearch);
+    }
+    if (selectedRating > 0) {
+      searchParams.set("rating", selectedRating.toString());
+    }
+    if (priceRange[0] > 0 || priceRange[1] < 1000) {
+      searchParams.set("minPrice", priceRange[0].toString());
+      searchParams.set("maxPrice", priceRange[1].toString());
+    }
+
+    setSearchParams(searchParams);
+  };
 
   return (
     <Card className="sticky top-24">
@@ -144,7 +177,12 @@ const CompanyFilters = ({ categories, priceRange, setPriceRange }: CompanyFilter
             {[1, 2, 3, 4, 5].map((star) => (
               <Star
                 key={star}
-                className="w-6 h-6 text-gray-300 cursor-pointer hover:text-yellow-400"
+                className={`w-6 h-6 cursor-pointer ${
+                  star <= selectedRating
+                    ? "text-yellow-400 fill-current"
+                    : "text-gray-300"
+                }`}
+                onClick={() => setSelectedRating(star)}
               />
             ))}
           </div>
@@ -166,7 +204,10 @@ const CompanyFilters = ({ categories, priceRange, setPriceRange }: CompanyFilter
           </div>
         </div>
 
-        <button className="w-full bg-primary text-white py-2 rounded-lg hover:bg-primary/90">
+        <button
+          onClick={handleApplyFilters}
+          className="w-full bg-primary text-white py-2 rounded-lg hover:bg-primary/90"
+        >
           Aplicar filtros
         </button>
       </CardContent>
