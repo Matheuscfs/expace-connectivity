@@ -1,5 +1,5 @@
 import { Search } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { CardContent } from "@/components/ui/card";
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
@@ -117,76 +117,74 @@ const CompanyFilters = ({ categories, priceRange, setPriceRange }: CompanyFilter
   };
 
   return (
-    <Card className="sticky top-24">
-      <CardContent className="p-6">
-        <h2 className="text-xl font-semibold mb-4">Filtros</h2>
-        
-        <CategoryFilter
-          categories={categories}
-          selectedCategories={selectedCategories}
-          onCategoryChange={handleCategoryChange}
-        />
+    <div className="p-6">
+      <h2 className="text-xl font-semibold mb-4">Filtros</h2>
+      
+      <CategoryFilter
+        categories={categories}
+        selectedCategories={selectedCategories}
+        onCategoryChange={handleCategoryChange}
+      />
 
-        <div className="mb-6">
-          <h3 className="font-medium mb-2">Localização</h3>
-          <Popover open={showSuggestions && filteredCities.length > 0} onOpenChange={setShowSuggestions}>
-            <PopoverTrigger asChild>
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Digite sua cidade"
-                  className="w-full px-4 py-2 border rounded-lg"
-                  value={citySearch}
-                  onChange={(e) => {
-                    setCitySearch(e.target.value);
-                    setShowSuggestions(true);
+      <div className="mb-6">
+        <h3 className="font-medium mb-2">Localização</h3>
+        <Popover open={showSuggestions && filteredCities.length > 0} onOpenChange={setShowSuggestions}>
+          <PopoverTrigger asChild>
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Digite sua cidade"
+                className="w-full px-4 py-2 border rounded-lg"
+                value={citySearch}
+                onChange={(e) => {
+                  setCitySearch(e.target.value);
+                  setShowSuggestions(true);
+                }}
+              />
+              <Search className="absolute right-3 top-2.5 text-gray-400 w-5 h-5" />
+            </div>
+          </PopoverTrigger>
+          <PopoverContent className="w-full p-0" align="start" sideOffset={5}>
+            <div className="max-h-[200px] overflow-y-auto">
+              {filteredCities.map((city) => (
+                <button
+                  key={city}
+                  className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                  onClick={() => {
+                    setCitySearch(city);
+                    setShowSuggestions(false);
                   }}
-                />
-                <Search className="absolute right-3 top-2.5 text-gray-400 w-5 h-5" />
-              </div>
-            </PopoverTrigger>
-            <PopoverContent className="w-full p-0" align="start" sideOffset={5}>
-              <div className="max-h-[200px] overflow-y-auto">
-                {filteredCities.map((city) => (
-                  <button
-                    key={city}
-                    className="w-full text-left px-4 py-2 hover:bg-gray-100"
-                    onClick={() => {
-                      setCitySearch(city);
-                      setShowSuggestions(false);
-                    }}
-                  >
-                    {city}
-                  </button>
-                ))}
-              </div>
-            </PopoverContent>
-          </Popover>
-        </div>
+                >
+                  {city}
+                </button>
+              ))}
+            </div>
+          </PopoverContent>
+        </Popover>
+      </div>
 
-        <RatingFilter
-          selectedRating={selectedRating}
-          onRatingChange={setSelectedRating}
-        />
+      <RatingFilter
+        selectedRating={selectedRating}
+        onRatingChange={setSelectedRating}
+      />
 
-        <PriceFilter
-          priceRange={priceRange}
-          onPriceRangeChange={setPriceRange}
-        />
+      <PriceFilter
+        priceRange={priceRange}
+        onPriceRangeChange={setPriceRange}
+      />
 
-        <DiscountFilter
-          selectedDiscount={selectedDiscount}
-          onDiscountChange={setSelectedDiscount}
-        />
+      <DiscountFilter
+        selectedDiscount={selectedDiscount}
+        onDiscountChange={setSelectedDiscount}
+      />
 
-        <button
-          onClick={handleApplyFilters}
-          className="w-full bg-primary text-white py-2 rounded-lg hover:bg-primary/90"
-        >
-          Aplicar filtros
-        </button>
-      </CardContent>
-    </Card>
+      <button
+        onClick={handleApplyFilters}
+        className="w-full bg-primary text-white py-2 rounded-lg hover:bg-primary/90"
+      >
+        Aplicar filtros
+      </button>
+    </div>
   );
 };
 
