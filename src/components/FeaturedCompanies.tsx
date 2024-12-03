@@ -15,28 +15,28 @@ const FeaturedCompanies = () => {
   }, {} as Record<string, typeof companies>);
 
   return (
-    <section className="py-16 bg-accent">
+    <section className="py-12 bg-accent">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold mb-8">Empresas em Destaque</h2>
+        <h2 className="text-2xl font-bold mb-6">Empresas em Destaque</h2>
         {Object.entries(companiesBySector).map(([sector, sectorCompanies]) => (
-          <div key={sector} className="mb-12">
-            <h3 className="text-2xl font-semibold mb-6 text-primary">{sector}</h3>
+          <div key={sector} className="mb-8">
+            <h3 className="text-xl font-semibold mb-4 text-primary">{sector}</h3>
             <Carousel className="w-full">
               <CarouselContent className="-ml-2 md:-ml-4">
                 {sectorCompanies.slice(0, 6).map((company) => (
                   <CarouselItem key={company.id} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
-                    <Card className="backdrop-blur-sm bg-white/30 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                    <Card className="backdrop-blur-sm bg-white/30 p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow">
                       <img
                         src={company.logo}
                         alt={company.name}
-                        className="w-24 h-24 mx-auto mb-4 rounded-full object-cover"
+                        className="w-16 h-16 mx-auto mb-3 rounded-full object-cover"
                       />
-                      <h3 className="text-xl font-semibold text-center mb-2">{company.name}</h3>
-                      <p className="text-sm text-gray-600 text-center mb-2">{company.category}</p>
-                      <p className="text-sm text-gray-500 text-center mb-3">{company.location}</p>
+                      <h3 className="text-lg font-semibold text-center mb-1">{company.name}</h3>
+                      <p className="text-sm text-gray-600 text-center mb-1">{company.category}</p>
+                      <p className="text-xs text-gray-500 text-center mb-2">{company.location}</p>
                       <div className="flex items-center justify-center">
-                        <Star className="w-5 h-5 text-yellow-400 fill-current" />
-                        <span className="ml-1 text-gray-600">{company.rating}</span>
+                        <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                        <span className="ml-1 text-sm text-gray-600">{company.rating}</span>
                       </div>
                     </Card>
                   </CarouselItem>
