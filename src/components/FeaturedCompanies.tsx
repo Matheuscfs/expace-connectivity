@@ -12,8 +12,15 @@ import {
 import { companies } from "@/data/mockCompanies";
 
 const FeaturedCompanies = () => {
-  // Get only the top 4 rated companies across all sectors
-  const topCompanies = companies
+  // Get top rated company from each category, limited to 4 total
+  const topCompaniesByCategory = Array.from(
+    new Set(companies.map((company) => company.category))
+  )
+    .map((category) => {
+      return companies
+        .filter((company) => company.category === category)
+        .sort((a, b) => b.rating - a.rating)[0];
+    })
     .sort((a, b) => b.rating - a.rating)
     .slice(0, 4);
 
@@ -29,7 +36,7 @@ const FeaturedCompanies = () => {
           className="w-full"
         >
           <CarouselContent className="-ml-2 md:-ml-4">
-            {topCompanies.map((company) => (
+            {topCompaniesByCategory.map((company) => (
               <CarouselItem key={company.id} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
                 <div className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow h-full">
                   <div className="flex items-start space-x-4">
