@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Professionals from "./pages/Professionals";
 import ProfessionalsByRegion from "./pages/ProfessionalsByRegion";
+import Profile from "./pages/Profile";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ function App() {
           <Route path="/professionals/:region" element={<ProfessionalsByRegion />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>
