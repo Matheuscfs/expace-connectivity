@@ -3,6 +3,11 @@ import { Slider } from "@/components/ui/slider";
 import { Card, CardContent } from "@/components/ui/card";
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 interface CompanyFiltersProps {
   categories: string[];
@@ -10,9 +15,34 @@ interface CompanyFiltersProps {
   setPriceRange: (value: number[]) => void;
 }
 
+const brazilianCities = [
+  "São Paulo",
+  "Rio de Janeiro",
+  "Belo Horizonte",
+  "Brasília",
+  "Salvador",
+  "Curitiba",
+  "Fortaleza",
+  "Recife",
+  "Porto Alegre",
+  "Manaus",
+  "Belém",
+  "Goiânia",
+  "Guarulhos",
+  "Campinas",
+  "São Luís",
+  "São Gonçalo",
+  "Maceió",
+  "Duque de Caxias",
+  "Campo Grande",
+  "Natal",
+];
+
 const CompanyFilters = ({ categories, priceRange, setPriceRange }: CompanyFiltersProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [citySearch, setCitySearch] = useState("");
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   // Initialize selected categories from URL params
   useEffect(() => {
@@ -42,6 +72,10 @@ const CompanyFilters = ({ categories, priceRange, setPriceRange }: CompanyFilter
     setSearchParams(searchParams);
   };
 
+  const filteredCities = brazilianCities.filter(city =>
+    city.toLowerCase().includes(citySearch.toLowerCase())
+  );
+
   return (
     <Card className="sticky top-24">
       <CardContent className="p-6">
@@ -68,14 +102,39 @@ const CompanyFilters = ({ categories, priceRange, setPriceRange }: CompanyFilter
         {/* Location */}
         <div className="mb-6">
           <h3 className="font-medium mb-2">Localização</h3>
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Digite sua cidade"
-              className="w-full px-4 py-2 border rounded-lg"
-            />
-            <Search className="absolute right-3 top-2.5 text-gray-400 w-5 h-5" />
-          </div>
+          <Popover open={showSuggestions && filteredCities.length > 0} onOpenChange={setShowSuggestions}>
+            <PopoverTrigger asChild>
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Digite sua cidade"
+                  className="w-full px-4 py-2 border rounded-lg"
+                  value={citySearch}
+                  onChange={(e) => {
+                    setCitySearch(e.target.value);
+                    setShowSuggestions(true);
+                  }}
+                />
+                <Search className="absolute right-3 top-2.5 text-gray-400 w-5 h-5" />
+              </div>
+            </PopoverTrigger>
+            <PopoverContent className="w-[calc(100%-2rem)] p-0">
+              <div className="max-h-[200px] overflow-y-auto">
+                {filteredCities.map((city) => (
+                  <button
+                    key={city}
+                    className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                    onClick={() => {
+                      setCitySearch(city);
+                      setShowSuggestions(false);
+                    }}
+                  >
+                    {city}
+                  </button>
+                ))}
+              </div>
+            </PopoverContent>
+          </Popover>
         </div>
 
         {/* Rating */}
