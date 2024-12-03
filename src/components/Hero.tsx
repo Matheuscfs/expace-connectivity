@@ -1,4 +1,3 @@
-import { Button } from "./ui/button";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "./ui/carousel";
 
 const Hero = () => {
@@ -29,7 +28,6 @@ const Hero = () => {
               <div className="text-center space-y-4">
                 <h2>{ad.title}</h2>
                 <p className="text-gray-600">{ad.description}</p>
-                <Button variant="default">Saiba mais</Button>
               </div>
             </CarouselItem>
           ))}
