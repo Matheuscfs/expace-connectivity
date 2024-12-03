@@ -110,7 +110,7 @@ const FeaturedCompanies = () => {
               className="w-full"
             >
               <CarouselContent className="-ml-2 md:-ml-4">
-                {sectorCompanies.map((company) => (
+                {sectorCompanies.slice(0, 4).map((company) => (
                   <CarouselItem key={company.id} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
                     <div className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow h-full">
                       <div className="flex items-start space-x-4">
