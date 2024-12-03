@@ -52,9 +52,9 @@ const Login = () => {
           onClick={handleGovLogin}
         >
           <img
-            src="https://www.gov.br/governodigital/pt-br/transformacao-digital/identidade-digital-do-governo/gov.br-logo.png"
+            src="https://www.gov.br/logo-gov.br.png"
             alt="Gov.br"
-            className="mr-2 h-5 w-5 rounded-sm"
+            className="mr-2 h-5 w-5 rounded-sm bg-white p-0.5"
           />
           Entrar com Gov.br
         </Button>
