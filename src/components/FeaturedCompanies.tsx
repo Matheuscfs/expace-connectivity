@@ -79,67 +79,51 @@ const companies = [
 ];
 
 const FeaturedCompanies = () => {
-  // Group companies by sector
-  const companiesBySector = companies.reduce((acc, company) => {
-    if (!acc[company.sector]) {
-      acc[company.sector] = [];
-    }
-    acc[company.sector].push(company);
-    return acc;
-  }, {} as Record<string, typeof companies>);
+  // Get only the top 4 rated companies across all sectors
+  const topCompanies = companies
+    .sort((a, b) => b.rating - a.rating)
+    .slice(0, 4);
 
   return (
     <section className="py-16 bg-accent">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold mb-8">Empresas em Destaque</h2>
-        {Object.entries(companiesBySector).map(([sector, sectorCompanies]) => (
-          <div key={sector} className="mb-12">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-2xl font-semibold text-primary">{sector}</h3>
-              <Link to={`/companies?sector=${encodeURIComponent(sector)}`}>
-                <Button variant="link" size="sm" className="text-primary">
-                  Ver mais
-                </Button>
-              </Link>
-            </div>
-            <Carousel
-              opts={{
-                align: "start",
-                loop: true,
-              }}
-              className="w-full"
-            >
-              <CarouselContent className="-ml-2 md:-ml-4">
-                {sectorCompanies.slice(0, 4).map((company) => (
-                  <CarouselItem key={company.id} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
-                    <div className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow h-full">
-                      <div className="flex items-start space-x-4">
-                        <img
-                          src={company.logo}
-                          alt={company.name}
-                          className="w-16 h-16 rounded-lg object-cover flex-shrink-0"
-                        />
-                        <div className="flex-1">
-                          <h3 className="font-semibold text-lg">{company.name}</h3>
-                          <p className="text-sm text-gray-600 mb-1">{sector}</p>
-                          <p className="text-sm text-gray-500 mb-2">São Paulo, SP</p>
-                          <div className="flex items-center">
-                            <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                            <span className="ml-1 text-sm text-gray-600">{company.rating}</span>
-                          </div>
-                        </div>
+        <Carousel
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+          className="w-full"
+        >
+          <CarouselContent className="-ml-2 md:-ml-4">
+            {topCompanies.map((company) => (
+              <CarouselItem key={company.id} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
+                <div className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow h-full">
+                  <div className="flex items-start space-x-4">
+                    <img
+                      src={company.logo}
+                      alt={company.name}
+                      className="w-16 h-16 rounded-lg object-cover flex-shrink-0"
+                    />
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-lg">{company.name}</h3>
+                      <p className="text-sm text-gray-600 mb-1">{company.sector}</p>
+                      <p className="text-sm text-gray-500 mb-2">São Paulo, SP</p>
+                      <div className="flex items-center">
+                        <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                        <span className="ml-1 text-sm text-gray-600">{company.rating}</span>
                       </div>
                     </div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <div className="hidden md:block">
-                <CarouselPrevious className="left-0" />
-                <CarouselNext className="right-0" />
-              </div>
-            </Carousel>
+                  </div>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <div className="hidden md:block">
+            <CarouselPrevious className="left-0" />
+            <CarouselNext className="right-0" />
           </div>
-        ))}
+        </Carousel>
       </div>
     </section>
   );
