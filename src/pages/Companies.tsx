@@ -1,10 +1,17 @@
 import { useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CompanyCard from "@/components/companies/CompanyCard";
 import CompanyFilters from "@/components/companies/CompanyFilters";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 const categories = [
   "Tecnologia",
@@ -79,10 +86,23 @@ const companies = [
   },
 ];
 
+const ITEMS_PER_PAGE = 4;
+
 const Companies = () => {
   const [priceRange, setPriceRange] = useState([0, 1000]);
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 5;
+
+  // Calculate pagination
+  const totalItems = companies.length;
+  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const currentCompanies = companies.slice(startIndex, endIndex);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -136,7 +156,7 @@ const Companies = () => {
                   Todas as Empresas
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {companies.map((company) => (
+                  {currentCompanies.map((company) => (
                     <Card key={company.id}>
                       <CardContent className="p-6">
                         <CompanyCard company={company} />
@@ -147,26 +167,35 @@ const Companies = () => {
               </div>
 
               {/* Pagination */}
-              <div className="mt-8 flex justify-center items-center space-x-4">
-                <button
-                  onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                  disabled={currentPage === 1}
-                  className="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-50"
-                >
-                  <ChevronLeft className="w-5 h-5" />
-                </button>
-                <span>
-                  Página {currentPage} de {totalPages}
-                </span>
-                <button
-                  onClick={() =>
-                    setCurrentPage(Math.min(totalPages, currentPage + 1))
-                  }
-                  disabled={currentPage === totalPages}
-                  className="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-50"
-                >
-                  <ChevronRight className="w-5 h-5" />
-                </button>
+              <div className="mt-8">
+                <Pagination>
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious 
+                        onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+                        className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                      />
+                    </PaginationItem>
+                    
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                      <PaginationItem key={page}>
+                        <PaginationLink
+                          onClick={() => handlePageChange(page)}
+                          isActive={currentPage === page}
+                        >
+                          {page}
+                        </PaginationLink>
+                      </PaginationItem>
+                    ))}
+                    
+                    <PaginationItem>
+                      <PaginationNext
+                        onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
+                        className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                      />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
               </div>
             </div>
           </div>
