@@ -25,9 +25,7 @@ const Hero = () => {
         <CarouselContent>
           {ads.map((ad) => (
             <CarouselItem key={ad.id} className="relative h-full bg-accent">
-              <div>
-                {ad.description}
-              </div>
+              {ad.description}
             </CarouselItem>
           ))}
         </CarouselContent>
