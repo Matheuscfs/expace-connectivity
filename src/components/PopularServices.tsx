@@ -1,5 +1,5 @@
 import { Briefcase, Scissors, Home, Code, Camera, Car } from "lucide-react";
-import { Button } from "./ui/button";
+import { Link } from "react-router-dom";
 
 const services = [
   { id: 1, name: "Tecnologia", icon: Code },
@@ -19,16 +19,14 @@ const PopularServices = () => {
           {services.map((service) => {
             const Icon = service.icon;
             return (
-              <div
+              <Link
                 key={service.id}
-                className="flex flex-col items-center p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow"
+                to={`/companies?category=${service.name}`}
+                className="flex flex-col items-center p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer"
               >
                 <Icon className="w-10 h-10 text-primary mb-4" />
-                <h3 className="text-lg font-semibold mb-3">{service.name}</h3>
-                <Button variant="outline" size="sm">
-                  Saiba mais
-                </Button>
-              </div>
+                <h3 className="text-lg font-semibold">{service.name}</h3>
+              </Link>
             );
           })}
         </div>
