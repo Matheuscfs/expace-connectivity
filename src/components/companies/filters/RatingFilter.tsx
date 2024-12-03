@@ -11,10 +11,10 @@ export const RatingFilter = ({
   onRatingChange,
 }: RatingFilterProps) => {
   const ratings = [
-    { value: 0, label: "Tudo" },
-    { value: 5, label: "5 estrelas" },
-    { value: 4, label: "4 estrelas ou mais" },
-    { value: 3, label: "3 estrelas ou mais" },
+    { value: 0, label: "" },
+    { value: 5, label: "" },
+    { value: 4, label: "" },
+    { value: 3, label: "" },
   ];
 
   return (
@@ -29,9 +29,10 @@ export const RatingFilter = ({
               className="mr-2"
             />
             <span className="flex items-center">
-              {rating.label}
-              {rating.value > 0 && (
-                <span className="ml-1 flex">
+              {rating.value === 0 ? (
+                <span>Tudo</span>
+              ) : (
+                <span className="flex">
                   {Array.from({ length: rating.value }).map((_, i) => (
                     <Star
                       key={i}
