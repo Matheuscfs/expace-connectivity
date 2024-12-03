@@ -17,12 +17,16 @@ const FeaturedCompanies = () => {
     new Set(companies.map((company) => company.category))
   )
     .map((category) => {
-      return companies
+      const companiesInCategory = companies
         .filter((company) => company.category === category)
-        .sort((a, b) => b.rating - a.rating)[0];
+        .sort((a, b) => b.rating - a.rating);
+      
+      // Get top 2 companies from each category
+      return companiesInCategory.slice(0, 2);
     })
+    .flat() // Flatten the array of arrays
     .sort((a, b) => b.rating - a.rating)
-    .slice(0, 4);
+    .slice(0, 8); // Get top 8 companies overall
 
   return (
     <section className="py-16 bg-accent">
