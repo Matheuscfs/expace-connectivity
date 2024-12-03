@@ -32,7 +32,6 @@ const locations = [
 
 const getRandomLocation = () => locations[Math.floor(Math.random() * locations.length)];
 
-// Generate companies by category
 const generateCompanies = (category: string, names: string[], logos: string[], startId: number): Company[] => {
   return names.map((name, index) => ({
     id: startId + index,
@@ -42,15 +41,19 @@ const generateCompanies = (category: string, names: string[], logos: string[], s
     category,
     rating: Number((3 + Math.random() * 2).toFixed(1)),
     reviews: Math.floor(50 + Math.random() * 200),
-    featured: index < 2, // First two companies in each category are featured
+    featured: index < 3, // Changed from 2 to 3 to feature more companies
     location: getRandomLocation()
   }));
 };
 
-// Companies by category
+// Companies by category with more names
 const contabilidadeCompanies = generateCompanies(
   "Contabilidade",
-  ["ContaFácil", "ContaExpress", "ContaMaster", "ContaDigital", "ContaPro", "ContaMax", "ContaVip", "ContaSmart", "ContaPlus", "ContaFlex"],
+  [
+    "ContaFácil", "ContaExpress", "ContaMaster", "ContaDigital", "ContaPro",
+    "ContaMax", "ContaVip", "ContaSmart", "ContaPlus", "ContaFlex",
+    "ContaGlobal", "ContaPremium", "ContaElite"
+  ],
   [
     "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c",
     "https://images.unsplash.com/photo-1554224154-26032ffc0d07",
@@ -61,46 +64,62 @@ const contabilidadeCompanies = generateCompanies(
 
 const tecnologiaCompanies = generateCompanies(
   "Tecnologia",
-  ["TechSolutions", "DataTech", "CloudMaster", "WebDev Pro", "AppCreators", "TechInova", "CodeMaster", "TechFuture", "DigitalPro", "TechExpert"],
+  [
+    "TechSolutions", "DataTech", "CloudMaster", "WebDev Pro", "AppCreators",
+    "TechInova", "CodeMaster", "TechFuture", "DigitalPro", "TechExpert",
+    "TechGlobal", "TechPremium", "TechElite"
+  ],
   [
     "https://images.unsplash.com/photo-1518770660439-4636190af475",
     "https://images.unsplash.com/photo-1461749280684-dccba630e2f6",
     "https://images.unsplash.com/photo-1451187580459-43490279c0fa"
   ],
-  11
+  20
 );
 
 const alimentacaoCompanies = generateCompanies(
   "Alimentação",
-  ["FoodExpress", "GourmetKitchen", "HealthyBites", "FreshMeal", "TasteMakers", "FoodArt", "ChefPrime", "GourmetPro", "FoodMaster", "CulinaryArt"],
+  [
+    "FoodExpress", "GourmetKitchen", "HealthyBites", "FreshMeal", "TasteMakers",
+    "FoodArt", "ChefPrime", "GourmetPro", "FoodMaster", "CulinaryArt",
+    "FoodGlobal", "FoodPremium", "FoodElite"
+  ],
   [
     "https://images.unsplash.com/photo-1498837167922-ddd27525d352",
     "https://images.unsplash.com/photo-1514326640560-7d063ef2aed5",
     "https://images.unsplash.com/photo-1495147466023-ac5c588e2e94"
   ],
-  21
+  40
 );
 
 const saudeCompanies = generateCompanies(
   "Saúde",
-  ["HealthCare Plus", "MedCenter", "VitaCare", "WellnessHub", "LifeClinic", "MedPro", "HealthLife", "MedExpert", "VitaPro", "HealthMaster"],
+  [
+    "HealthCare Plus", "MedCenter", "VitaCare", "WellnessHub", "LifeClinic",
+    "MedPro", "HealthLife", "MedExpert", "VitaPro", "HealthMaster",
+    "HealthGlobal", "HealthPremium", "HealthElite"
+  ],
   [
     "https://images.unsplash.com/photo-1538108149393-fbbd81895907",
     "https://images.unsplash.com/photo-1579684385127-1ef15d508118",
     "https://images.unsplash.com/photo-1581056771107-24ca5f033842"
   ],
-  31
+  60
 );
 
 const belezaCompanies = generateCompanies(
   "Beleza",
-  ["BeautySpace", "GlamourStyle", "EleganceSpa", "BeautyZone", "StyleStudio", "BeautyPro", "GlamourPro", "BeautyMaster", "StyleExpert", "BeautyArt"],
+  [
+    "BeautySpace", "GlamourStyle", "EleganceSpa", "BeautyZone", "StyleStudio",
+    "BeautyPro", "GlamourPro", "BeautyMaster", "StyleExpert", "BeautyArt",
+    "BeautyGlobal", "BeautyPremium", "BeautyElite"
+  ],
   [
     "https://images.unsplash.com/photo-1560750588-73207b1ef5b8",
     "https://images.unsplash.com/photo-1562322140-8baeececf3df",
     "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9"
   ],
-  41
+  80
 );
 
 // Combine all companies
