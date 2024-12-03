@@ -89,7 +89,7 @@ const FeaturedCompanies = () => {
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-2xl font-semibold text-primary">{sector}</h3>
               <Link to={`/companies?sector=${encodeURIComponent(sector)}`}>
-                <Button variant="secondary" size="sm">
+                <Button variant="link" size="sm" className="text-primary">
                   Ver mais
                 </Button>
               </Link>
