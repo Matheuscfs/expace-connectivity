@@ -12,6 +12,7 @@ import { CompanyStats } from "@/components/company/CompanyStats";
 import { CompanyMarketing } from "@/components/company/CompanyMarketing";
 import { CompanySEO } from "@/components/company/CompanySEO";
 import { CompanyNotifications } from "@/components/company/CompanyNotifications";
+import { CompanySetupNav } from "@/components/company/CompanySetupNav";
 
 const CompanyProfile = () => {
   const { id } = useParams();
@@ -53,72 +54,77 @@ const CompanyProfile = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-8">
-      <CompanyHeader
-        logo={companyData.logo}
-        name={companyData.name}
-        description={companyData.shortDescription}
-        status={companyData.status}
-        onContact={handleContact}
-        isOwner={true}
-      />
+    <div className="min-h-screen bg-background">
+      <div className="flex">
+        <CompanySetupNav />
+        <div className="flex-1">
+          <CompanyHeader
+            logo={companyData.logo}
+            name={companyData.name}
+            description={companyData.shortDescription}
+            status={companyData.status}
+            onContact={handleContact}
+            isOwner={true}
+          />
 
-      <div className="container mx-auto px-4 mt-8">
-        <Tabs defaultValue="about" className="space-y-8">
-          <TabsList className="w-full justify-start">
-            <TabsTrigger value="about">Sobre</TabsTrigger>
-            <TabsTrigger value="portfolio">Portfólio</TabsTrigger>
-            <TabsTrigger value="services">Serviços</TabsTrigger>
-            <TabsTrigger value="reviews">Avaliações</TabsTrigger>
-            <TabsTrigger value="team">Equipe</TabsTrigger>
-            <TabsTrigger value="stats">Estatísticas</TabsTrigger>
-            <TabsTrigger value="marketing">Marketing</TabsTrigger>
-            <TabsTrigger value="seo">SEO</TabsTrigger>
-            <TabsTrigger value="notifications">Notificações</TabsTrigger>
-          </TabsList>
+          <div className="container mx-auto px-4 mt-8">
+            <Tabs defaultValue="about" className="space-y-8">
+              <TabsList className="w-full justify-start">
+                <TabsTrigger value="about">Sobre</TabsTrigger>
+                <TabsTrigger value="portfolio">Portfólio</TabsTrigger>
+                <TabsTrigger value="services">Serviços</TabsTrigger>
+                <TabsTrigger value="reviews">Avaliações</TabsTrigger>
+                <TabsTrigger value="team">Equipe</TabsTrigger>
+                <TabsTrigger value="stats">Estatísticas</TabsTrigger>
+                <TabsTrigger value="marketing">Marketing</TabsTrigger>
+                <TabsTrigger value="seo">SEO</TabsTrigger>
+                <TabsTrigger value="notifications">Notificações</TabsTrigger>
+              </TabsList>
 
-          <TabsContent value="about">
-            <CompanyAbout
-              description={companyData.about}
-              address={companyData.contact.address}
-              workingHours={companyData.workingHours}
-              contact={companyData.contact}
-              socialMedia={companyData.socialMedia}
-            />
-          </TabsContent>
+              <TabsContent value="about">
+                <CompanyAbout
+                  description={companyData.about}
+                  address={companyData.contact.address}
+                  workingHours={companyData.workingHours}
+                  contact={companyData.contact}
+                  socialMedia={companyData.socialMedia}
+                />
+              </TabsContent>
 
-          <TabsContent value="portfolio">
-            <CompanyPortfolio />
-          </TabsContent>
+              <TabsContent value="portfolio">
+                <CompanyPortfolio />
+              </TabsContent>
 
-          <TabsContent value="services">
-            <CompanyServices />
-          </TabsContent>
+              <TabsContent value="services">
+                <CompanyServices />
+              </TabsContent>
 
-          <TabsContent value="reviews">
-            <CompanyReviews />
-          </TabsContent>
+              <TabsContent value="reviews">
+                <CompanyReviews />
+              </TabsContent>
 
-          <TabsContent value="team">
-            <CompanyTeam />
-          </TabsContent>
+              <TabsContent value="team">
+                <CompanyTeam />
+              </TabsContent>
 
-          <TabsContent value="stats">
-            <CompanyStats />
-          </TabsContent>
+              <TabsContent value="stats">
+                <CompanyStats />
+              </TabsContent>
 
-          <TabsContent value="marketing">
-            <CompanyMarketing />
-          </TabsContent>
+              <TabsContent value="marketing">
+                <CompanyMarketing />
+              </TabsContent>
 
-          <TabsContent value="seo">
-            <CompanySEO />
-          </TabsContent>
+              <TabsContent value="seo">
+                <CompanySEO />
+              </TabsContent>
 
-          <TabsContent value="notifications">
-            <CompanyNotifications />
-          </TabsContent>
-        </Tabs>
+              <TabsContent value="notifications">
+                <CompanyNotifications />
+              </TabsContent>
+            </Tabs>
+          </div>
+        </div>
       </div>
     </div>
   );
