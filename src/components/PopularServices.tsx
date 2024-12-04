@@ -1,15 +1,15 @@
-import { Calculator, Code, Utensils, Heart, Scissors, Briefcase, Palette, LineChart } from "lucide-react";
+import { Calculator, Code, Utensils, Heart, Scissors, Briefcase, Palette, LineChart, Laptop, Book, GraduationCap, MoreHorizontal } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const services = [
-  { id: 1, name: "Contabilidade", icon: Calculator, description: "Gestão financeira profissional" },
-  { id: 2, name: "Tecnologia", icon: Code, description: "Soluções digitais inovadoras" },
-  { id: 3, name: "Alimentação", icon: Utensils, description: "Serviços gastronômicos" },
-  { id: 4, name: "Saúde", icon: Heart, description: "Cuidados especializados" },
-  { id: 5, name: "Beleza", icon: Scissors, description: "Serviços estéticos" },
-  { id: 6, name: "Consultoria", icon: Briefcase, description: "Assessoria empresarial" },
-  { id: 7, name: "Design", icon: Palette, description: "Criação visual profissional" },
-  { id: 8, name: "Marketing", icon: LineChart, description: "Estratégias de crescimento" },
+  { id: 1, name: "Tecnologia", icon: Laptop, description: "Desenvolvimento e suporte" },
+  { id: 2, name: "Design", icon: Palette, description: "Criação visual profissional" },
+  { id: 3, name: "Consultoria", icon: LineChart, description: "Assessoria empresarial" },
+  { id: 4, name: "Educação", icon: GraduationCap, description: "Ensino e capacitação" },
+  { id: 5, name: "Contabilidade", icon: Calculator, description: "Gestão financeira" },
+  { id: 6, name: "Marketing", icon: LineChart, description: "Estratégias digitais" },
+  { id: 7, name: "Saúde", icon: Heart, description: "Cuidados especializados" },
+  { id: 8, name: "Outros", icon: MoreHorizontal, description: "Diversos serviços" },
 ];
 
 const PopularServices = () => {
@@ -17,7 +17,7 @@ const PopularServices = () => {
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <h2 className="text-2xl sm:text-3xl font-bold mb-8 text-center">
-          Serviços Populares
+          Categorias Populares
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 max-w-6xl mx-auto">
           {services.map((service) => {
