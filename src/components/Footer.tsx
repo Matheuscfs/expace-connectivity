@@ -14,49 +14,60 @@ const Footer = () => {
             </h3>
             <ul className="space-y-2">
               <li>
-                <Link to="#" className="text-gray-600 hover:text-primary">
-                  Quem somos
+                <Link to="/" className="text-gray-600 hover:text-primary">
+                  Página Inicial
                 </Link>
               </li>
               <li>
-                <Link to="#" className="text-gray-600 hover:text-primary">
-                  Fale conosco
+                <Link to="/companies" className="text-gray-600 hover:text-primary">
+                  Empresas
                 </Link>
               </li>
               <li>
-                <Link to="#" className="text-gray-600 hover:text-primary">
-                  Carreiras
+                <Link to="/professionals" className="text-gray-600 hover:text-primary">
+                  Profissionais
                 </Link>
               </li>
               <li>
-                <Link to="#" className="text-gray-600 hover:text-primary">
-                  Profissionais e Empresas
+                <Link to="/plans" className="text-gray-600 hover:text-primary">
+                  Planos
                 </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold mb-4">Descubra</h3>
+            <h3 className="text-lg font-semibold mb-4">Área do Usuário</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="#" className="text-gray-600 hover:text-primary">
-                  Cadastre seu serviço ou empresa
+                <Link to="/login" className="text-gray-600 hover:text-primary">
+                  Login
                 </Link>
               </li>
               <li>
-                <Link to="#" className="text-gray-600 hover:text-primary">
-                  Expace Shop
+                <Link to="/register" className="text-gray-600 hover:text-primary">
+                  Cadastro de Usuário
                 </Link>
               </li>
               <li>
-                <Link to="#" className="text-gray-600 hover:text-primary">
-                  Orçamentos rápidos
+                <Link to="/profile" className="text-gray-600 hover:text-primary">
+                  Meu Perfil
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Área da Empresa</h3>
+            <ul className="space-y-2">
+              <li>
+                <Link to="/company-login" className="text-gray-600 hover:text-primary">
+                  Login Empresarial
                 </Link>
               </li>
               <li>
-                <Link to="#" className="text-gray-600 hover:text-primary">
-                  Blog Expace Empresas
+                <Link to="/company-register" className="text-gray-600 hover:text-primary">
+                  Cadastro Empresarial
                 </Link>
               </li>
             </ul>
@@ -99,27 +110,6 @@ const Footer = () => {
                 >
                   <Linkedin size={20} />
                   LinkedIn
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Outros</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link to="#" className="text-gray-600 hover:text-primary">
-                  Termos de Uso
-                </Link>
-              </li>
-              <li>
-                <Link to="#" className="text-gray-600 hover:text-primary">
-                  Política de Privacidade
-                </Link>
-              </li>
-              <li>
-                <Link to="#" className="text-gray-600 hover:text-primary">
-                  Ajuda e Suporte
                 </Link>
               </li>
             </ul>
