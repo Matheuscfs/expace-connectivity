@@ -10,6 +10,7 @@ import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import CompanyRegister from "./pages/CompanyRegister";
 import CompanyLogin from "./pages/CompanyLogin";
+import Plans from "./pages/Plans";
 import { Toaster } from "./components/ui/toaster";
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/company-register" element={<CompanyRegister />} />
             <Route path="/company-login" element={<CompanyLogin />} />
+            <Route path="/plans" element={<Plans />} />
           </Routes>
         </main>
         <Footer />
