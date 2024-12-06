@@ -33,6 +33,11 @@ const Footer = () => {
                   Planos
                 </Link>
               </li>
+              <li>
+                <Link to="/company/preview" className="text-gray-600 hover:text-primary">
+                  Visualizar Empresa
+                </Link>
+              </li>
             </ul>
           </div>
 
