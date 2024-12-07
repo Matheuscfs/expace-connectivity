@@ -42,45 +42,100 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    
+    --wsr-color-D10: #000624;
+    --wsr-color-D20: #333853;
+    --wsr-color-D30: #595d70;
+    --wsr-color-D40: #868aa5;
+    --wsr-color-D50: #acafc4;
+    --wsr-color-D55: #cfd1dc;
+    --wsr-color-D60: #dfe5eb;
+    --wsr-color-D70: #eceff3;
+    --wsr-color-D80: #fff;
+    --wsr-color-B00: #084ebd;
+    --wsr-color-B05: #0f62e6;
+    --wsr-color-B10: #116dff;
+    --wsr-color-B20: #5999ff;
+    --wsr-color-B30: #a8caff;
+    --wsr-color-B40: #d6e6fe;
+    --wsr-color-B50: #e7f0ff;
+    --wsr-color-B60: #f4f7ff;
+    --wsr-color-R00: #b81206;
+    --wsr-color-R05: #d0180b;
+    --wsr-color-R10: #e62214;
+    --wsr-color-R20: #ff6d63;
+    --wsr-color-R30: #f69891;
+    --wsr-color-R40: #fbd0cd;
+    --wsr-color-R50: #fde3e1;
+    --wsr-color-R60: #fdeceb;
+    --wsr-color-P00: #7416a5;
+    --wsr-color-P05: #8e1dd1;
+    --wsr-color-P10: #9a27d5;
+    --wsr-color-P20: #c161f0;
+    --wsr-color-P30: #cf8cf1;
+    --wsr-color-P40: #e3c3f4;
+    --wsr-color-P50: #f1e0f9;
+    --wsr-color-P60: #f7edfc;
+    --wsr-color-G00: #1d8649;
+    --wsr-color-G05: #229954;
+    --wsr-color-G10: #25a55a;
+    --wsr-color-G20: #51b77b;
+    --wsr-color-G30: #87cea5;
+    --wsr-color-G40: #c8e8d6;
+    --wsr-color-G50: #e1f4eb;
+    --wsr-color-G60: #e9f6ee;
+    --wsr-color-Y00: #d59900;
+    --wsr-color-Y05: #e7a600;
+    --wsr-color-Y10: #ffb700;
+    --wsr-color-Y20: #ffc23d;
+    --wsr-color-Y30: #ffd16e;
+    --wsr-color-Y40: #ffe2a5;
+    --wsr-color-Y50: #fff0d1;
+    --wsr-color-Y60: #fff6e5;
+    --wsr-color-O00: #df4d00;
+    --font-family: var(--wds-font-family-default, var(--wsr-font-family, Madefor, "Helvetica Neue", Helvetica, Arial, "メイリオ", "meiryo", "ヒラギノ角ゴpro w3", "hiragino kaku gothic pro", sans-serif));
+    --wix-font-stack: Madefor, "Helvetica Neue", Helvetica, Arial, "メイリオ", "meiryo", "ヒラギノ角ゴ pro w3", "hiragino kaku gothic pro", sans-serif;
+    --wix-font-weight-regular: 400;
+    --wix-font-weight-medium: 530;
+    --wix-font-weight-bold: 700;
+    --wix-font-weight-xbold: 800;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
   }
 }
 
-@layer base {
-  * {
-    @apply border-border;
+@layer components {
+  .wds_1_139_1_SidebarItemNext__listItem {
+    display: flex;
+    list-style-type: none;
+    outline: 0;
   }
 
-  body {
-    @apply bg-background text-foreground;
+  .wds_1_139_1_SidebarSubMenuNext__subMenuItems {
+    list-style-type: none;
+    margin: 0;
+    max-height: 0;
+    overflow: hidden;
+    padding: 0;
+  }
+
+  .wds_1_139_1_SidebarNext__listItems {
+    list-style-type: none;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+  }
+
+  #root, .q4W8a1, .vGMPIY, body, html {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-touch-callout: none;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #fff;
+    height: 100%;
+    margin: 0;
+    padding: 0;
   }
 }
