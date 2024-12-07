@@ -1,5 +1,6 @@
 import { Check, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface SetupStep {
   id: number;
@@ -17,11 +18,31 @@ const steps: SetupStep[] = [
 ];
 
 const categories = [
-  { name: "Início", items: [] },
-  { name: "Apps", items: ["Wix App Market", "Gerenciar aplicativos", "Wix FAQ"] },
-  { name: "Vendas", items: ["Requisitos de checkout", "Slots for Stores"] },
-  { name: "Marketing", items: ["Site e app mobile", "Inbox", "Clientes e leads", "Análises", "Automações"] },
-  { name: "Configurações", items: ["CMS", "Ferramentas de desenvolvedor"] },
+  { 
+    name: "Início", 
+    description: "Configure as informações básicas da sua empresa",
+    items: [] 
+  },
+  { 
+    name: "Apps", 
+    description: "Gerencie os aplicativos e integrações",
+    items: ["Wix App Market", "Gerenciar aplicativos", "Wix FAQ"] 
+  },
+  { 
+    name: "Vendas", 
+    description: "Configure suas opções de venda e pagamento",
+    items: ["Requisitos de checkout", "Slots for Stores"] 
+  },
+  { 
+    name: "Marketing", 
+    description: "Gerencie suas estratégias de marketing e comunicação",
+    items: ["Site e app mobile", "Inbox", "Clientes e leads", "Análises", "Automações"] 
+  },
+  { 
+    name: "Configurações", 
+    description: "Ajuste as configurações gerais da sua empresa",
+    items: ["CMS", "Ferramentas de desenvolvedor"] 
+  },
 ];
 
 export function CompanySetupNav() {
@@ -63,25 +84,30 @@ export function CompanySetupNav() {
       </div>
 
       {/* Categories */}
-      <div className="p-4">
+      <div className="p-4 space-y-4">
         {categories.map((category) => (
-          <div key={category.name} className="mb-6">
-            <h3 className="text-sm font-medium text-gray-900 mb-2">
-              {category.name}
-            </h3>
-            {category.items.length > 0 && (
-              <ul className="space-y-2">
-                {category.items.map((item) => (
-                  <li
-                    key={item}
-                    className="text-sm text-gray-600 hover:text-primary cursor-pointer pl-2"
-                  >
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+          <Card key={category.name} className="border border-gray-200">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-gray-900">
+                {category.name}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-xs text-gray-600 mb-2">{category.description}</p>
+              {category.items.length > 0 && (
+                <ul className="space-y-2">
+                  {category.items.map((item) => (
+                    <li
+                      key={item}
+                      className="text-sm text-gray-600 hover:text-primary cursor-pointer pl-2 transition-colors"
+                    >
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </CardContent>
+          </Card>
         ))}
       </div>
     </div>
