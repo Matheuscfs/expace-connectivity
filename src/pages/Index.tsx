@@ -1,7 +1,7 @@
 import { Hero } from "@/components/Hero";
 import PopularServices from "@/components/PopularServices";
 import FeaturedCompanies from "@/components/FeaturedCompanies";
-import { Testimonials } from "@/components/Testimonials";
+import Testimonials from "@/components/Testimonials";
 
 const Index = () => {
   return (
