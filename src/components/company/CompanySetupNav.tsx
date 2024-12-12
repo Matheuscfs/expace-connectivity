@@ -1,4 +1,4 @@
-import { Check, ChevronRight, Home, Apps, ShoppingCart, BarChart3, Settings } from "lucide-react";
+import { Check, ChevronRight, Home, AppWindow, ShoppingCart, BarChart3, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
@@ -28,7 +28,7 @@ const categories = [
   { 
     name: "Apps", 
     description: "Gerencie os aplicativos e integrações",
-    icon: Apps,
+    icon: AppWindow,
     items: ["Wix App Market", "Gerenciar aplicativos", "Wix FAQ"] 
   },
   { 
