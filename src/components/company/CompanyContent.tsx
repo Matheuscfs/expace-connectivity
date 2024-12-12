@@ -3,9 +3,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DashboardContent } from "./dashboard/DashboardContent";
 import { SEOContent } from "./seo/SEOContent";
 import { CampaignsContent } from "./campaigns/CampaignsContent";
+import { CompanyServices } from "./CompanyServices";
 
 const tabsContent = {
   dashboard: <DashboardContent />,
+  servicos: <CompanyServices />,
   seo: <SEOContent />,
   campanhas: <CampaignsContent />,
   configuracoes: (
