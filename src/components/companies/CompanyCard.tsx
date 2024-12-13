@@ -36,7 +36,7 @@ const CompanyCard = ({ company, featured = false }: CompanyCardProps) => {
           <div className="flex items-start justify-between">
             <div>
               <Link 
-                to={`/companies/${company.id}`}
+                to={`/company/${company.id}`}
                 className="font-semibold text-lg hover:text-primary group-hover:underline"
               >
                 {company.name}

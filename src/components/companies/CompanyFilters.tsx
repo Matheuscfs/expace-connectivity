@@ -1,7 +1,7 @@
+import { useState } from "react";
 import { Search } from "lucide-react";
-import { CardContent } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useSearchParams } from "react-router-dom";
-import { useEffect, useState } from "react";
 import {
   Popover,
   PopoverContent,
@@ -49,30 +49,9 @@ const CompanyFilters = ({ categories, priceRange, setPriceRange }: CompanyFilter
   const [selectedRating, setSelectedRating] = useState<number>(0);
   const [selectedDiscount, setSelectedDiscount] = useState<number>(0);
 
-  useEffect(() => {
-    const categoryParam = searchParams.get("category");
-    const cityParam = searchParams.get("city");
-    const ratingParam = searchParams.get("rating");
-    const minPriceParam = searchParams.get("minPrice");
-    const maxPriceParam = searchParams.get("maxPrice");
-    const discountParam = searchParams.get("discount");
-
-    if (categoryParam) {
-      setSelectedCategories([categoryParam]);
-    }
-    if (cityParam) {
-      setCitySearch(cityParam);
-    }
-    if (ratingParam) {
-      setSelectedRating(Number(ratingParam));
-    }
-    if (minPriceParam && maxPriceParam) {
-      setPriceRange([Number(minPriceParam), Number(maxPriceParam)]);
-    }
-    if (discountParam) {
-      setSelectedDiscount(Number(discountParam));
-    }
-  }, [searchParams]);
+  const filteredCities = brazilianCities.filter(city =>
+    city.toLowerCase().includes(citySearch.toLowerCase())
+  );
 
   const handleCategoryChange = (category: string, checked: boolean) => {
     if (category === "") {
@@ -88,10 +67,6 @@ const CompanyFilters = ({ categories, priceRange, setPriceRange }: CompanyFilter
     }
     setSelectedCategories(newCategories);
   };
-
-  const filteredCities = brazilianCities.filter(city =>
-    city.toLowerCase().includes(citySearch.toLowerCase())
-  );
 
   const handleApplyFilters = () => {
     const params = new URLSearchParams();
