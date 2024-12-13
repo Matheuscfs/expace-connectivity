@@ -1,17 +1,7 @@
+import { CompanyStats } from "../CompanyStats";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { Button } from "@/components/ui/button";
 import { TrendingUp, Users, Star, DollarSign } from "lucide-react";
-
-const mockData = {
-  monthlyVisits: [
-    { month: 'Jan', visits: 1000 },
-    { month: 'Fev', visits: 1500 },
-    { month: 'Mar', visits: 1200 },
-    { month: 'Abr', visits: 1800 },
-    { month: 'Mai', visits: 2000 },
-    { month: 'Jun', visits: 1700 },
-  ]
-};
 
 export function DashboardContent() {
   return (
@@ -62,21 +52,17 @@ export function DashboardContent() {
         </Card>
       </div>
 
-      <Card>
+      <CompanyStats />
+
+      <Card className="mt-6">
         <CardHeader>
-          <CardTitle>Visitas Mensais</CardTitle>
+          <CardTitle>Promova sua Empresa</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-[300px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={mockData.monthlyVisits}>
-                <XAxis dataKey="month" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="visits" fill="#1E40AF" />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+          <Button className="w-full">
+            <TrendingUp className="w-4 h-4 mr-2" />
+            Impulsionar Perfil
+          </Button>
         </CardContent>
       </Card>
     </div>
