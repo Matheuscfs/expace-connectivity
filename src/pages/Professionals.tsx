@@ -20,6 +20,11 @@ const Professionals = () => {
     navigate(`/professionals/${encodeURIComponent(region)}`);
   };
 
+  // Filter professionals based on selected category
+  const filteredProfessionals = professionals.filter(professional => 
+    selectedCategory === "" || professional.profession === selectedCategory
+  );
+
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -50,6 +55,16 @@ const Professionals = () => {
             
             {/* Popular Categories */}
             <div className="flex flex-wrap gap-4 justify-center mt-8">
+              <Button
+                variant="outline"
+                className={`gap-2 ${
+                  selectedCategory === "" ? "bg-primary text-white" : ""
+                }`}
+                onClick={() => setSelectedCategory("")}
+              >
+                <Briefcase className="w-4 h-4" />
+                Todos
+              </Button>
               {categories.slice(0, 6).map((category) => (
                 <Button
                   key={category}
@@ -142,7 +157,7 @@ const Professionals = () => {
           {/* Professionals Grid */}
           <main className="flex-1">
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {professionals.map((professional) => (
+              {filteredProfessionals.map((professional) => (
                 <div
                   key={professional.id}
                   className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-6"
