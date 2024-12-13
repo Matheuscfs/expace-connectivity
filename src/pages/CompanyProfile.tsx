@@ -42,8 +42,6 @@ const mockCompanyData = {
 
 const CompanyProfile = () => {
   const { id } = useParams();
-  // In a real application, you would fetch the company data using the ID
-  // const { data: company, isLoading } = useQuery(['company', id], fetchCompany)
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -52,6 +50,7 @@ const CompanyProfile = () => {
         logo={mockCompanyData.logo}
         banner={mockCompanyData.banner}
         location={mockCompanyData.location}
+        description={mockCompanyData.description}
       />
       
       <div className="container mx-auto px-4 py-8 space-y-8">
