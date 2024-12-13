@@ -5,7 +5,7 @@ interface CompanyHeaderProps {
   logo: string;
   name: string;
   description: string;
-  status: string;
+  status?: string;
   isOwner?: boolean;
   onEdit?: () => void;
   onContact?: () => void;
@@ -15,7 +15,7 @@ export function CompanyHeader({
   logo,
   name,
   description,
-  status,
+  status = "Ativo",
   isOwner = false,
   onEdit,
   onContact,
