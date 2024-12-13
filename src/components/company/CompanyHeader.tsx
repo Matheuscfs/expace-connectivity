@@ -6,6 +6,8 @@ interface CompanyHeaderProps {
   name: string;
   description: string;
   status?: string;
+  banner?: string;
+  location?: string;
   isOwner?: boolean;
   onEdit?: () => void;
   onContact?: () => void;
@@ -16,12 +18,23 @@ export function CompanyHeader({
   name,
   description,
   status = "Ativo",
+  banner,
+  location,
   isOwner = false,
   onEdit,
   onContact,
 }: CompanyHeaderProps) {
   return (
     <div className="w-full bg-white shadow-sm">
+      {banner && (
+        <div className="w-full h-48 overflow-hidden">
+          <img
+            src={banner}
+            alt={`${name} banner`}
+            className="w-full h-full object-cover"
+          />
+        </div>
+      )}
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row gap-8 items-start">
           <img
@@ -33,6 +46,9 @@ export function CompanyHeader({
             <div>
               <h1 className="text-3xl font-bold">{name}</h1>
               <p className="text-gray-600">{description}</p>
+              {location && (
+                <p className="text-sm text-gray-500 mt-1">{location}</p>
+              )}
               <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mt-2">
                 {status}
               </span>
