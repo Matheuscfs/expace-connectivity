@@ -1,4 +1,4 @@
-import { Card, CardContent } from "@/components/ui/card"
+import { Card } from "@/components/ui/card"
 import CompanyCard from "./CompanyCard"
 import type { Company } from "@/data/mockCompanies"
 
@@ -10,17 +10,13 @@ export const FeaturedCompanies = ({ companies }: FeaturedCompaniesProps) => {
   const featuredCompanies = companies.filter(company => company.featured)
 
   return (
-    <div className="mb-8">
-      <h2 className="text-xl font-semibold mb-4">
+    <div className="space-y-4">
+      <h2 className="text-xl font-semibold">
         Empresas em Destaque
       </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {featuredCompanies.map((company) => (
-          <Card key={company.id} className="backdrop-blur-sm bg-white/30 shadow-lg hover:shadow-xl transition-all">
-            <CardContent className="p-6">
-              <CompanyCard company={company} featured />
-            </CardContent>
-          </Card>
+          <CompanyCard key={company.id} company={company} featured />
         ))}
       </div>
     </div>
