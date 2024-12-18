@@ -12,6 +12,7 @@ import CompanyRegister from "./pages/CompanyRegister";
 import CompanyLogin from "./pages/CompanyLogin";
 import Plans from "./pages/Plans";
 import { Toaster } from "./components/ui/toaster";
+import ChatButton from "./components/ChatButton";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
         </main>
         <Footer />
       </div>
+      <ChatButton />
       <Toaster />
     </Router>
   );
