@@ -1,4 +1,4 @@
-import { Star, Award, Heart, BookmarkPlus } from "lucide-react";
+import { Star, Award, Heart, BookmarkPlus, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,9 +21,10 @@ interface CompanyCardProps {
     location: string;
   };
   featured?: boolean;
+  onMessageClick?: (companyId: number) => void;
 }
 
-const CompanyCard = ({ company, featured = false }: CompanyCardProps) => {
+const CompanyCard = ({ company, featured = false, onMessageClick }: CompanyCardProps) => {
   return (
     <div className="flex flex-col space-y-4 p-4 rounded-lg bg-white hover:shadow-md transition-all duration-300">
       <div className="flex items-start justify-between">
@@ -65,6 +66,14 @@ const CompanyCard = ({ company, featured = false }: CompanyCardProps) => {
         </Button>
         <Button size="sm" variant="ghost" className="px-2">
           <BookmarkPlus className="w-4 h-4" />
+        </Button>
+        <Button 
+          size="sm" 
+          variant="ghost" 
+          className="px-2"
+          onClick={() => onMessageClick?.(company.id)}
+        >
+          <MessageCircle className="w-4 h-4" />
         </Button>
       </div>
     </div>

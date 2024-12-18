@@ -1,4 +1,4 @@
-import { MessageCircle, Send, X } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import { useState } from "react";
 import {
   Dialog,
@@ -6,27 +6,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-
-interface Message {
-  id: string;
-  content: string;
-  timestamp: string;
-  sender: "user" | "company";
-}
-
-interface Conversation {
-  id: string;
-  companyName: string;
-  lastMessage: string;
-  timestamp: string;
-  unread: boolean;
-  messages: Message[];
-}
+import { ChatList } from "./chat/ChatList";
+import { ChatArea } from "./chat/ChatArea";
+import { Conversation } from "./chat/types";
 
 // Mock data - replace with real data later
 const mockConversations: Conversation[] = [
@@ -143,83 +126,24 @@ const ChatButton = () => {
               <DialogHeader className="p-4 border-b">
                 <DialogTitle>Suas Conversas</DialogTitle>
               </DialogHeader>
-              <ScrollArea className="h-[calc(70vh-65px)]">
-                <div className="p-4 space-y-4">
-                  {mockConversations.map((conversation) => (
-                    <div
-                      key={conversation.id}
-                      onClick={() => setSelectedConversation(conversation)}
-                      className={cn(
-                        "p-4 rounded-lg border bg-card hover:bg-accent transition-colors cursor-pointer",
-                        selectedConversation?.id === conversation.id && "bg-accent"
-                      )}
-                    >
-                      <div className="flex justify-between items-start mb-2">
-                        <div className="flex items-center gap-2">
-                          <h4 className="font-medium">{conversation.companyName}</h4>
-                          {conversation.unread && (
-                            <div className="w-2 h-2 rounded-full bg-primary" />
-                          )}
-                        </div>
-                        <span className="text-xs text-muted-foreground">
-                          {formatTimestamp(conversation.timestamp)}
-                        </span>
-                      </div>
-                      <p className="text-sm text-muted-foreground line-clamp-2">
-                        {conversation.lastMessage}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </ScrollArea>
+              <ChatList
+                conversations={mockConversations}
+                selectedConversation={selectedConversation}
+                onSelectConversation={setSelectedConversation}
+                formatTimestamp={formatTimestamp}
+              />
             </div>
 
             {/* Chat Area */}
             <div className="hidden sm:flex flex-col w-[70%] h-full">
               {selectedConversation ? (
-                <>
-                  <div className="p-4 border-b">
-                    <h3 className="font-semibold">{selectedConversation.companyName}</h3>
-                  </div>
-                  <ScrollArea className="flex-1 p-4">
-                    <div className="space-y-4">
-                      {selectedConversation.messages.map((message) => (
-                        <div
-                          key={message.id}
-                          className={cn(
-                            "flex flex-col max-w-[70%] space-y-1",
-                            message.sender === "user" ? "ml-auto items-end" : "items-start"
-                          )}
-                        >
-                          <div
-                            className={cn(
-                              "rounded-lg p-3",
-                              message.sender === "user"
-                                ? "bg-primary text-primary-foreground"
-                                : "bg-accent"
-                            )}
-                          >
-                            {message.content}
-                          </div>
-                          <span className="text-xs text-muted-foreground">
-                            {formatTimestamp(message.timestamp)}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </ScrollArea>
-                  <form onSubmit={handleSendMessage} className="p-4 border-t flex gap-2">
-                    <Input
-                      value={newMessage}
-                      onChange={(e) => setNewMessage(e.target.value)}
-                      placeholder="Digite sua mensagem..."
-                      className="flex-1"
-                    />
-                    <Button type="submit" size="icon">
-                      <Send className="h-4 w-4" />
-                    </Button>
-                  </form>
-                </>
+                <ChatArea
+                  conversation={selectedConversation}
+                  newMessage={newMessage}
+                  setNewMessage={setNewMessage}
+                  handleSendMessage={handleSendMessage}
+                  formatTimestamp={formatTimestamp}
+                />
               ) : (
                 <div className="flex items-center justify-center h-full text-muted-foreground">
                   Selecione uma conversa para começar
