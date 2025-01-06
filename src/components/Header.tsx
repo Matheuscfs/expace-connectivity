@@ -51,7 +51,7 @@ const Header = () => {
           <div className="flex items-center space-x-4">
             <Link to="/" className="pl-2">
               <span className="text-2xl font-bold bg-gradient-to-r from-blue-700 via-blue-700 to-blue-200 bg-clip-text text-transparent">
-                Expace
+                The Office
               </span>
             </Link>
 
