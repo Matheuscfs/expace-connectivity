@@ -1,69 +1,97 @@
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Send } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Conversation } from "./types";
-import { FormEvent } from "react";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Badge } from "@/components/ui/badge";
+import { Message } from "./types";
 
 interface ChatAreaProps {
-  conversation: Conversation;
-  newMessage: string;
-  setNewMessage: (message: string) => void;
-  handleSendMessage: (e: FormEvent) => void;
-  formatTimestamp: (timestamp: string) => string;
+  messages: Message[];
+  company?: {
+    id: number;
+    name: string;
+    logo: string;
+    category: string;
+    isOnline?: boolean;
+  };
+  onSendMessage?: (message: string) => void;
 }
 
-export const ChatArea = ({
-  conversation,
-  newMessage,
-  setNewMessage,
-  handleSendMessage,
-  formatTimestamp,
-}: ChatAreaProps) => {
+export function ChatArea({ messages, company, onSendMessage }: ChatAreaProps) {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const input = form.elements.namedItem("message") as HTMLInputElement;
+    
+    if (input.value.trim() && onSendMessage) {
+      onSendMessage(input.value);
+      input.value = "";
+    }
+  };
+
   return (
-    <>
+    <div className="flex flex-col h-full">
       <div className="p-4 border-b">
-        <h3 className="font-semibold">{conversation.companyName}</h3>
+        {company ? (
+          <div className="flex items-center space-x-4">
+            <img
+              src={company.logo}
+              alt={company.name}
+              className="w-10 h-10 rounded-full object-cover"
+            />
+            <div className="flex-1">
+              <div className="flex items-center space-x-2">
+                <h3 className="font-semibold">{company.name}</h3>
+                <Badge variant={company.isOnline ? "success" : "secondary"} className="text-xs">
+                  {company.isOnline ? "Online" : "Offline"}
+                </Badge>
+              </div>
+              <p className="text-sm text-gray-500">{company.category}</p>
+            </div>
+          </div>
+        ) : (
+          <p className="text-gray-500">Selecione uma conversa</p>
+        )}
       </div>
+
       <ScrollArea className="flex-1 p-4">
         <div className="space-y-4">
-          {conversation.messages.map((message) => (
+          {messages.map((message, index) => (
             <div
-              key={message.id}
-              className={cn(
-                "flex flex-col max-w-[70%] space-y-1",
-                message.sender === "user" ? "ml-auto items-end" : "items-start"
-              )}
+              key={index}
+              className={`flex ${
+                message.isUser ? "justify-end" : "justify-start"
+              }`}
             >
               <div
-                className={cn(
-                  "rounded-lg p-3",
-                  message.sender === "user"
+                className={`max-w-[80%] rounded-lg p-3 ${
+                  message.isUser
                     ? "bg-primary text-primary-foreground"
-                    : "bg-accent"
-                )}
+                    : "bg-muted"
+                }`}
               >
-                {message.content}
+                <p>{message.content}</p>
+                <span className="text-xs opacity-70">
+                  {message.timestamp.toLocaleTimeString()}
+                </span>
               </div>
-              <span className="text-xs text-muted-foreground">
-                {formatTimestamp(message.timestamp)}
-              </span>
             </div>
           ))}
         </div>
       </ScrollArea>
-      <form onSubmit={handleSendMessage} className="p-4 border-t flex gap-2">
-        <Input
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          placeholder="Digite sua mensagem..."
-          className="flex-1"
-        />
-        <Button type="submit" size="icon">
-          <Send className="h-4 w-4" />
-        </Button>
+
+      <form onSubmit={handleSubmit} className="p-4 border-t">
+        <div className="flex space-x-2">
+          <Input
+            name="message"
+            placeholder="Digite sua mensagem..."
+            className="flex-1"
+          />
+          <Button type="submit">
+            <Send className="h-4 w-4" />
+          </Button>
+        </div>
       </form>
-    </>
+    </div>
   );
-};
+}
