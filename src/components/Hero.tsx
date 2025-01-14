@@ -6,7 +6,7 @@ export function Hero() {
     <div className="relative min-h-[600px] flex items-center justify-center overflow-hidden bg-gradient-to-r from-primary to-primary/80">
       {/* Background Pattern */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1496307653780-42ee777d4833')] bg-cover bg-center opacity-20" />
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1451187580459-43490279c0fa')] bg-cover bg-center opacity-20" />
         <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/70" />
       </div>
 
