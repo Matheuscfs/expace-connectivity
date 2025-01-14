@@ -6,7 +6,7 @@ export function Hero() {
     <div className="relative min-h-[600px] flex items-center justify-center overflow-hidden bg-gradient-to-r from-primary to-primary/80">
       {/* Background Pattern */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop')] bg-cover bg-center opacity-20" />
+        <div className="absolute inset-0 bg-[url('/lovable-uploads/0b32e181-5a2a-49fe-9480-89b6b8f6e9eb.png')] bg-cover bg-center opacity-20" />
         <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/70" />
       </div>
 
@@ -78,8 +78,8 @@ export function Hero() {
           <div className="hidden lg:block relative">
             <div className="relative w-full h-[500px] rounded-lg overflow-hidden">
               <img
-                src="https://images.unsplash.com/photo-1535223289827-42f1e9919769?q=80&w=1974&auto=format&fit=crop"
-                alt="Modern Industry"
+                src="/lovable-uploads/0b32e181-5a2a-49fe-9480-89b6b8f6e9eb.png"
+                alt="Cidade Futurista"
                 className="object-cover w-full h-full rounded-lg"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-primary/50 to-transparent" />
