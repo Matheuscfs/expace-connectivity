@@ -102,6 +102,18 @@
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
   }
+
+  html, body {
+    @apply min-h-screen w-full m-0 p-0;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+
+  #root {
+    @apply min-h-screen w-full flex flex-col;
+  }
 }
 
 @layer components {
