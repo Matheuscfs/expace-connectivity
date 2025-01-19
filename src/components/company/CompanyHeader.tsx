@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Edit, MessageSquare } from "lucide-react";
+import { useState } from "react";
+import ChatButton from "@/components/ChatButton";
 
 interface CompanyHeaderProps {
   logo: string;
@@ -24,6 +26,13 @@ export function CompanyHeader({
   onEdit,
   onContact,
 }: CompanyHeaderProps) {
+  const [showChat, setShowChat] = useState(false);
+
+  const handleContact = () => {
+    setShowChat(true);
+    onContact?.();
+  };
+
   return (
     <div className="w-full bg-white shadow-sm">
       {banner && (
@@ -60,7 +69,7 @@ export function CompanyHeader({
                   Editar Perfil
                 </Button>
               )}
-              <Button onClick={onContact}>
+              <Button onClick={handleContact}>
                 <MessageSquare className="w-4 h-4 mr-2" />
                 Enviar mensagem
               </Button>
@@ -68,6 +77,7 @@ export function CompanyHeader({
           </div>
         </div>
       </div>
+      {showChat && <ChatButton />}
     </div>
   );
 }
