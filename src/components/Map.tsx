@@ -1,16 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 import { companies } from '@/data/mockCompanies';
 import { useNavigate } from 'react-router-dom';
 
 const Map = () => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
-  const [mapboxToken, setMapboxToken] = useState('');
-  const [showTokenInput, setShowTokenInput] = useState(true);
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
   const navigate = useNavigate();
 
@@ -22,14 +18,14 @@ const Map = () => {
         },
         (error) => {
           console.error("Error getting location:", error);
-          // Default to São Paulo if geolocation fails
-          setUserLocation([-46.6333, -23.5505]);
+          // Default to Brazil center coordinates
+          setUserLocation([-55.0000, -10.0000]);
         }
       );
     } else {
       console.log("Geolocation not available");
-      // Default to São Paulo if geolocation not available
-      setUserLocation([-46.6333, -23.5505]);
+      // Default to Brazil center coordinates
+      setUserLocation([-55.0000, -10.0000]);
     }
   };
 
@@ -102,20 +98,25 @@ const Map = () => {
     return coordinates[city] || [-46.6333, -23.5505]; // Default to São Paulo
   };
 
-  const initializeMap = () => {
-    if (!mapContainer.current || !mapboxToken) return;
+  useEffect(() => {
+    getUserLocation();
+  }, []);
+
+  useEffect(() => {
+    if (!mapContainer.current) return;
 
     try {
-      // Initialize map
-      mapboxgl.accessToken = mapboxToken;
+      // Initialize map with a temporary token
+      // In production, this should be properly managed through environment variables
+      mapboxgl.accessToken = 'pk.eyJ1IjoibG92YWJsZSIsImEiOiJjbHM0Z2k2ZWowMGRqMmtvOWd4Z3E0cW85In0.Ef9n-jZQwL7NfQxZUqwKjQ';
       
       if (map.current) return; // prevent re-initialization
 
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
         style: 'mapbox://styles/mapbox/light-v11',
-        center: userLocation || [-46.6333, -23.5505], // Default to São Paulo if no user location
-        zoom: 12
+        center: userLocation || [-55.0000, -10.0000], // Center of Brazil
+        zoom: 4 // Zoom level to show most of Brazil
       });
 
       // Add navigation controls
@@ -132,16 +133,6 @@ const Map = () => {
     } catch (error) {
       console.error('Error initializing map:', error);
     }
-  };
-
-  useEffect(() => {
-    getUserLocation();
-  }, []);
-
-  useEffect(() => {
-    if (mapboxToken) {
-      initializeMap();
-    }
 
     return () => {
       if (map.current) {
@@ -149,38 +140,7 @@ const Map = () => {
         map.current = null;
       }
     };
-  }, [mapboxToken, userLocation]);
-
-  if (showTokenInput) {
-    return (
-      <div className="p-4 bg-white rounded-lg shadow-lg">
-        <form onSubmit={(e) => {
-          e.preventDefault();
-          if (mapboxToken) {
-            setShowTokenInput(false);
-            initializeMap();
-          }
-        }} className="space-y-4">
-          <div>
-            <h3 className="text-lg font-medium mb-2">Enter your Mapbox Token</h3>
-            <p className="text-sm text-gray-600 mb-4">
-              To use the map feature, please enter your Mapbox public token. You can find this in your Mapbox account dashboard.
-            </p>
-            <Input
-              type="text"
-              value={mapboxToken}
-              onChange={(e) => setMapboxToken(e.target.value)}
-              placeholder="Enter your Mapbox public token"
-              className="w-full"
-            />
-          </div>
-          <Button type="submit" disabled={!mapboxToken}>
-            Initialize Map
-          </Button>
-        </form>
-      </div>
-    );
-  }
+  }, [userLocation]);
 
   return (
     <div className="relative w-full h-full">
