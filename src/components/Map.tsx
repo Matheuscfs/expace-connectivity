@@ -3,6 +3,7 @@ import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { companies } from '@/data/mockCompanies';
 import { useNavigate } from 'react-router-dom';
+import { brazilianCities } from '@/data/brazilianCities';
 
 const Map = () => {
   const mapContainer = useRef<HTMLDivElement>(null);
@@ -88,14 +89,11 @@ const Map = () => {
   };
 
   const getCityCoordinates = (city: string): [number, number] => {
-    const coordinates: { [key: string]: [number, number] } = {
-      'São Paulo': [-46.6333, -23.5505],
-      'Rio de Janeiro': [-43.1729, -22.9068],
-      'Curitiba': [-49.2671, -25.4289],
-      'Porto Alegre': [-51.2177, -30.0346],
-      'Belo Horizonte': [-43.9378, -19.9208],
-    };
-    return coordinates[city] || [-46.6333, -23.5505];
+    const cityData = brazilianCities.find(c => c.city === city);
+    if (cityData) {
+      return [cityData.longitude, cityData.latitude];
+    }
+    return [-55.0000, -10.0000]; // Brazil center as fallback
   };
 
   useEffect(() => {
