@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const Map = () => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
+  const markersRef = useRef<mapboxgl.Marker[]>([]);
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
   const navigate = useNavigate();
 
@@ -32,13 +33,14 @@ const Map = () => {
   const addCompanyMarkers = () => {
     if (!map.current) return;
 
+    // Clear existing markers
+    markersRef.current.forEach(marker => marker.remove());
+    markersRef.current = [];
+
     companies.forEach((company) => {
-      // Convert location string to coordinates (mock data for demonstration)
       const [city] = company.location.split('-');
-      // Mock coordinates based on city (in real app, would come from database)
       const coordinates = getCityCoordinates(city);
 
-      // Create marker element
       const el = document.createElement('div');
       el.className = 'marker';
       el.style.backgroundColor = getCategoryColor(company.category);
@@ -47,7 +49,6 @@ const Map = () => {
       el.style.borderRadius = '50%';
       el.style.cursor = 'pointer';
 
-      // Create popup
       const popup = new mapboxgl.Popup({ offset: 25 })
         .setHTML(`
           <div class="p-3">
@@ -66,11 +67,12 @@ const Map = () => {
           </div>
         `);
 
-      // Add marker to map
-      new mapboxgl.Marker(el)
+      const marker = new mapboxgl.Marker(el)
         .setLngLat(coordinates)
         .setPopup(popup)
         .addTo(map.current);
+
+      markersRef.current.push(marker);
     });
   };
 
@@ -86,8 +88,6 @@ const Map = () => {
   };
 
   const getCityCoordinates = (city: string): [number, number] => {
-    // Mock coordinates for demonstration
-    // In a real app, these would come from a geocoding service or database
     const coordinates: { [key: string]: [number, number] } = {
       'São Paulo': [-46.6333, -23.5505],
       'Rio de Janeiro': [-43.1729, -22.9068],
@@ -95,51 +95,52 @@ const Map = () => {
       'Porto Alegre': [-51.2177, -30.0346],
       'Belo Horizonte': [-43.9378, -19.9208],
     };
-    return coordinates[city] || [-46.6333, -23.5505]; // Default to São Paulo
+    return coordinates[city] || [-46.6333, -23.5505];
   };
 
   useEffect(() => {
     getUserLocation();
+
+    return () => {
+      // Cleanup markers on unmount
+      markersRef.current.forEach(marker => marker.remove());
+      markersRef.current = [];
+    };
   }, []);
 
   useEffect(() => {
     if (!mapContainer.current) return;
 
     try {
-      // Initialize map with a temporary token
-      // In production, this should be properly managed through environment variables
       mapboxgl.accessToken = 'pk.eyJ1IjoibG92YWJsZSIsImEiOiJjbHM0Z2k2ZWowMGRqMmtvOWd4Z3E0cW85In0.Ef9n-jZQwL7NfQxZUqwKjQ';
       
-      if (map.current) return; // prevent re-initialization
+      if (map.current) return;
 
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
         style: 'mapbox://styles/mapbox/light-v11',
-        center: userLocation || [-55.0000, -10.0000], // Center of Brazil
-        zoom: 4 // Zoom level to show most of Brazil
+        center: userLocation || [-55.0000, -10.0000],
+        zoom: 4
       });
 
-      // Add navigation controls
       map.current.addControl(
         new mapboxgl.NavigationControl(),
         'top-right'
       );
 
-      // Add company markers when map loads
       map.current.on('load', () => {
         addCompanyMarkers();
       });
 
+      return () => {
+        if (map.current) {
+          map.current.remove();
+          map.current = null;
+        }
+      };
     } catch (error) {
       console.error('Error initializing map:', error);
     }
-
-    return () => {
-      if (map.current) {
-        map.current.remove();
-        map.current = null;
-      }
-    };
   }, [userLocation]);
 
   return (
