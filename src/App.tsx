@@ -22,7 +22,7 @@ function App() {
         <Header />
         <main className="flex-1 pt-16">
           <Routes>
-            <Route path="/" element={<Index />} />
+            <Route index element={<Index />} />
             <Route path="/companies" element={<Companies />} />
             <Route path="/company/:id" element={<CompanyProfile />} />
             <Route path="/company/private/:id" element={<CompanyProfilePrivate />} />
