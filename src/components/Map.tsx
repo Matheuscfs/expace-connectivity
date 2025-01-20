@@ -116,7 +116,7 @@ const Map = () => {
 
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
-        style: 'mapbox://styles/mapbox/light-v11',
+        style: 'mapbox://styles/mapbox/streets-v12', // Changed to streets style
         center: userLocation || [-55.0000, -10.0000],
         zoom: 4
       });
