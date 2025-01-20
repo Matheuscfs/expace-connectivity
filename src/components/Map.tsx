@@ -185,16 +185,18 @@ const Map = () => {
   return (
     <div className="relative w-full h-full">
       <div ref={mapContainer} className="absolute inset-0" />
-      <style jsx>{`
-        .marker {
-          border: 2px solid white;
-          box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-          transition: all 0.3s ease;
-        }
-        .marker:hover {
-          transform: scale(1.2);
-        }
-      `}</style>
+      <style>
+        {`
+          .marker {
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+          }
+          .marker:hover {
+            transform: scale(1.2);
+          }
+        `}
+      </style>
     </div>
   );
 };
