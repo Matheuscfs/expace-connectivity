@@ -10,6 +10,7 @@ import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import Profile from "@/pages/Profile";
 import Professionals from "@/pages/Professionals";
+import SearchCompanies from "@/pages/SearchCompanies";
 import { Toaster } from "@/components/ui/toaster";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -24,6 +25,7 @@ function App() {
           <Routes>
             <Route index element={<Index />} />
             <Route path="/companies" element={<Companies />} />
+            <Route path="/search-companies" element={<SearchCompanies />} />
             <Route path="/company/:id" element={<CompanyProfile />} />
             <Route path="/company/private/:id" element={<CompanyProfilePrivate />} />
             <Route path="/company/register" element={<CompanyRegister />} />
