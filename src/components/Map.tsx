@@ -20,14 +20,12 @@ const Map = () => {
         },
         (error) => {
           console.error("Error getting location:", error);
-          // Default to Brazil center coordinates
-          setUserLocation([-55.0000, -10.0000]);
+          setUserLocation([-55.0000, -10.0000]); // Brazil center
         }
       );
     } else {
       console.log("Geolocation not available");
-      // Default to Brazil center coordinates
-      setUserLocation([-55.0000, -10.0000]);
+      setUserLocation([-55.0000, -10.0000]); // Brazil center
     }
   };
 
@@ -116,7 +114,7 @@ const Map = () => {
 
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
-        style: 'mapbox://styles/mapbox/streets-v12', // Changed to streets style
+        style: 'mapbox://styles/mapbox/streets-v12',
         center: userLocation || [-55.0000, -10.0000],
         zoom: 4
       });
@@ -131,6 +129,10 @@ const Map = () => {
       });
 
       return () => {
+        // Clean up markers before removing map
+        markersRef.current.forEach(marker => marker.remove());
+        markersRef.current = [];
+        
         if (map.current) {
           map.current.remove();
           map.current = null;
