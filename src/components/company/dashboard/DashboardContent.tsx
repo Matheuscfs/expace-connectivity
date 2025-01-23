@@ -22,10 +22,10 @@ const deviceData = [
 ];
 
 const locationData = [
-  { name: 'United States', value: 52.1 },
-  { name: 'Canada', value: 22.8 },
-  { name: 'Mexico', value: 13.9 },
-  { name: 'Other', value: 11.2 },
+  { name: 'São Paulo', value: 52.1 },
+  { name: 'Rio de Janeiro', value: 22.8 },
+  { name: 'Minas Gerais', value: 13.9 },
+  { name: 'Outros', value: 11.2 },
 ];
 
 const trafficData = [
@@ -45,49 +45,49 @@ export function DashboardContent() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Views</CardTitle>
+            <CardTitle className="text-sm font-medium">Visualizações</CardTitle>
             <Eye className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">7,265</div>
             <p className="text-xs text-muted-foreground">
-              +11.01% from last month
+              +11.01% em relação ao mês anterior
             </p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Visits</CardTitle>
+            <CardTitle className="text-sm font-medium">Visitas</CardTitle>
             <Activity className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">3,671</div>
             <p className="text-xs text-muted-foreground">
-              -0.03% from last month
+              -0.03% em relação ao mês anterior
             </p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">New Users</CardTitle>
+            <CardTitle className="text-sm font-medium">Novos Usuários</CardTitle>
             <UserPlus className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">156</div>
             <p className="text-xs text-muted-foreground">
-              +15.03% from last month
+              +15.03% em relação ao mês anterior
             </p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Users</CardTitle>
+            <CardTitle className="text-sm font-medium">Usuários Ativos</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">2,318</div>
             <p className="text-xs text-muted-foreground">
-              +6.08% from last month
+              +6.08% em relação ao mês anterior
             </p>
           </CardContent>
         </Card>
@@ -95,7 +95,7 @@ export function DashboardContent() {
 
       <Card className="col-span-4">
         <CardHeader>
-          <CardTitle>Total Users Overview</CardTitle>
+          <CardTitle>Visão Geral de Usuários</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="h-[300px]">
@@ -120,7 +120,7 @@ export function DashboardContent() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle>Traffic by Device</CardTitle>
+            <CardTitle>Tráfego por Dispositivo</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="h-[300px]">
@@ -138,7 +138,7 @@ export function DashboardContent() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Traffic by Location</CardTitle>
+            <CardTitle>Tráfego por Localização</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="h-[300px]">
@@ -168,7 +168,7 @@ export function DashboardContent() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Traffic by Website</CardTitle>
+          <CardTitle>Tráfego por Site</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
