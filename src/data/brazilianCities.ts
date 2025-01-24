@@ -35,5 +35,6 @@ export const brazilianCities: BrazilianCity[] = [
   { city: "Aracaju", state: "SE", latitude: -10.9091, longitude: -37.0677 },
   { city: "Cuiabá", state: "MT", latitude: -15.6014, longitude: -56.0979 },
   { city: "Vitória", state: "ES", latitude: -20.3155, longitude: -40.3128 },
-  { city: "Macapá", state: "AP", latitude: 0.0356, longitude: -51.0705 }
+  { city: "Macapá", state: "AP", latitude: 0.0356, longitude: -51.0705 },
+  { city: "Cascavel", state: "PR", latitude: -24.9578, longitude: -53.4595 }
 ];

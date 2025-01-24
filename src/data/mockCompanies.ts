@@ -93,7 +93,73 @@ const generateCompanies = (category: string, names: string[], logos: string[], b
   }));
 };
 
-// Companies by category with more realistic data
+const cascavelCompanies = generateCompanies(
+  "Tecnologia",
+  [
+    "TechCascavel Solutions",
+    "CascavelTech Systems",
+    "WebCascavel Pro",
+    "DataCascavel Tech",
+    "CascavelApp Creators",
+    "InnovaCascavel Digital",
+    "CodeCascavel Labs",
+    "FutureCascavel Systems",
+    "DigitalCascavel Services",
+    "TechExpertCascavel",
+    "GlobalCascavel Tech",
+    "PremiumCascavel Labs",
+    "EliteCascavel Digital",
+    "CascavelSoft Solutions",
+    "TechMasterCascavel",
+    "CascavelCloud Pro",
+    "WebDevCascavel",
+    "AppCascavel Tech",
+    "TechInnovaCascavel",
+    "CodeMasterCascavel",
+    "TechFutureCascavel",
+    "DigitalProCascavel",
+    "TechExpertCascavel",
+    "TechGlobalCascavel",
+    "TechPremiumCascavel",
+    "TechEliteCascavel",
+    "CascavelTech Pro",
+    "DataTechCascavel",
+    "CloudCascavel Master",
+    "WebDevCascavel Solutions",
+    "AppCreatorsCascavel",
+    "TechInovaCascavel",
+    "CodeMasterCascavel Labs",
+    "TechFutureCascavel Systems",
+    "DigitalProCascavel Services",
+    "TechExpertCascavel Solutions",
+    "TechGlobalCascavel Systems",
+    "TechPremiumCascavel Labs",
+    "TechEliteCascavel Digital",
+    "CascavelTech Solutions",
+    "DataTechCascavel Systems",
+    "CloudCascavel Pro",
+    "WebDevCascavel Tech",
+    "AppCreatorsCascavel Tech",
+    "TechInovaCascavel Digital",
+    "CodeMasterCascavel Pro",
+    "TechFutureCascavel Labs",
+    "DigitalProCascavel Tech",
+    "TechExpertCascavel Pro",
+    "TechGlobalCascavel Digital"
+  ],
+  [
+    "https://images.unsplash.com/photo-1518770660439-4636190af475",
+    "https://images.unsplash.com/photo-1461749280684-dccba630e2f6",
+    "https://images.unsplash.com/photo-1451187580459-43490279c0fa"
+  ],
+  [
+    "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab",
+    "https://images.unsplash.com/photo-1451187580459-43490279c0fa",
+    "https://images.unsplash.com/photo-1518770660439-4636190af475"
+  ],
+  200
+);
+
 const contabilidadeCompanies = generateCompanies(
   "Contabilidade",
   [
@@ -250,7 +316,8 @@ export const companies: Company[] = [
   ...tecnologiaCompanies,
   ...alimentacaoCompanies,
   ...saudeCompanies,
-  ...belezaCompanies
+  ...belezaCompanies,
+  ...cascavelCompanies
 ];
 
 export const categories = [
