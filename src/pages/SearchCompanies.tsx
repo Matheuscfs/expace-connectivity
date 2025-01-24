@@ -18,9 +18,9 @@ const SearchCompanies = () => {
   const [priceRange, setPriceRange] = useState([0, 1000]);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       {/* Search Header */}
-      <div className="bg-white shadow-sm">
+      <div className="bg-white shadow-sm sticky top-0 z-10">
         <div className="container mx-auto py-4">
           <div className="flex flex-col md:flex-row gap-4 items-center">
             <div className="relative flex-1">
@@ -41,7 +41,7 @@ const SearchCompanies = () => {
             </div>
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="outline" className="gap-2">
+                <Button variant="outline" className="gap-2 whitespace-nowrap">
                   <Sliders className="h-4 w-4" />
                   Filtros
                 </Button>
@@ -64,21 +64,21 @@ const SearchCompanies = () => {
       </div>
 
       {/* Map and Results */}
-      <div className="container mx-auto py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Map */}
-          <div className="lg:col-span-2 h-[600px] rounded-lg overflow-hidden">
-            <Map />
-          </div>
+      <div className="flex-1 flex">
+        {/* Map Container */}
+        <div className="flex-1 relative">
+          <Map />
+        </div>
 
-          {/* Results List */}
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold">Empresas Encontradas</h2>
+        {/* Results Sidebar */}
+        <div className="w-96 bg-white border-l overflow-y-auto h-[calc(100vh-80px)]">
+          <div className="p-4">
+            <h2 className="text-xl font-semibold mb-4">Empresas Encontradas</h2>
             <div className="space-y-4">
               {companies.slice(0, 5).map((company) => (
                 <div
                   key={company.id}
-                  className="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                  className="bg-accent p-4 rounded-lg hover:shadow-md transition-shadow cursor-pointer"
                 >
                   <div className="flex items-start gap-4">
                     <img
@@ -95,6 +95,9 @@ const SearchCompanies = () => {
                           {company.rating}
                         </span>
                         <span className="text-yellow-400 ml-1">★</span>
+                        <span className="text-sm text-gray-500 ml-1">
+                          ({company.reviews} avaliações)
+                        </span>
                       </div>
                     </div>
                   </div>
