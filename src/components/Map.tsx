@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { GoogleMap, Marker, InfoWindow, useLoadScript } from '@react-google-maps/api';
+import { GoogleMap, Marker, InfoWindow, useLoadScript, Libraries } from '@react-google-maps/api';
 import { companies } from '@/data/mockCompanies';
 import { useNavigate } from 'react-router-dom';
 import { brazilianCities } from '@/data/brazilianCities';
@@ -15,7 +15,7 @@ const brazilCenter = {
   lng: -47.8919,
 };
 
-const libraries = ['places'];
+const libraries: Libraries = ['places'];
 
 const Map = () => {
   const navigate = useNavigate();
