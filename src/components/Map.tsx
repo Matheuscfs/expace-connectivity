@@ -10,9 +10,10 @@ const mapContainerStyle = {
   height: '100%',
 };
 
-const brazilCenter = {
-  lat: -15.7975,
-  lng: -47.8919,
+// Center on Cascavel for better visualization of test companies
+const cascavelCenter = {
+  lat: -24.9578,
+  lng: -53.4595,
 };
 
 const libraries: Libraries = ['places'];
@@ -48,7 +49,7 @@ const Map = () => {
     if (cityData) {
       return { lat: cityData.latitude, lng: cityData.longitude };
     }
-    return brazilCenter;
+    return cascavelCenter;
   };
 
   const getUserLocation = () => {
@@ -62,12 +63,12 @@ const Map = () => {
         },
         (error) => {
           console.error("Error getting location:", error);
-          setUserLocation(brazilCenter);
+          setUserLocation(cascavelCenter);
         }
       );
     } else {
       console.log("Geolocation not available");
-      setUserLocation(brazilCenter);
+      setUserLocation(cascavelCenter);
     }
   };
 
@@ -81,8 +82,8 @@ const Map = () => {
   return (
     <GoogleMap
       mapContainerStyle={mapContainerStyle}
-      zoom={4}
-      center={userLocation || brazilCenter}
+      zoom={13}
+      center={userLocation || cascavelCenter}
       onLoad={onMapLoad}
       options={{
         styles: [
