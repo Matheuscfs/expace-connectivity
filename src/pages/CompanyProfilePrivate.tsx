@@ -15,6 +15,7 @@ import { ProfileSidebar } from "@/components/ProfileSidebar";
 import { Card } from "@/components/ui/card";
 import { Avatar } from "@/components/ui/avatar";
 import { Bell, MessageSquare } from "lucide-react";
+import { SidebarProvider } from "@/components/ui/sidebar";
 
 const CompanyProfilePrivate = () => {
   const { id } = useParams();
@@ -100,8 +101,8 @@ const CompanyProfilePrivate = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="flex">
+    <SidebarProvider>
+      <div className="min-h-screen bg-background flex w-full">
         {/* Left Sidebar */}
         <div className="w-64 min-h-screen bg-white border-r">
           <div className="p-4 border-b">
@@ -167,7 +168,7 @@ const CompanyProfilePrivate = () => {
           </div>
         </div>
       </div>
-    </div>
+    </SidebarProvider>
   );
 };
 
