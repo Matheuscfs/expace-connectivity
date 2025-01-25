@@ -1,4 +1,17 @@
-import { User, Settings, List, LogOut } from "lucide-react";
+import { 
+  User, 
+  Settings, 
+  List, 
+  LogOut, 
+  Home,
+  FileText,
+  Users,
+  Star,
+  BarChart,
+  Megaphone,
+  Search,
+  Bell
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import {
   Sidebar,
@@ -10,13 +23,25 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 
+interface ProfileSidebarProps {
+  onTabChange: (tab: string) => void;
+  activeTab: string;
+}
+
 const menuItems = [
-  { icon: User, label: "Perfil", path: "/profile" },
-  { icon: Settings, label: "Configurações", path: "/settings" },
-  { icon: List, label: "Pedidos", path: "/orders" },
+  { icon: BarChart, label: "Estatísticas", value: "stats" },
+  { icon: FileText, label: "Sobre", value: "about" },
+  { icon: List, label: "Portfólio", value: "portfolio" },
+  { icon: Home, label: "Serviços", value: "services" },
+  { icon: Star, label: "Avaliações", value: "reviews" },
+  { icon: Users, label: "Equipe", value: "team" },
+  { icon: Megaphone, label: "Marketing", value: "marketing" },
+  { icon: Search, label: "SEO", value: "seo" },
+  { icon: Bell, label: "Notificações", value: "notifications" },
+  { icon: Settings, label: "Configurações", value: "settings" },
 ];
 
-export function ProfileSidebar() {
+export function ProfileSidebar({ onTabChange, activeTab }: ProfileSidebarProps) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -26,20 +51,20 @@ export function ProfileSidebar() {
 
   return (
     <Sidebar>
-      <SidebarContent className="pt-20">
+      <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => (
-                <SidebarMenuItem key={item.label}>
+                <SidebarMenuItem key={item.value}>
                   <SidebarMenuButton
-                    asChild
-                    className="flex items-center gap-2 px-4 py-2 hover:bg-accent rounded-md transition-colors"
+                    onClick={() => onTabChange(item.value)}
+                    className={`flex items-center gap-2 px-4 py-2 w-full hover:bg-accent rounded-md transition-colors ${
+                      activeTab === item.value ? 'bg-accent' : ''
+                    }`}
                   >
-                    <a href={item.path}>
-                      <item.icon className="h-4 w-4" />
-                      <span>{item.label}</span>
-                    </a>
+                    <item.icon className="h-4 w-4" />
+                    <span>{item.label}</span>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
