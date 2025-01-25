@@ -51,7 +51,7 @@ export function ProfileSidebar({ onTabChange, activeTab }: ProfileSidebarProps) 
 
   return (
     <Sidebar>
-      <SidebarContent className="mt-16"> {/* Added margin-top to prevent overlap with profile */}
+      <SidebarContent className="mt-24"> {/* Increased margin-top from mt-16 to mt-24 */}
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
