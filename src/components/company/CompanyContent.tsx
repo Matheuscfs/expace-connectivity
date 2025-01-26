@@ -4,18 +4,14 @@ import { DashboardContent } from "./dashboard/DashboardContent";
 import { SEOContent } from "./seo/SEOContent";
 import { CampaignsContent } from "./campaigns/CampaignsContent";
 import { CompanyServices } from "./CompanyServices";
+import { CompanySettings } from "./settings/CompanySettings";
 
 const tabsContent = {
   dashboard: <DashboardContent />,
   servicos: <CompanyServices />,
   seo: <SEOContent />,
   campanhas: <CampaignsContent />,
-  configuracoes: (
-    <div>
-      <h2 className="text-lg font-semibold mb-4">Configurações Gerais</h2>
-      <p>Personalize preferências e gerencie a segurança da sua conta.</p>
-    </div>
-  ),
+  configuracoes: <CompanySettings />,
 };
 
 export function CompanyContent() {
@@ -32,12 +28,18 @@ export function CompanyContent() {
 
         {Object.keys(tabsContent).map((key) => (
           <TabsContent key={key} value={key}>
-            <Card>
-              <CardHeader>
-                <CardTitle>{key.charAt(0).toUpperCase() + key.slice(1).replace("_", " ")}</CardTitle>
-              </CardHeader>
-              <CardContent>{tabsContent[key]}</CardContent>
-            </Card>
+            {key === "configuracoes" ? (
+              tabsContent[key]
+            ) : (
+              <Card>
+                <CardHeader>
+                  <CardTitle>
+                    {key.charAt(0).toUpperCase() + key.slice(1).replace("_", " ")}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>{tabsContent[key]}</CardContent>
+              </Card>
+            )}
           </TabsContent>
         ))}
       </Tabs>
