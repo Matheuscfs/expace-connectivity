@@ -49,6 +49,17 @@ export function CompanySettings() {
     }
   };
 
+  const InputWithIcon = ({ icon: Icon, ...props }: { icon: any } & React.ComponentProps<typeof Input>) => {
+    return (
+      <div className="relative">
+        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+          <Icon className="h-4 w-4" />
+        </div>
+        <Input className="pl-10" {...props} />
+      </div>
+    );
+  };
+
   return (
     <Tabs defaultValue="general" className="space-y-6">
       <TabsList className="w-full justify-start">
@@ -152,20 +163,20 @@ export function CompanySettings() {
             <div className="space-y-4">
               <div>
                 <Label>E-mail de Contato</Label>
-                <Input
+                <InputWithIcon
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  icon={<Mail className="w-4 h-4" />}
+                  icon={Mail}
                 />
               </div>
 
               <div>
                 <Label>Telefone Comercial</Label>
-                <Input
+                <InputWithIcon
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  icon={<Phone className="w-4 h-4" />}
+                  icon={Phone}
                 />
               </div>
 
