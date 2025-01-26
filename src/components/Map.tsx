@@ -76,7 +76,7 @@ const Map = () => {
     getUserLocation();
   }, []);
 
-  const render => {
+  const renderReviews = (company: typeof companies[0]) => {
     return (
       <div className="mt-3 space-y-2">
         <h4 className="font-semibold text-sm">Últimas Avaliações</h4>
