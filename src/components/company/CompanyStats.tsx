@@ -3,6 +3,9 @@ import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, BarChart, 
 import { Eye, Users, UserPlus, Activity, Monitor, Smartphone, Laptop } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState } from "react";
+import { SocialMediaStats } from "./stats/SocialMediaStats";
+import { ServiceInteractions } from "./stats/ServiceInteractions";
+import { UserOrigins } from "./stats/UserOrigins";
 
 const monthlyData = [
   { month: 'Jan', thisYear: 10000, lastYear: 8000 },
@@ -50,10 +53,13 @@ export function CompanyStats() {
             <SelectItem value="day">Last 24 Hours</SelectItem>
             <SelectItem value="week">Last Week</SelectItem>
             <SelectItem value="month">Last Month</SelectItem>
+            <SelectItem value="6months">Last 6 Months</SelectItem>
+            <SelectItem value="year">Last Year</SelectItem>
           </SelectContent>
         </Select>
       </div>
 
+      {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900 dark:to-green-800">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -108,7 +114,9 @@ export function CompanyStats() {
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {/* Charts Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Total Users Chart */}
         <Card className="md:col-span-2 shadow-lg hover:shadow-xl transition-shadow duration-300">
           <CardHeader>
             <CardTitle>Total de Usuários</CardTitle>
@@ -161,6 +169,16 @@ export function CompanyStats() {
           </CardContent>
         </Card>
 
+        {/* User Origins Chart */}
+        <UserOrigins />
+
+        {/* Service Interactions Chart */}
+        <ServiceInteractions />
+
+        {/* Social Media Stats Chart */}
+        <SocialMediaStats />
+
+        {/* Traffic by Location Chart */}
         <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
           <CardHeader>
             <CardTitle>Tráfego por Localização</CardTitle>
@@ -211,6 +229,7 @@ export function CompanyStats() {
         </Card>
       </div>
 
+      {/* Traffic by Device Chart */}
       <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
         <CardHeader>
           <CardTitle>Tráfego por Dispositivo</CardTitle>
