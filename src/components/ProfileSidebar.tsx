@@ -51,7 +51,7 @@ export function ProfileSidebar({ onTabChange, activeTab }: ProfileSidebarProps) 
 
   return (
     <Sidebar>
-      <SidebarContent className="mt-32"> {/* Increased margin-top from mt-24 to mt-32 */}
+      <SidebarContent className="mt-32">
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>

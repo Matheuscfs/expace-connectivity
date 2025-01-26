@@ -11,6 +11,7 @@ import { CompanyStats } from "@/components/company/CompanyStats";
 import { CompanyMarketing } from "@/components/company/CompanyMarketing";
 import { CompanySEO } from "@/components/company/CompanySEO";
 import { CompanyNotifications } from "@/components/company/CompanyNotifications";
+import { CompanySettings } from "@/components/company/settings/CompanySettings";
 import { ProfileSidebar } from "@/components/ProfileSidebar";
 import { Card } from "@/components/ui/card";
 import { Avatar } from "@/components/ui/avatar";
@@ -95,6 +96,8 @@ const CompanyProfilePrivate = () => {
         return <CompanySEO />;
       case "notifications":
         return <CompanyNotifications />;
+      case "settings":
+        return <CompanySettings />;
       default:
         return <CompanyStats />;
     }
