@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "./components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
-import { Header } from "./components/header";
-import { Footer } from "./components/footer";
+import { Header } from "./components/Header";
+import { Footer } from "./components/Footer";
 import ServiceDetails from "@/pages/ServiceDetails";
 import Home from "./pages/Home";
 import Services from "./pages/Services";
