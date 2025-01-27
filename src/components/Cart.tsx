@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ShoppingCart, X } from "lucide-react";
+import { ShoppingCart, X, Minus, Plus } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -42,6 +42,15 @@ const Cart = () => {
     setItems(items.filter((item) => item.id !== id));
   };
 
+  const updateQuantity = (id: string, newQuantity: number) => {
+    if (newQuantity < 1) return;
+    setItems(
+      items.map((item) =>
+        item.id === id ? { ...item, quantity: newQuantity } : item
+      )
+    );
+  };
+
   const total = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   return (
@@ -60,55 +69,110 @@ const Cart = () => {
         </Button>
       </SheetTrigger>
       <SheetContent className="w-full sm:max-w-lg">
-        <SheetHeader>
-          <SheetTitle>Carrinho de Compras</SheetTitle>
+        <SheetHeader className="space-y-2.5 pb-6 border-b">
+          <SheetTitle className="text-2xl font-bold">Carrinho</SheetTitle>
+          <p className="text-sm text-muted-foreground">
+            {items.length} {items.length === 1 ? "item" : "itens"} no seu carrinho
+          </p>
         </SheetHeader>
-        <div className="mt-8 flex h-full flex-col">
-          <ScrollArea className="flex-1">
+        <div className="mt-8 flex h-[calc(100vh-12rem)] flex-col">
+          <ScrollArea className="flex-1 pr-4">
             {items.length === 0 ? (
-              <p className="text-center text-muted-foreground">
-                Seu carrinho está vazio
-              </p>
+              <div className="flex flex-col items-center justify-center h-full text-center space-y-3">
+                <ShoppingCart className="h-12 w-12 text-muted-foreground/50" />
+                <p className="text-lg font-medium text-muted-foreground">
+                  Seu carrinho está vazio
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  Adicione alguns serviços para começar
+                </p>
+              </div>
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-6">
                 {items.map((item) => (
-                  <div key={item.id} className="flex items-center space-x-4">
-                    <div className="flex-1">
-                      <h4 className="font-medium">{item.name}</h4>
+                  <div
+                    key={item.id}
+                    className="flex items-start space-x-4 bg-accent/30 p-4 rounded-lg"
+                  >
+                    <div className="flex-1 space-y-1">
+                      <h4 className="font-medium text-base">{item.name}</h4>
                       <p className="text-sm text-muted-foreground">
                         {item.company}
                       </p>
+                      <div className="flex items-center space-x-2 mt-2">
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          className="h-8 w-8"
+                          onClick={() =>
+                            updateQuantity(item.id, item.quantity - 1)
+                          }
+                        >
+                          <Minus className="h-4 w-4" />
+                        </Button>
+                        <span className="text-sm font-medium w-8 text-center">
+                          {item.quantity}
+                        </span>
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          className="h-8 w-8"
+                          onClick={() =>
+                            updateQuantity(item.id, item.quantity + 1)
+                          }
+                        >
+                          <Plus className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </div>
-                    <div className="text-right">
+                    <div className="text-right space-y-1">
                       <p className="font-medium">
-                        {item.price.toLocaleString("pt-BR", {
+                        {(item.price * item.quantity).toLocaleString("pt-BR", {
                           style: "currency",
                           currency: "BRL",
                         })}
                       </p>
                       <p className="text-sm text-muted-foreground">
-                        Qtd: {item.quantity}
+                        {item.price.toLocaleString("pt-BR", {
+                          style: "currency",
+                          currency: "BRL",
+                        })}
+                        {item.quantity > 1 ? " cada" : ""}
                       </p>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 mt-2"
+                        onClick={() => removeItem(item.id)}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
                     </div>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => removeItem(item.id)}
-                    >
-                      <X className="h-4 w-4" />
-                    </Button>
                   </div>
                 ))}
               </div>
             )}
           </ScrollArea>
           {items.length > 0 && (
-            <div className="space-y-4 pt-4">
-              <Separator />
+            <div className="space-y-4 pt-6 border-t mt-6">
               <div className="space-y-1.5">
-                <div className="flex justify-between">
-                  <span className="font-medium">Total</span>
-                  <span className="font-medium">
+                <div className="flex items-center justify-between">
+                  <span className="text-base font-medium">Subtotal</span>
+                  <span className="text-base">
+                    {total.toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between text-muted-foreground">
+                  <span className="text-sm">Taxa de serviço</span>
+                  <span className="text-sm">Grátis</span>
+                </div>
+                <Separator className="my-4" />
+                <div className="flex items-center justify-between">
+                  <span className="text-lg font-semibold">Total</span>
+                  <span className="text-lg font-semibold">
                     {total.toLocaleString("pt-BR", {
                       style: "currency",
                       currency: "BRL",
@@ -116,7 +180,9 @@ const Cart = () => {
                   </span>
                 </div>
               </div>
-              <Button className="w-full">Finalizar Compra</Button>
+              <Button className="w-full h-11 text-base font-medium">
+                Finalizar Compra
+              </Button>
             </div>
           )}
         </div>
