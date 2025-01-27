@@ -8,18 +8,19 @@ import { ServiceQuote } from "@/components/service/ServiceQuote";
 const ServiceDetails = () => {
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2">
+      <div className="grid gap-6 lg:grid-cols-3">
+        {/* Main Content */}
+        <div className="lg:col-span-2 space-y-6">
           <ServiceInfo />
           <ServiceProvider />
           <ServiceReviews />
           <ServiceSchedule />
         </div>
-        <div className="lg:col-span-1">
-          <div className="sticky top-4">
-            <ServiceCustomization />
-            <ServiceQuote />
-          </div>
+
+        {/* Sidebar */}
+        <div className="space-y-6">
+          <ServiceCustomization />
+          <ServiceQuote />
         </div>
       </div>
     </div>
