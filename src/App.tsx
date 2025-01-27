@@ -1,14 +1,14 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "./components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
+import { Header } from "./components/header";
+import { Footer } from "./components/footer";
 import ServiceDetails from "@/pages/ServiceDetails";
-import Home from "@/pages/Home";
-import Services from "@/pages/Services";
+import Home from "./pages/Home";
+import Services from "./pages/Services";
 import Professionals from "@/pages/Professionals";
-import About from "@/pages/About";
-import Contact from "@/pages/Contact";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
 
 function App() {
   return (
