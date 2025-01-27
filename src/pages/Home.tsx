@@ -1,7 +1,17 @@
-export default function Home() {
+import { Hero } from "@/components/Hero";
+import PopularServices from "@/components/PopularServices";
+import FeaturedCompanies from "@/components/FeaturedCompanies";
+import Testimonials from "@/components/Testimonials";
+
+const Home = () => {
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold">Bem-vindo ao The Office</h1>
+    <div className="min-h-screen">
+      <Hero />
+      <PopularServices />
+      <FeaturedCompanies />
+      <Testimonials />
     </div>
   );
-}
+};
+
+export default Home;
