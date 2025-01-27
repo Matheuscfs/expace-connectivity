@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ShoppingCart, X, Minus, Plus } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import {
   Sheet,
   SheetContent,
@@ -21,6 +22,7 @@ interface CartItem {
 }
 
 const Cart = () => {
+  const navigate = useNavigate();
   const [items, setItems] = useState<CartItem[]>([
     {
       id: "1",
@@ -52,6 +54,10 @@ const Cart = () => {
   };
 
   const total = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+
+  const handleCheckout = () => {
+    navigate('/service-details');
+  };
 
   return (
     <Sheet>
@@ -180,7 +186,10 @@ const Cart = () => {
                   </span>
                 </div>
               </div>
-              <Button className="w-full h-11 text-base font-medium">
+              <Button 
+                className="w-full h-11 text-base font-medium"
+                onClick={handleCheckout}
+              >
                 Finalizar Compra
               </Button>
             </div>
