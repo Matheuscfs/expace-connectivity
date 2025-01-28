@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState, useEffect } from 'react';
 import { GoogleMap, Marker, InfoWindow, useLoadScript, Libraries } from '@react-google-maps/api';
 import { companies } from '@/data/mockCompanies';
 import { useNavigate } from 'react-router-dom';
@@ -22,6 +22,11 @@ const Map = () => {
   const navigate = useNavigate();
   const [selectedCompany, setSelectedCompany] = useState<typeof companies[0] | null>(null);
   const [userLocation, setUserLocation] = useState<google.maps.LatLngLiteral | null>(null);
+
+  useEffect(() => {
+    // Store the API key in localStorage
+    localStorage.setItem('GOOGLE_MAPS_API_KEY', 'AIzaSyAKYlSm5yjYRJZ4vUpgXC-ZPkwv3IOKftM');
+  }, []);
 
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: localStorage.getItem('GOOGLE_MAPS_API_KEY') || '',
