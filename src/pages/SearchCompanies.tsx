@@ -67,7 +67,7 @@ const SearchCompanies = () => {
       <div className="flex-1 flex">
         {/* Map Container */}
         <div className="flex-1 relative">
-          <Map />
+          <Map companies={companies} />
         </div>
 
         {/* Results Sidebar */}
