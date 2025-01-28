@@ -23,7 +23,6 @@ const Map = () => {
   const [userLocation, setUserLocation] = useState<google.maps.LatLngLiteral | null>(null);
 
   useEffect(() => {
-    // Store the API key in localStorage if it's not already there
     if (!localStorage.getItem('GOOGLE_MAPS_API_KEY')) {
       localStorage.setItem('GOOGLE_MAPS_API_KEY', 'AIzaSyAKYlSm5yjYRJZ4vUpgXC-ZPkwv3IOKftM');
     }
@@ -78,7 +77,7 @@ const Map = () => {
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     getUserLocation();
   }, []);
 
