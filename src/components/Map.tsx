@@ -1,26 +1,37 @@
-import React, { useCallback, useRef, useState, useEffect } from 'react';
-import { GoogleMap, Marker, InfoWindow, useLoadScript, Libraries } from '@react-google-maps/api';
-import { companies } from '@/data/mockCompanies';
-import { useNavigate } from 'react-router-dom';
-import { brazilianCities } from '@/data/brazilianCities';
-import { Star, MapPin } from 'lucide-react';
+import { useEffect, useState, useCallback } from "react";
+import { GoogleMap, Marker, InfoWindow, StandaloneSearchBox } from "@react-google-maps/api";
+import { MapPin } from "lucide-react";
+import { Button } from "./ui/button";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
+
+interface Company {
+  id: string;
+  name: string;
+  category: string;
+  location: {
+    lat: number;
+    lng: number;
+  };
+  address: string;
+}
 
 const mapContainerStyle = {
-  width: '100%',
-  height: '100%',
+  width: "100%",
+  height: "400px",
 };
 
-const paranaCenter = {
-  lat: -25.2521,
-  lng: -52.0215,
-};
-
-const libraries: Libraries = ['places'];
-
-const Map = () => {
+const Map = ({ companies }: { companies: Company[] }) => {
   const navigate = useNavigate();
-  const [selectedCompany, setSelectedCompany] = useState<typeof companies[0] | null>(null);
+  const { toast } = useToast();
+  const [map, setMap] = useState<google.maps.Map | null>(null);
+  const [searchBox, setSearchBox] = useState<google.maps.places.SearchBox | null>(null);
+  const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
   const [userLocation, setUserLocation] = useState<google.maps.LatLngLiteral | null>(null);
+  const [center, setCenter] = useState<google.maps.LatLngLiteral>({
+    lat: -23.550520,
+    lng: -46.633308,
+  });
 
   useEffect(() => {
     if (!localStorage.getItem('GOOGLE_MAPS_API_KEY')) {
@@ -28,52 +39,55 @@ const Map = () => {
     }
   }, []);
 
-  const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: localStorage.getItem('GOOGLE_MAPS_API_KEY') || '',
-    libraries,
-  });
-
-  const mapRef = useRef<google.maps.Map>();
-  const onMapLoad = useCallback((map: google.maps.Map) => {
-    mapRef.current = map;
+  const onLoad = useCallback((map: google.maps.Map) => {
+    setMap(map);
   }, []);
 
-  const getCategoryColor = (category: string): string => {
-    const colors: { [key: string]: string } = {
-      'Contabilidade': '#4A90E2',
-      'Tecnologia': '#50E3C2',
-      'Alimentação': '#F5A623',
-      'Saúde': '#D0021B',
-      'Beleza': '#BD10E0'
-    };
-    return colors[category] || '#7A7A7A';
+  const onUnmount = useCallback(() => {
+    setMap(null);
+  }, []);
+
+  const onLoadSearchBox = (ref: google.maps.places.SearchBox) => {
+    setSearchBox(ref);
   };
 
-  const getCityCoordinates = (city: string): google.maps.LatLngLiteral => {
-    const cityData = brazilianCities.find(c => c.city === city);
-    if (cityData) {
-      return { lat: cityData.latitude, lng: cityData.longitude };
+  const onPlacesChanged = () => {
+    if (searchBox) {
+      const places = searchBox.getPlaces();
+      if (places && places.length > 0) {
+        const place = places[0];
+        if (place.geometry?.location) {
+          setCenter({
+            lat: place.geometry.location.lat(),
+            lng: place.geometry.location.lng(),
+          });
+          map?.panTo(place.geometry.location);
+          map?.setZoom(15);
+        }
+      }
     }
-    return paranaCenter;
   };
 
   const getUserLocation = () => {
-    if ("geolocation" in navigator) {
+    if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          setUserLocation({
+          const userPos = {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
-          });
+          };
+          setUserLocation(userPos);
+          setCenter(userPos);
+          map?.panTo(userPos);
         },
-        (error) => {
-          console.error("Error getting location:", error);
-          setUserLocation(paranaCenter);
+        () => {
+          toast({
+            title: "Erro",
+            description: "Não foi possível obter sua localização.",
+            variant: "destructive",
+          });
         }
       );
-    } else {
-      console.log("Geolocation not available");
-      setUserLocation(paranaCenter);
     }
   };
 
@@ -81,137 +95,116 @@ const Map = () => {
     getUserLocation();
   }, []);
 
-  const renderReviews = (company: typeof companies[0]) => {
-    return (
-      <div className="mt-3 space-y-2">
-        <h4 className="font-semibold text-sm">Últimas Avaliações</h4>
-        {company.reviews > 0 && (
-          <div className="bg-accent/50 p-2 rounded-md">
-            <div className="flex items-center gap-1">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star
-                  key={i}
-                  className={`w-3 h-3 ${
-                    i < Math.floor(company.rating)
-                      ? 'text-yellow-400 fill-current'
-                      : 'text-gray-300'
-                  }`}
-                />
-              ))}
-            </div>
-            <p className="text-xs text-gray-600 mt-1">
-              "Excelente serviço, super recomendo!"
-            </p>
-            <p className="text-xs text-gray-500 mt-1">
-              - Cliente verificado
-            </p>
-          </div>
-        )}
-      </div>
-    );
+  const getCategoryColor = (category: string) => {
+    const colors: { [key: string]: string } = {
+      "TI": "#4F46E5",
+      "Design": "#EC4899",
+      "Marketing": "#F59E0B",
+      default: "#6B7280"
+    };
+    return colors[category] || colors.default;
   };
 
-  if (loadError) return <div>Error loading maps</div>;
-  if (!isLoaded) return <div>Loading maps...</div>;
+  const handleMarkerClick = (company: Company) => {
+    setSelectedCompany(company);
+  };
+
+  const handleInfoWindowClose = () => {
+    setSelectedCompany(null);
+  };
+
+  const handleViewDetails = (companyId: string) => {
+    navigate(`/company/${companyId}`);
+  };
+
+  const handleGetDirections = (company: Company) => {
+    if (userLocation) {
+      const url = `https://www.google.com/maps/dir/?api=1&origin=${userLocation.lat},${userLocation.lng}&destination=${company.location.lat},${company.location.lng}`;
+      window.open(url, '_blank');
+    }
+  };
 
   return (
-    <GoogleMap
-      mapContainerStyle={mapContainerStyle}
-      zoom={7}
-      center={userLocation || paranaCenter}
-      onLoad={onMapLoad}
-      options={{
-        styles: [
-          {
-            featureType: "all",
-            elementType: "all",
-            stylers: [{ saturation: -20 }]
-          }
-        ],
-        zoomControl: true,
-        mapTypeControl: false,
-        streetViewControl: false,
-        fullscreenControl: true,
-      }}
-    >
-      {companies.map((company) => {
-        const [city] = company.location.split('-');
-        const position = getCityCoordinates(city);
-        
-        return (
+    <div className="relative w-full h-[400px]">
+      <div className="absolute top-4 left-4 z-10 w-72">
+        <StandaloneSearchBox
+          onLoad={onLoadSearchBox}
+          onPlacesChanged={onPlacesChanged}
+        >
+          <input
+            type="text"
+            placeholder="Buscar endereço..."
+            className="w-full px-4 py-2 rounded-lg border border-gray-300 shadow-sm focus:ring-2 focus:ring-primary focus:border-transparent"
+          />
+        </StandaloneSearchBox>
+      </div>
+
+      <GoogleMap
+        mapContainerStyle={mapContainerStyle}
+        center={center}
+        zoom={13}
+        onLoad={onLoad}
+        onUnmount={onUnmount}
+        options={{
+          zoomControl: true,
+          streetViewControl: false,
+          mapTypeControl: false,
+          fullscreenControl: false,
+        }}
+      >
+        {companies.map((company) => (
           <Marker
             key={company.id}
-            position={position}
+            position={company.location}
+            onClick={() => handleMarkerClick(company)}
             icon={{
-              path: google.maps.SymbolPath.CIRCLE,
-              scale: 8,
+              path: MapPin.toString(),
               fillColor: getCategoryColor(company.category),
               fillOpacity: 1,
-              strokeColor: '#FFFFFF',
-              strokeWeight: 2,
+              strokeWeight: 1,
+              strokeColor: "#FFFFFF",
+              scale: 1.5,
             }}
-            onClick={() => setSelectedCompany(company)}
           />
-        );
-      })}
+        ))}
 
-      {selectedCompany && (
-        <InfoWindow
-          position={getCityCoordinates(selectedCompany.location.split('-')[0])}
-          onCloseClick={() => setSelectedCompany(null)}
-        >
-          <div className="p-3 min-w-[250px]">
-            <div className="flex items-start gap-3">
-              <img
-                src={selectedCompany.logo}
-                alt={selectedCompany.name}
-                className="w-12 h-12 rounded-lg object-cover"
-              />
-              <div>
-                <h3 className="font-bold text-lg">{selectedCompany.name}</h3>
-                <div className="flex items-center mt-1">
-                  <span className="text-yellow-400">★</span>
-                  <span className="ml-1">{selectedCompany.rating}</span>
-                  <span className="text-sm text-gray-500 ml-1">
-                    ({selectedCompany.reviews} avaliações)
-                  </span>
-                </div>
+        {userLocation && (
+          <Marker
+            position={userLocation}
+            icon={{
+              url: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+            }}
+          />
+        )}
+
+        {selectedCompany && (
+          <InfoWindow
+            position={selectedCompany.location}
+            onCloseClick={handleInfoWindowClose}
+          >
+            <div className="p-2">
+              <h3 className="font-semibold mb-1">{selectedCompany.name}</h3>
+              <p className="text-sm text-gray-600 mb-2">{selectedCompany.address}</p>
+              <div className="flex gap-2">
+                <Button
+                  size="sm"
+                  onClick={() => handleViewDetails(selectedCompany.id)}
+                >
+                  Ver Detalhes
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => handleGetDirections(selectedCompany)}
+                >
+                  Como Chegar
+                </Button>
               </div>
             </div>
-            
-            <p className="text-sm mt-2 text-gray-600">
-              {selectedCompany.description.substring(0, 100)}...
-            </p>
-            
-            <div className="mt-2 flex items-center gap-2">
-              <span className="px-2 py-1 bg-accent rounded-full text-xs">
-                {selectedCompany.category}
-              </span>
-              <span className="text-sm text-gray-500 flex items-center">
-                <MapPin className="w-4 h-4 mr-1" />
-                {selectedCompany.location}
-              </span>
-            </div>
-
-            {renderReviews(selectedCompany)}
-
-            <div className="mt-4 flex gap-2">
-              <button
-                onClick={() => navigate(`/company/${selectedCompany.id}`)}
-                className="flex-1 bg-primary text-white py-2 px-4 rounded-md text-sm hover:bg-primary/90 transition-colors"
-              >
-                Ver Perfil
-              </button>
-              <button
-                className="flex-1 bg-accent text-accent-foreground py-2 px-4 rounded-md text-sm hover:bg-accent/90 transition-colors"
-              >
-                Como Chegar
-              </button>
-            </div>
-          </div>
-        </InfoWindow>
-      )}
-    </GoogleMap>
+          </InfoWindow>
+        )}
+      </GoogleMap>
+    </div>
   );
 };
 
