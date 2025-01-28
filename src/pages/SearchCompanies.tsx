@@ -27,7 +27,8 @@ const transformCompanyLocation = (company: typeof companies[0]) => {
   const coordinates = cityCoordinates[company.location] || cityCoordinates["São Paulo-SP"];
   return {
     ...company,
-    location: coordinates
+    location: coordinates,
+    address: company.address || `${company.name} - ${company.location}` // Ensure address is always present
   };
 };
 
