@@ -1,6 +1,5 @@
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { cn } from "@/lib/utils";
 import { Conversation } from "./types";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface ChatListProps {
   conversations: Conversation[];
@@ -9,41 +8,40 @@ interface ChatListProps {
   formatTimestamp: (timestamp: string) => string;
 }
 
-export const ChatList = ({
+export function ChatList({
   conversations,
   selectedConversation,
   onSelectConversation,
   formatTimestamp,
-}: ChatListProps) => {
+}: ChatListProps) {
   return (
     <ScrollArea className="h-[calc(70vh-65px)]">
-      <div className="p-4 space-y-4">
+      <div className="space-y-1">
         {conversations.map((conversation) => (
-          <div
+          <button
             key={conversation.id}
             onClick={() => onSelectConversation(conversation)}
-            className={cn(
-              "p-4 rounded-lg border bg-card hover:bg-accent transition-colors cursor-pointer",
-              selectedConversation?.id === conversation.id && "bg-accent"
-            )}
+            className={`w-full p-4 text-left hover:bg-accent transition-colors ${
+              selectedConversation?.id === conversation.id ? "bg-accent" : ""
+            }`}
           >
-            <div className="flex justify-between items-start mb-2">
-              <div className="flex items-center gap-2">
-                <h4 className="font-medium">{conversation.companyName}</h4>
-                {conversation.unread && (
-                  <div className="w-2 h-2 rounded-full bg-primary" />
-                )}
-              </div>
+            <div className="flex items-center justify-between">
+              <span className="font-medium">{conversation.companyName}</span>
               <span className="text-xs text-muted-foreground">
                 {formatTimestamp(conversation.timestamp)}
               </span>
             </div>
-            <p className="text-sm text-muted-foreground line-clamp-2">
-              {conversation.lastMessage}
-            </p>
-          </div>
+            <div className="flex items-center justify-between mt-1">
+              <p className="text-sm text-muted-foreground line-clamp-1">
+                {conversation.lastMessage}
+              </p>
+              {conversation.unread && (
+                <div className="w-2 h-2 bg-primary rounded-full" />
+              )}
+            </div>
+          </button>
         ))}
       </div>
     </ScrollArea>
   );
-};
+}
