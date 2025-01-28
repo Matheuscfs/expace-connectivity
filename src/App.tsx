@@ -12,6 +12,7 @@ import Profile from "@/pages/Profile";
 import Professionals from "@/pages/Professionals";
 import SearchCompanies from "@/pages/SearchCompanies";
 import ExpacePartners from "@/pages/ExpacePartners";
+import ServiceDetails from "@/pages/ServiceDetails";
 import { Toaster } from "@/components/ui/toaster";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -37,6 +38,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/professionals" element={<Professionals />} />
             <Route path="/expace-partners" element={<ExpacePartners />} />
+            <Route path="/service-details" element={<ServiceDetails />} />
           </Routes>
         </main>
         <Footer />
