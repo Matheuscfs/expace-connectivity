@@ -12,6 +12,7 @@ import {
 import CompanyFilters from "@/components/companies/CompanyFilters";
 import { companies, categories } from "@/data/mockCompanies";
 import Map from "@/components/Map";
+import { LoadScript } from "@react-google-maps/api";
 
 // Mock coordinates for different cities
 const cityCoordinates: { [key: string]: { lat: number; lng: number } } = {
@@ -35,6 +36,7 @@ const transformCompanyLocation = (company: typeof companies[0]) => {
 const SearchCompanies = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [priceRange, setPriceRange] = useState([0, 1000]);
+  const googleMapsApiKey = localStorage.getItem('GOOGLE_MAPS_API_KEY') || '';
 
   // Transform companies data to include proper location coordinates
   const companiesWithLocations = companies.map(transformCompanyLocation);
@@ -89,7 +91,9 @@ const SearchCompanies = () => {
       <div className="flex-1 flex">
         {/* Map Container */}
         <div className="flex-1 relative">
-          <Map companies={companiesWithLocations} />
+          <LoadScript googleMapsApiKey={googleMapsApiKey} libraries={["places"]}>
+            <Map companies={companiesWithLocations} />
+          </LoadScript>
         </div>
 
         {/* Results Sidebar */}
