@@ -17,6 +17,11 @@ const SearchCompanies = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [priceRange, setPriceRange] = useState([0, 1000]);
 
+  // Filter companies to only include ones with location data
+  const companiesWithLocations = companies.filter(company => 
+    company.location && typeof company.location.lat === 'number' && typeof company.location.lng === 'number'
+  );
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
       {/* Search Header */}
@@ -67,7 +72,7 @@ const SearchCompanies = () => {
       <div className="flex-1 flex">
         {/* Map Container */}
         <div className="flex-1 relative">
-          <Map companies={companies} />
+          <Map companies={companiesWithLocations} />
         </div>
 
         {/* Results Sidebar */}

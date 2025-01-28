@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
 interface Company {
-  id: string;
+  id: number; // Changed from string to number to match mockCompanies.ts
   name: string;
   category: string;
   location: {
@@ -21,7 +21,7 @@ const mapContainerStyle = {
   height: "400px",
 };
 
-const Map = ({ companies }: { companies: Company[] }) => {
+const Map = ({ companies = [] }: { companies: Company[] }) => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [map, setMap] = useState<google.maps.Map | null>(null);
@@ -188,7 +188,7 @@ const Map = ({ companies }: { companies: Company[] }) => {
               <div className="flex gap-2">
                 <Button
                   size="sm"
-                  onClick={() => handleViewDetails(selectedCompany.id)}
+                  onClick={() => handleViewDetails(selectedCompany.id.toString())}
                 >
                   Ver Detalhes
                 </Button>
