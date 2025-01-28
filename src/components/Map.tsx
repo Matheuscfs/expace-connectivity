@@ -10,7 +10,6 @@ const mapContainerStyle = {
   height: '100%',
 };
 
-// Center on Paraná for better visualization
 const paranaCenter = {
   lat: -25.2521,
   lng: -52.0215,
@@ -24,8 +23,10 @@ const Map = () => {
   const [userLocation, setUserLocation] = useState<google.maps.LatLngLiteral | null>(null);
 
   useEffect(() => {
-    // Store the API key in localStorage
-    localStorage.setItem('GOOGLE_MAPS_API_KEY', 'AIzaSyAKYlSm5yjYRJZ4vUpgXC-ZPkwv3IOKftM');
+    // Store the API key in localStorage if it's not already there
+    if (!localStorage.getItem('GOOGLE_MAPS_API_KEY')) {
+      localStorage.setItem('GOOGLE_MAPS_API_KEY', 'AIzaSyAKYlSm5yjYRJZ4vUpgXC-ZPkwv3IOKftM');
+    }
   }, []);
 
   const { isLoaded, loadError } = useLoadScript({
