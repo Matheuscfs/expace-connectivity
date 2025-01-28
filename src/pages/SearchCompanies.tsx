@@ -13,14 +13,30 @@ import CompanyFilters from "@/components/companies/CompanyFilters";
 import { companies, categories } from "@/data/mockCompanies";
 import Map from "@/components/Map";
 
+// Mock coordinates for different cities
+const cityCoordinates: { [key: string]: { lat: number; lng: number } } = {
+  "São Paulo-SP": { lat: -23.550520, lng: -46.633308 },
+  "Rio de Janeiro-RJ": { lat: -22.906847, lng: -43.172897 },
+  "Curitiba-PR": { lat: -25.428954, lng: -49.267137 },
+  "Florianópolis-SC": { lat: -27.594870, lng: -48.548219 },
+  "Cascavel-PR": { lat: -24.955781, lng: -53.455109 },
+  // Add more cities as needed
+};
+
+const transformCompanyLocation = (company: typeof companies[0]) => {
+  const coordinates = cityCoordinates[company.location] || cityCoordinates["São Paulo-SP"];
+  return {
+    ...company,
+    location: coordinates
+  };
+};
+
 const SearchCompanies = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [priceRange, setPriceRange] = useState([0, 1000]);
 
-  // Filter companies to only include ones with location data
-  const companiesWithLocations = companies.filter(company => 
-    company.location && typeof company.location.lat === 'number' && typeof company.location.lng === 'number'
-  );
+  // Transform companies data to include proper location coordinates
+  const companiesWithLocations = companies.map(transformCompanyLocation);
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
