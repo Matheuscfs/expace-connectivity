@@ -30,7 +30,7 @@ const Map = ({ companies = [] }: { companies: Company[] }) => {
   const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
   const [userLocation, setUserLocation] = useState<google.maps.LatLngLiteral | null>(null);
   const [mapError, setMapError] = useState<string | null>(null);
-  const [center] = useState<google.maps.LatLngLiteral>({
+  const [center, setCenter] = useState<google.maps.LatLngLiteral>({
     lat: -23.550520,
     lng: -46.633308,
   });
