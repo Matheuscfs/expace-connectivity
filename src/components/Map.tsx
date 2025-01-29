@@ -1,12 +1,13 @@
 import { useEffect, useState, useCallback } from "react";
 import { GoogleMap, Marker, InfoWindow, StandaloneSearchBox } from "@react-google-maps/api";
-import { MapPin } from "lucide-react";
+import { MapPin, AlertCircle } from "lucide-react";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface Company {
-  id: number; // Changed from string to number to match mockCompanies.ts
+  id: number;
   name: string;
   category: string;
   location: {
@@ -28,19 +29,20 @@ const Map = ({ companies = [] }: { companies: Company[] }) => {
   const [searchBox, setSearchBox] = useState<google.maps.places.SearchBox | null>(null);
   const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
   const [userLocation, setUserLocation] = useState<google.maps.LatLngLiteral | null>(null);
-  const [center, setCenter] = useState<google.maps.LatLngLiteral>({
+  const [mapError, setMapError] = useState<string | null>(null);
+  const [center] = useState<google.maps.LatLngLiteral>({
     lat: -23.550520,
     lng: -46.633308,
   });
 
-  useEffect(() => {
-    if (!localStorage.getItem('GOOGLE_MAPS_API_KEY')) {
-      localStorage.setItem('GOOGLE_MAPS_API_KEY', 'AIzaSyAKYlSm5yjYRJZ4vUpgXC-ZPkwv3IOKftM');
-    }
-  }, []);
-
   const onLoad = useCallback((map: google.maps.Map) => {
     setMap(map);
+    setMapError(null);
+  }, []);
+
+  const onError = useCallback((error: Error) => {
+    console.error("Error loading Google Maps:", error);
+    setMapError("Não foi possível carregar o mapa. Por favor, tente novamente mais tarde.");
   }, []);
 
   const onUnmount = useCallback(() => {
@@ -123,6 +125,15 @@ const Map = ({ companies = [] }: { companies: Company[] }) => {
       window.open(url, '_blank');
     }
   };
+
+  if (mapError) {
+    return (
+      <Alert variant="destructive" className="m-4">
+        <AlertCircle className="h-4 w-4" />
+        <AlertDescription>{mapError}</AlertDescription>
+      </Alert>
+    );
+  }
 
   return (
     <div className="relative w-full h-[400px]">
