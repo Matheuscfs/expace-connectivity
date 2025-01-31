@@ -4,7 +4,7 @@ import { MapPin, AlertCircle } from "lucide-react";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 interface Company {
   id: number;
@@ -42,7 +42,13 @@ const Map = ({ companies = [] }: { companies: Company[] }) => {
 
   const onError = useCallback((error: Error) => {
     console.error("Error loading Google Maps:", error);
-    setMapError("Não foi possível carregar o mapa. Por favor, tente novamente mais tarde.");
+    if (error.message.includes("ApiProjectMapError")) {
+      setMapError("É necessário configurar uma chave de API do Google Maps válida com faturamento ativado.");
+    } else if (error.message.includes("NoApiKeys")) {
+      setMapError("Chave de API do Google Maps não encontrada. Por favor, configure uma chave válida.");
+    } else {
+      setMapError("Não foi possível carregar o mapa. Por favor, tente novamente mais tarde.");
+    }
   }, []);
 
   const onUnmount = useCallback(() => {
@@ -130,6 +136,7 @@ const Map = ({ companies = [] }: { companies: Company[] }) => {
     return (
       <Alert variant="destructive" className="m-4">
         <AlertCircle className="h-4 w-4" />
+        <AlertTitle>Erro ao carregar o mapa</AlertTitle>
         <AlertDescription>{mapError}</AlertDescription>
       </Alert>
     );
