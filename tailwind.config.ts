@@ -29,25 +29,16 @@ export default {
     },
     extend: {
       colors: {
-        border: {
-          DEFAULT: "hsl(var(--border))",
-          dark: "hsl(var(--border-dark))",
-        },
-        input: {
-          DEFAULT: "hsl(var(--input))",
-          dark: "hsl(var(--input-dark))",
-        },
-        ring: {
-          DEFAULT: "hsl(var(--ring))",
-          dark: "hsl(var(--ring-dark))",
-        },
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
         background: {
           DEFAULT: "hsl(var(--background))",
-          dark: "#1A1F2C",
+          dark: "hsl(var(--background))",
         },
         foreground: {
           DEFAULT: "hsl(var(--foreground))",
-          dark: "#F1F1F1",
+          dark: "hsl(var(--foreground))",
         },
         primary: {
           DEFAULT: "#1E40AF",
