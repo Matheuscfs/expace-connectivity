@@ -16,8 +16,11 @@ export const useTheme = () => useContext(ThemeContext);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>(() => {
-    const savedTheme = localStorage.getItem("theme") as Theme;
-    return savedTheme || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    if (typeof window !== 'undefined') {
+      const savedTheme = localStorage.getItem("theme") as Theme;
+      return savedTheme || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    }
+    return "light";
   });
 
   useEffect(() => {
@@ -28,19 +31,27 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+    setTheme((prev) => {
+      const newTheme = prev === "light" ? "dark" : "light";
+      return newTheme;
+    });
   };
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
       {children}
       <Button
-        variant="ghost"
+        variant="outline"
         size="icon"
-        className="fixed bottom-4 right-4 rounded-full"
+        className="fixed bottom-4 right-4 rounded-full bg-background hover:bg-accent"
         onClick={toggleTheme}
+        aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
       >
-        {theme === "light" ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
+        {theme === "light" ? (
+          <Moon className="h-5 w-5" />
+        ) : (
+          <Sun className="h-5 w-5" />
+        )}
       </Button>
     </ThemeContext.Provider>
   );
