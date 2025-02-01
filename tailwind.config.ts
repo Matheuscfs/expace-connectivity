@@ -32,19 +32,33 @@ export default {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        background: "#FFFFFF",
-        foreground: "hsl(var(--foreground))",
+        background: {
+          DEFAULT: "hsl(var(--background))",
+          dark: "#1A1F2C",
+        },
+        foreground: {
+          DEFAULT: "hsl(var(--foreground))",
+          dark: "#F1F1F1",
+        },
         primary: {
-          DEFAULT: "#1E40AF", // Changed to blue-700
+          DEFAULT: "#1E40AF",
           foreground: "#FFFFFF",
+          dark: "#2563EB",
         },
         secondary: {
           DEFAULT: "#F97316",
           foreground: "#FFFFFF",
+          dark: "#FB923C",
         },
         accent: {
           DEFAULT: "#F3F4F6",
           foreground: "#1F2937",
+          dark: "#374151",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+          dark: "#222222",
         },
       },
       keyframes: {
