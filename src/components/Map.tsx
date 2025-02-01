@@ -5,6 +5,7 @@ import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Input } from "./ui/input";
 
 interface Company {
   id: number;
@@ -34,6 +35,18 @@ const Map = ({ companies = [] }: { companies: Company[] }) => {
     lat: -23.550520,
     lng: -46.633308,
   });
+  const [apiKey, setApiKey] = useState<string>(localStorage.getItem('GOOGLE_MAPS_API_KEY') || '');
+  const [showApiKeyInput, setShowApiKeyInput] = useState(!apiKey);
+
+  const handleApiKeySubmit = () => {
+    if (apiKey) {
+      localStorage.setItem('GOOGLE_MAPS_API_KEY', apiKey);
+      setShowApiKeyInput(false);
+      setMapError(null);
+      // Force reload to reinitialize Google Maps with new API key
+      window.location.reload();
+    }
+  };
 
   const onLoad = useCallback((map: google.maps.Map) => {
     setMap(map);
@@ -44,8 +57,10 @@ const Map = ({ companies = [] }: { companies: Company[] }) => {
     console.error("Error loading Google Maps:", error);
     if (error.message.includes("ApiProjectMapError")) {
       setMapError("É necessário configurar uma chave de API do Google Maps válida com faturamento ativado.");
+      setShowApiKeyInput(true);
     } else if (error.message.includes("NoApiKeys")) {
       setMapError("Chave de API do Google Maps não encontrada. Por favor, configure uma chave válida.");
+      setShowApiKeyInput(true);
     } else {
       setMapError("Não foi possível carregar o mapa. Por favor, tente novamente mais tarde.");
     }
@@ -131,6 +146,38 @@ const Map = ({ companies = [] }: { companies: Company[] }) => {
       window.open(url, '_blank');
     }
   };
+
+  if (showApiKeyInput) {
+    return (
+      <div className="p-4 space-y-4">
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Configuração Necessária</AlertTitle>
+          <AlertDescription>
+            Para utilizar o mapa, é necessário configurar uma chave de API do Google Maps válida com faturamento ativado.
+            <a 
+              href="https://console.cloud.google.com/google/maps-apis/credentials"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block mt-2 text-primary hover:underline"
+            >
+              Clique aqui para criar sua chave de API
+            </a>
+          </AlertDescription>
+        </Alert>
+        <div className="flex gap-2">
+          <Input
+            type="text"
+            placeholder="Cole sua chave de API do Google Maps"
+            value={apiKey}
+            onChange={(e) => setApiKey(e.target.value)}
+            className="flex-1"
+          />
+          <Button onClick={handleApiKeySubmit}>Salvar</Button>
+        </div>
+      </div>
+    );
+  }
 
   if (mapError) {
     return (
