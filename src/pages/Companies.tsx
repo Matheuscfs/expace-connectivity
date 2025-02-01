@@ -22,7 +22,7 @@ const Companies = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-primary/90 to-primary text-white py-16">
         <div className="container mx-auto px-4 text-center">
@@ -74,7 +74,7 @@ const Companies = () => {
           <h2 className="text-2xl font-bold mb-4">
             Tem uma empresa? Cadastre-se no Xplace!
           </h2>
-          <p className="text-gray-600 mb-6">
+          <p className="text-gray-600 dark:text-gray-300 mb-6">
             Alcance novos clientes e faça parte do futuro do comércio digital
           </p>
           <Button size="lg" variant="default">
