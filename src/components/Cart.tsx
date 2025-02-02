@@ -74,7 +74,7 @@ const Cart = () => {
       });
       return;
     }
-    navigate('/service-details');
+    navigate('/checkout');
   };
 
   return (
