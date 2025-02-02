@@ -10,6 +10,9 @@ export interface Product {
   rating: number;
   stock: number;
   specifications: Record<string, string>;
+  serviceType?: 'hourly' | 'fixed' | 'recurring';
+  duration?: number;
+  availability?: string[];
 }
 
 export interface OrderItem {
@@ -18,6 +21,8 @@ export interface OrderItem {
   quantity: number;
   price: number;
   subtotal: number;
+  scheduledDate?: string;
+  customizations?: Record<string, any>;
 }
 
 export interface Order {
@@ -25,11 +30,12 @@ export interface Order {
   buyerId: string;
   sellerId: string;
   items: OrderItem[];
-  status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+  status: 'pending' | 'processing' | 'completed' | 'cancelled';
   totalAmount: number;
   paymentStatus: 'pending' | 'paid' | 'failed';
   createdAt: Date;
   address: Address;
+  scheduledDate?: string;
 }
 
 export interface Address {
@@ -54,6 +60,8 @@ export interface CartItem {
   productId: string;
   quantity: number;
   price: number;
+  scheduledDate?: string;
+  customizations?: Record<string, any>;
 }
 
 export interface Cart {

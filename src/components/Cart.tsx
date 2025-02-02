@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
 
 interface CartItem {
   id: string;
@@ -19,10 +20,13 @@ interface CartItem {
   price: number;
   quantity: number;
   company: string;
+  scheduledDate?: string;
+  customizations?: Record<string, any>;
 }
 
 const Cart = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [items, setItems] = useState<CartItem[]>([
     {
       id: "1",
@@ -30,6 +34,7 @@ const Cart = () => {
       price: 299.99,
       quantity: 1,
       company: "TechSolutions",
+      scheduledDate: "2024-03-20",
     },
     {
       id: "2",
@@ -37,11 +42,16 @@ const Cart = () => {
       price: 899.99,
       quantity: 1,
       company: "DesignPro",
+      scheduledDate: "2024-03-25",
     },
   ]);
 
   const removeItem = (id: string) => {
     setItems(items.filter((item) => item.id !== id));
+    toast({
+      title: "Item removido",
+      description: "O serviço foi removido do carrinho.",
+    });
   };
 
   const updateQuantity = (id: string, newQuantity: number) => {
@@ -56,6 +66,14 @@ const Cart = () => {
   const total = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   const handleCheckout = () => {
+    if (items.length === 0) {
+      toast({
+        title: "Carrinho vazio",
+        description: "Adicione serviços ao carrinho antes de continuar.",
+        variant: "destructive",
+      });
+      return;
+    }
     navigate('/service-details');
   };
 
@@ -78,7 +96,7 @@ const Cart = () => {
         <SheetHeader className="space-y-2.5 pb-6 border-b">
           <SheetTitle className="text-2xl font-bold">Carrinho</SheetTitle>
           <p className="text-sm text-muted-foreground">
-            {items.length} {items.length === 1 ? "item" : "itens"} no seu carrinho
+            {items.length} {items.length === 1 ? "serviço" : "serviços"} no seu carrinho
           </p>
         </SheetHeader>
         <div className="mt-8 flex h-[calc(100vh-12rem)] flex-col">
@@ -105,6 +123,11 @@ const Cart = () => {
                       <p className="text-sm text-muted-foreground">
                         {item.company}
                       </p>
+                      {item.scheduledDate && (
+                        <p className="text-sm text-muted-foreground">
+                          Agendado para: {new Date(item.scheduledDate).toLocaleDateString()}
+                        </p>
+                      )}
                       <div className="flex items-center space-x-2 mt-2">
                         <Button
                           variant="outline"
