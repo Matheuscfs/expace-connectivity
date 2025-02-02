@@ -56,7 +56,24 @@ export function CompanyServices({ companyId }: CompanyServicesProps) {
     }
   ];
 
-  const handleAddToCart = (serviceId: string) => {
+  const handleAddToCart = (service: Service) => {
+    // Get existing cart items from localStorage
+    const existingCartItems = localStorage.getItem('cartItems');
+    let cartItems = existingCartItems ? JSON.parse(existingCartItems) : [];
+    
+    // Add new item
+    cartItems.push({
+      id: service.id,
+      name: service.name,
+      price: service.price,
+      quantity: 1,
+      company: "TechSolutions", // This should come from actual company data
+      scheduledDate: new Date().toISOString().split('T')[0]
+    });
+    
+    // Save back to localStorage
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+
     toast({
       title: "Serviço adicionado ao carrinho",
       description: "O serviço foi adicionado ao seu carrinho com sucesso.",
@@ -123,7 +140,7 @@ export function CompanyServices({ companyId }: CompanyServicesProps) {
                   </Button>
                   <Button
                     className="flex-1"
-                    onClick={() => handleAddToCart(service.id)}
+                    onClick={() => handleAddToCart(service)}
                   >
                     <ShoppingCart className="h-4 w-4 mr-2" />
                     Comprar

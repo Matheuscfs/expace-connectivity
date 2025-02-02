@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ShoppingCart, X, Minus, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -27,27 +27,19 @@ interface CartItem {
 const Cart = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [items, setItems] = useState<CartItem[]>([
-    {
-      id: "1",
-      name: "Consultoria em TI",
-      price: 299.99,
-      quantity: 1,
-      company: "TechSolutions",
-      scheduledDate: "2024-03-20",
-    },
-    {
-      id: "2",
-      name: "Design de Website",
-      price: 899.99,
-      quantity: 1,
-      company: "DesignPro",
-      scheduledDate: "2024-03-25",
-    },
-  ]);
+  const [items, setItems] = useState<CartItem[]>([]);
+
+  useEffect(() => {
+    const cartItems = localStorage.getItem('cartItems');
+    if (cartItems) {
+      setItems(JSON.parse(cartItems));
+    }
+  }, []);
 
   const removeItem = (id: string) => {
-    setItems(items.filter((item) => item.id !== id));
+    const updatedItems = items.filter((item) => item.id !== id);
+    setItems(updatedItems);
+    localStorage.setItem('cartItems', JSON.stringify(updatedItems));
     toast({
       title: "Item removido",
       description: "O serviço foi removido do carrinho.",
@@ -56,11 +48,11 @@ const Cart = () => {
 
   const updateQuantity = (id: string, newQuantity: number) => {
     if (newQuantity < 1) return;
-    setItems(
-      items.map((item) =>
-        item.id === id ? { ...item, quantity: newQuantity } : item
-      )
+    const updatedItems = items.map((item) =>
+      item.id === id ? { ...item, quantity: newQuantity } : item
     );
+    setItems(updatedItems);
+    localStorage.setItem('cartItems', JSON.stringify(updatedItems));
   };
 
   const total = items.reduce((acc, item) => acc + item.price * item.quantity, 0);

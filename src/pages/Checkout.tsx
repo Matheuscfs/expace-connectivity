@@ -43,6 +43,8 @@ const Checkout = () => {
         title: "Pedido realizado com sucesso!",
         description: "Você receberá um email com os detalhes do pedido.",
       });
+      // Clear cart after successful order
+      localStorage.removeItem('cartItems');
       navigate("/orders");
     } catch (error) {
       toast({
