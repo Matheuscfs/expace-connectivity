@@ -8,17 +8,19 @@ import Caixa from "@/pages/Caixa";
 
 function App() {
   return (
-    <ThemeProvider>
-      <div className="min-h-screen bg-background font-sans antialiased">
-        <Header />
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/checkout" element={<Checkout />} />
-          <Route path="/caixa" element={<Caixa />} />
-        </Routes>
-        <Toaster />
-      </div>
-    </ThemeProvider>
+    <Router>
+      <ThemeProvider>
+        <div className="min-h-screen bg-background font-sans antialiased">
+          <Header />
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/caixa" element={<Caixa />} />
+          </Routes>
+          <Toaster />
+        </div>
+      </ThemeProvider>
+    </Router>
   );
 }
 
