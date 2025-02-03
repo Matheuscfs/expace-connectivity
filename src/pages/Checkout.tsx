@@ -6,7 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import { CheckoutAddress } from "@/components/checkout/CheckoutAddress";
 import { CheckoutPayment } from "@/components/checkout/CheckoutPayment";
 import { CheckoutReview } from "@/components/checkout/CheckoutReview";
-import { Steps } from "@/components/checkout/Steps";
+import { CheckoutSteps } from "@/components/checkout/CheckoutSteps";
 import { useToast } from "@/hooks/use-toast";
 
 const steps = [
@@ -57,7 +57,7 @@ const Checkout = () => {
 
   return (
     <div className="container mx-auto px-4 py-8 pt-24">
-      <Steps steps={steps} currentStep={currentStep} />
+      <CheckoutSteps steps={steps} currentStep={currentStep} />
       <div className="mt-8 grid gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2 space-y-6">
           {currentStep === 1 && (
