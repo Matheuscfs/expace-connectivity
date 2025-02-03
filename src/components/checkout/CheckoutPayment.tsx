@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
+import { Loader2 } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -9,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { validatePaymentInfo, processPayment } from "@/utils/paymentUtils";
 
 interface CheckoutPaymentProps {
   onSubmit: (payment: any) => void;
@@ -22,10 +25,41 @@ export function CheckoutPayment({ onSubmit }: CheckoutPaymentProps) {
     expiryDate: "",
     cvv: "",
   });
+  const [isProcessing, setIsProcessing] = useState(false);
+  const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(payment);
+    
+    if (!validatePaymentInfo(payment)) {
+      toast({
+        title: "Erro de Validação",
+        description: "Por favor, verifique os dados do pagamento",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsProcessing(true);
+    
+    try {
+      const result = await processPayment(payment, {});
+      if (result.success) {
+        toast({
+          title: "Pagamento Processado",
+          description: "Seu pagamento foi processado com sucesso",
+        });
+        onSubmit({ ...payment, transactionId: result.transactionId });
+      }
+    } catch (error) {
+      toast({
+        title: "Erro no Pagamento",
+        description: "Não foi possível processar seu pagamento. Tente novamente.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   return (
@@ -62,6 +96,8 @@ export function CheckoutPayment({ onSubmit }: CheckoutPaymentProps) {
                 onChange={(e) =>
                   setPayment((prev) => ({ ...prev, cardNumber: e.target.value }))
                 }
+                maxLength={19}
+                placeholder="0000 0000 0000 0000"
                 required
               />
             </div>
@@ -76,6 +112,7 @@ export function CheckoutPayment({ onSubmit }: CheckoutPaymentProps) {
                 onChange={(e) =>
                   setPayment((prev) => ({ ...prev, cardName: e.target.value }))
                 }
+                placeholder="Nome como está no cartão"
                 required
               />
             </div>
@@ -94,6 +131,8 @@ export function CheckoutPayment({ onSubmit }: CheckoutPaymentProps) {
                       expiryDate: e.target.value,
                     }))
                   }
+                  placeholder="MM/AA"
+                  maxLength={5}
                   required
                 />
               </div>
@@ -107,6 +146,9 @@ export function CheckoutPayment({ onSubmit }: CheckoutPaymentProps) {
                   onChange={(e) =>
                     setPayment((prev) => ({ ...prev, cvv: e.target.value }))
                   }
+                  type="password"
+                  maxLength={4}
+                  placeholder="123"
                   required
                 />
               </div>
@@ -122,8 +164,19 @@ export function CheckoutPayment({ onSubmit }: CheckoutPaymentProps) {
           </div>
         )}
 
-        <Button type="submit" className="w-full">
-          Continuar para Revisão
+        <Button 
+          type="submit" 
+          className="w-full"
+          disabled={isProcessing}
+        >
+          {isProcessing ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Processando...
+            </>
+          ) : (
+            "Continuar para Revisão"
+          )}
         </Button>
       </form>
     </Card>

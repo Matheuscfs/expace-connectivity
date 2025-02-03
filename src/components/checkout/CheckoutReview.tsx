@@ -2,6 +2,14 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
+import { 
+  sendOrderConfirmation, 
+  sendPaymentConfirmation,
+  notifySellerNewOrder 
+} from "@/utils/notificationUtils";
 
 interface CheckoutReviewProps {
   orderData: any;
@@ -9,9 +17,43 @@ interface CheckoutReviewProps {
 }
 
 export function CheckoutReview({ orderData, onSubmit }: CheckoutReviewProps) {
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const { toast } = useToast();
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit();
+    
+    if (!termsAccepted) {
+      toast({
+        title: "Termos não aceitos",
+        description: "Por favor, aceite os termos para continuar",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+    
+    try {
+      // Process notifications
+      await Promise.all([
+        sendOrderConfirmation(orderData),
+        sendPaymentConfirmation(orderData.payment),
+        notifySellerNewOrder(orderData)
+      ]);
+      
+      onSubmit();
+    } catch (error) {
+      console.error("Error processing order:", error);
+      toast({
+        title: "Erro no Processamento",
+        description: "Houve um erro ao finalizar seu pedido. Tente novamente.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -53,7 +95,11 @@ export function CheckoutReview({ orderData, onSubmit }: CheckoutReviewProps) {
         <Separator />
 
         <div className="flex items-start space-x-2">
-          <Checkbox id="terms" required />
+          <Checkbox 
+            id="terms" 
+            checked={termsAccepted}
+            onCheckedChange={(checked) => setTermsAccepted(checked as boolean)}
+          />
           <label
             htmlFor="terms"
             className="text-sm text-muted-foreground leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -62,8 +108,19 @@ export function CheckoutReview({ orderData, onSubmit }: CheckoutReviewProps) {
           </label>
         </div>
 
-        <Button type="submit" className="w-full">
-          Confirmar Pedido
+        <Button 
+          type="submit" 
+          className="w-full"
+          disabled={isSubmitting || !termsAccepted}
+        >
+          {isSubmitting ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Processando...
+            </>
+          ) : (
+            "Confirmar Pedido"
+          )}
         </Button>
       </form>
     </Card>
