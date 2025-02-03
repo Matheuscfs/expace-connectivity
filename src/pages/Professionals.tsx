@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { Star, Search, Filter, MapPin, Briefcase, MessageCircle } from "lucide-react";
 import { professionals } from "@/data/mockProfessionals";
+import { toast } from "@/components/ui/use-toast";
 
 const Professionals = () => {
   const navigate = useNavigate();
@@ -12,18 +13,51 @@ const Professionals = () => {
   const [priceRange, setPriceRange] = useState([0, 1000]);
   const [selectedCategory, setSelectedCategory] = useState("");
 
+  // Safely get unique categories
   const categories = Array.from(
-    new Set(professionals.map((pro) => pro.profession))
+    new Set(professionals?.map((pro) => pro.profession) || [])
   );
 
   const handleRegionClick = (region: string) => {
-    navigate(`/professionals/${encodeURIComponent(region)}`);
+    try {
+      navigate(`/search-companies?region=${encodeURIComponent(region)}`);
+    } catch (error) {
+      console.error("Navigation error:", error);
+      toast({
+        title: "Error",
+        description: "Não foi possível navegar para a região selecionada.",
+        variant: "destructive",
+      });
+    }
   };
 
-  // Filter professionals based on selected category
-  const filteredProfessionals = professionals.filter(professional => 
-    selectedCategory === "" || professional.profession === selectedCategory
-  );
+  // Safely filter professionals with error handling
+  const filteredProfessionals = professionals?.filter(professional => {
+    try {
+      return selectedCategory === "" || professional.profession === selectedCategory;
+    } catch (error) {
+      console.error("Filter error:", error);
+      return false;
+    }
+  }) || [];
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      // Implement search logic here
+      toast({
+        title: "Busca realizada",
+        description: `Buscando por: ${searchTerm}`,
+      });
+    } catch (error) {
+      console.error("Search error:", error);
+      toast({
+        title: "Erro na busca",
+        description: "Não foi possível realizar a busca. Tente novamente.",
+        variant: "destructive",
+      });
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -36,7 +70,7 @@ const Professionals = () => {
           
           {/* Search Bar */}
           <div className="max-w-3xl mx-auto">
-            <div className="relative">
+            <form onSubmit={handleSearch} className="relative">
               <Input
                 type="text"
                 placeholder="Busque por profissionais ou serviços..."
@@ -46,12 +80,13 @@ const Professionals = () => {
               />
               <Search className="absolute left-4 top-3.5 text-gray-400" />
               <Button 
+                type="submit"
                 variant="default"
                 className="absolute right-2 top-2"
               >
                 Buscar
               </Button>
-            </div>
+            </form>
             
             {/* Popular Categories */}
             <div className="flex flex-wrap gap-4 justify-center mt-8">
@@ -65,7 +100,7 @@ const Professionals = () => {
                 <Briefcase className="w-4 h-4" />
                 Todos
               </Button>
-              {categories.slice(0, 6).map((category) => (
+              {categories.map((category) => (
                 <Button
                   key={category}
                   variant="outline"
