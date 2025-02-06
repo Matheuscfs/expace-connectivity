@@ -12,23 +12,21 @@ import {
   Star,
   Users,
 } from "lucide-react";
+import { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
 
 // Add type for notification payload
-type NotificationPayload = {
-  new: {
-    title: string;
-    message: string;
-    type: string;
-    id: string;
-  };
-  old: {
-    title: string;
-    message: string;
-    type: string;
-    id: string;
-  } | null;
-  eventType: 'INSERT' | 'UPDATE' | 'DELETE';
+type Notification = {
+  id: string;
+  title: string;
+  message: string;
+  type: string;
 };
+
+type NotificationPayload = RealtimePostgresChangesPayload<{
+  [key: string]: any;
+  old_record: Notification | null;
+  record: Notification;
+}>;
 
 const AdminDashboard = () => {
   const [stats, setStats] = useState({
@@ -87,18 +85,19 @@ const AdminDashboard = () => {
   useEffect(() => {
     const channel = supabase
       .channel('admin-dashboard')
-      .on(
+      .on<Notification>(
         'postgres_changes',
         {
           event: '*',
           schema: 'public',
           table: 'notifications'
         },
-        (payload: NotificationPayload) => {
-          if (payload.new && payload.new.title) {
+        (payload) => {
+          const newNotification = payload.new;
+          if (newNotification && newNotification.title) {
             toast({
               title: "Nova Notificação",
-              description: payload.new.title,
+              description: newNotification.title,
             });
           }
         }
