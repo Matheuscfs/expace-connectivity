@@ -1,0 +1,136 @@
+
+openapi: 3.0.0
+info:
+  title: Marketplace API Documentation
+  description: Documentação das APIs do marketplace
+  version: 1.0.0
+servers:
+  - url: https://mppkdtetvnkdyzcveeoi.supabase.co
+    description: Supabase API Server
+paths:
+  /rest/v1/services:
+    get:
+      summary: Lista todos os serviços
+      description: Retorna uma lista de todos os serviços disponíveis
+      tags:
+        - Serviços
+      parameters:
+        - in: query
+          name: select
+          schema:
+            type: string
+          description: Campos a serem retornados
+      responses:
+        '200':
+          description: Lista de serviços retornada com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Service'
+    post:
+      summary: Cria um novo serviço
+      description: Adiciona um novo serviço ao marketplace
+      tags:
+        - Serviços
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceInput'
+      responses:
+        '201':
+          description: Serviço criado com sucesso
+
+  /rest/v1/profiles:
+    get:
+      summary: Lista perfis de usuários
+      description: Retorna perfis de usuários com base nos filtros
+      tags:
+        - Perfis
+      responses:
+        '200':
+          description: Lista de perfis retornada com sucesso
+          
+  /rest/v1/applications:
+    post:
+      summary: Cria uma nova aplicação
+      description: Envia uma nova aplicação para um serviço
+      tags:
+        - Aplicações
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicationInput'
+      responses:
+        '201':
+          description: Aplicação criada com sucesso
+
+components:
+  schemas:
+    Service:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        category_id:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        requirements:
+          type: array
+          items:
+            type: string
+        location:
+          type: string
+          
+    ServiceInput:
+      type: object
+      required:
+        - title
+        - description
+        - price
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        category_id:
+          type: string
+        requirements:
+          type: array
+          items:
+            type: string
+        location:
+          type: string
+          
+    ApplicationInput:
+      type: object
+      required:
+        - service_id
+        - message
+      properties:
+        service_id:
+          type: string
+          format: uuid
+        message:
+          type: string
+        status:
+          type: string
+          enum: [pending, approved, rejected]
+
