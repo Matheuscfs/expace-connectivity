@@ -9,6 +9,51 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      addresses: {
+        Row: {
+          city: string
+          complement: string | null
+          created_at: string
+          id: string
+          is_default: boolean | null
+          neighborhood: string | null
+          number: string | null
+          postal_code: string
+          state: string
+          street: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          city: string
+          complement?: string | null
+          created_at?: string
+          id?: string
+          is_default?: boolean | null
+          neighborhood?: string | null
+          number?: string | null
+          postal_code: string
+          state: string
+          street: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          city?: string
+          complement?: string | null
+          created_at?: string
+          id?: string
+          is_default?: boolean | null
+          neighborhood?: string | null
+          number?: string | null
+          postal_code?: string
+          state?: string
+          street?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       applications: {
         Row: {
           created_at: string
@@ -86,6 +131,39 @@ export type Database = {
         }
         Relationships: []
       }
+      notifications: {
+        Row: {
+          created_at: string
+          data: Json | null
+          id: string
+          message: string
+          read: boolean | null
+          title: string
+          type: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          data?: Json | null
+          id?: string
+          message: string
+          read?: boolean | null
+          title: string
+          type: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          data?: Json | null
+          id?: string
+          message?: string
+          read?: boolean | null
+          title?: string
+          type?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       plans: {
         Row: {
           created_at: string
@@ -121,6 +199,7 @@ export type Database = {
       }
       profiles: {
         Row: {
+          address_id: string | null
           avatar_url: string | null
           bio: string | null
           company_name: string | null
@@ -129,11 +208,14 @@ export type Database = {
           first_name: string | null
           id: string
           last_name: string | null
+          notification_preferences: Json | null
+          phone: string | null
           role: string | null
           skills: string[] | null
           updated_at: string
         }
         Insert: {
+          address_id?: string | null
           avatar_url?: string | null
           bio?: string | null
           company_name?: string | null
@@ -142,11 +224,14 @@ export type Database = {
           first_name?: string | null
           id: string
           last_name?: string | null
+          notification_preferences?: Json | null
+          phone?: string | null
           role?: string | null
           skills?: string[] | null
           updated_at?: string
         }
         Update: {
+          address_id?: string | null
           avatar_url?: string | null
           bio?: string | null
           company_name?: string | null
@@ -155,11 +240,21 @@ export type Database = {
           first_name?: string | null
           id?: string
           last_name?: string | null
+          notification_preferences?: Json | null
+          phone?: string | null
           role?: string | null
           skills?: string[] | null
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_profiles_address"
+            columns: ["address_id"]
+            isOneToOne: false
+            referencedRelation: "addresses"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       services: {
         Row: {
@@ -208,6 +303,30 @@ export type Database = {
           },
         ]
       }
+      system_logs: {
+        Row: {
+          created_at: string
+          description: string
+          event_type: string
+          id: string
+          metadata: Json | null
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          event_type: string
+          id?: string
+          metadata?: Json | null
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          event_type?: string
+          id?: string
+          metadata?: Json | null
+        }
+        Relationships: []
+      }
       testimonials: {
         Row: {
           created_at: string
@@ -242,6 +361,53 @@ export type Database = {
             columns: ["service_id"]
             isOneToOne: false
             referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      transactions: {
+        Row: {
+          amount: number
+          created_at: string
+          gateway_transaction_id: string | null
+          id: string
+          payment_gateway: string
+          payment_method: string
+          status: string
+          subscription_id: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          gateway_transaction_id?: string | null
+          id?: string
+          payment_gateway: string
+          payment_method: string
+          status: string
+          subscription_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          gateway_transaction_id?: string | null
+          id?: string
+          payment_gateway?: string
+          payment_method?: string
+          status?: string
+          subscription_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transactions_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "user_subscriptions"
             referencedColumns: ["id"]
           },
         ]
