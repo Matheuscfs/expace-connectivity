@@ -92,9 +92,10 @@ const AdminDashboard = () => {
           schema: 'public',
           table: 'notifications'
         },
-        (payload) => {
-          const newNotification = payload.new;
-          if (newNotification && newNotification.title) {
+        (payload: NotificationPayload) => {
+          const newNotification = payload.new as Notification;
+          // Add type guard to check if newNotification exists and has required properties
+          if (newNotification && typeof newNotification === 'object' && 'title' in newNotification) {
             toast({
               title: "Nova Notificação",
               description: newNotification.title,
