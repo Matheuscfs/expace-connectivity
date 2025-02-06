@@ -1,8 +1,9 @@
+
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase";
 import {
   BarChart,
   DollarSign,
@@ -11,6 +12,23 @@ import {
   Star,
   Users,
 } from "lucide-react";
+
+// Add type for notification payload
+type NotificationPayload = {
+  new: {
+    title: string;
+    message: string;
+    type: string;
+    id: string;
+  };
+  old: {
+    title: string;
+    message: string;
+    type: string;
+    id: string;
+  } | null;
+  eventType: 'INSERT' | 'UPDATE' | 'DELETE';
+};
 
 const AdminDashboard = () => {
   const [stats, setStats] = useState({
@@ -65,7 +83,7 @@ const AdminDashboard = () => {
     fetchStats();
   }, [toast]);
 
-  // Setup realtime subscription for notifications
+  // Setup realtime subscription for notifications with proper typing
   useEffect(() => {
     const channel = supabase
       .channel('admin-dashboard')
@@ -76,11 +94,13 @@ const AdminDashboard = () => {
           schema: 'public',
           table: 'notifications'
         },
-        (payload) => {
-          toast({
-            title: "Nova Notificação",
-            description: payload.new.title,
-          });
+        (payload: NotificationPayload) => {
+          if (payload.new && payload.new.title) {
+            toast({
+              title: "Nova Notificação",
+              description: payload.new.title,
+            });
+          }
         }
       )
       .subscribe();
