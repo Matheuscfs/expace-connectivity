@@ -458,8 +458,13 @@ export type Database = {
           created_at: string
           gateway_transaction_id: string | null
           id: string
+          metadata: Json | null
+          payment_details: Json | null
           payment_gateway: string
+          payment_intent_id: string | null
           payment_method: string
+          receipt_url: string | null
+          refund_status: string | null
           status: string
           subscription_id: string | null
           updated_at: string
@@ -470,8 +475,13 @@ export type Database = {
           created_at?: string
           gateway_transaction_id?: string | null
           id?: string
+          metadata?: Json | null
+          payment_details?: Json | null
           payment_gateway: string
+          payment_intent_id?: string | null
           payment_method: string
+          receipt_url?: string | null
+          refund_status?: string | null
           status: string
           subscription_id?: string | null
           updated_at?: string
@@ -482,8 +492,13 @@ export type Database = {
           created_at?: string
           gateway_transaction_id?: string | null
           id?: string
+          metadata?: Json | null
+          payment_details?: Json | null
           payment_gateway?: string
+          payment_intent_id?: string | null
           payment_method?: string
+          receipt_url?: string | null
+          refund_status?: string | null
           status?: string
           subscription_id?: string | null
           updated_at?: string
