@@ -19,6 +19,13 @@ import ProductListing from "@/pages/ProductListing";
 import AdminDashboard from "@/pages/AdminDashboard";
 import NotFound from "@/pages/NotFound";
 import Unauthorized from "@/pages/Unauthorized";
+import AdvancedSearch from "@/pages/AdvancedSearch";
+import UserDashboard from "@/pages/UserDashboard";
+import AccountSettings from "@/pages/AccountSettings";
+import Reports from "@/pages/Reports";
+import Blog from "@/pages/Blog";
+import BlogPost from "@/pages/BlogPost";
+import Resources from "@/pages/Resources";
 
 export function Routes() {
   return (
@@ -60,6 +67,37 @@ export function Routes() {
           </AuthMiddleware>
         }
       />
+
+      {/* New Routes */}
+      <Route path="/advanced-search" element={<AdvancedSearch />} />
+      <Route
+        path="/dashboard"
+        element={
+          <AuthMiddleware requireAuth>
+            <UserDashboard />
+          </AuthMiddleware>
+        }
+      />
+      <Route
+        path="/settings"
+        element={
+          <AuthMiddleware requireAuth>
+            <AccountSettings />
+          </AuthMiddleware>
+        }
+      />
+      <Route
+        path="/reports"
+        element={
+          <AuthMiddleware requireAuth>
+            <Reports />
+          </AuthMiddleware>
+        }
+      />
+      <Route path="/blog" element={<Blog />} />
+      <Route path="/blog/:id" element={<BlogPost />} />
+      <Route path="/resources" element={<Resources />} />
+
       <Route path="/unauthorized" element={<Unauthorized />} />
       <Route path="*" element={<NotFound />} />
     </RouterRoutes>
