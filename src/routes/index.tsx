@@ -1,5 +1,5 @@
 
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Routes as RouterRoutes, Route } from "react-router-dom";
 import { AuthMiddleware } from "@/components/auth/AuthMiddleware";
 import Index from "@/pages/Index";
 import Companies from "@/pages/Companies";
@@ -20,93 +20,48 @@ import AdminDashboard from "@/pages/AdminDashboard";
 import NotFound from "@/pages/NotFound";
 import Unauthorized from "@/pages/Unauthorized";
 
-const routes = createBrowserRouter([
-  {
-    path: "/",
-    element: <Index />,
-  },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/register",
-    element: <Register />,
-  },
-  {
-    path: "/companies",
-    element: <Companies />,
-  },
-  {
-    path: "/search-companies",
-    element: <SearchCompanies />,
-  },
-  {
-    path: "/company/:id",
-    element: <CompanyProfile />,
-  },
-  {
-    path: "/company/private/:id",
-    element: (
-      <AuthMiddleware requireAuth>
-        <CompanyProfilePrivate />
-      </AuthMiddleware>
-    ),
-  },
-  {
-    path: "/company/register",
-    element: <CompanyRegister />,
-  },
-  {
-    path: "/company/login",
-    element: <CompanyLogin />,
-  },
-  {
-    path: "/plans",
-    element: <Plans />,
-  },
-  {
-    path: "/profile",
-    element: (
-      <AuthMiddleware requireAuth>
-        <Profile />
-      </AuthMiddleware>
-    ),
-  },
-  {
-    path: "/professionals",
-    element: <Professionals />,
-  },
-  {
-    path: "/expace-partners",
-    element: <ExpacePartners />,
-  },
-  {
-    path: "/service-details",
-    element: <ServiceDetails />,
-  },
-  {
-    path: "/products",
-    element: <ProductListing />,
-  },
-  {
-    path: "/admin/dashboard",
-    element: (
-      <AuthMiddleware requireAuth allowedRoles={["admin"]}>
-        <AdminDashboard />
-      </AuthMiddleware>
-    ),
-  },
-  {
-    path: "/unauthorized",
-    element: <Unauthorized />,
-  },
-  {
-    path: "*",
-    element: <NotFound />,
-  },
-]);
-
 export function Routes() {
-  return <RouterProvider router={routes} />;
+  return (
+    <RouterRoutes>
+      <Route path="/" element={<Index />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/companies" element={<Companies />} />
+      <Route path="/search-companies" element={<SearchCompanies />} />
+      <Route path="/company/:id" element={<CompanyProfile />} />
+      <Route
+        path="/company/private/:id"
+        element={
+          <AuthMiddleware requireAuth>
+            <CompanyProfilePrivate />
+          </AuthMiddleware>
+        }
+      />
+      <Route path="/company/register" element={<CompanyRegister />} />
+      <Route path="/company/login" element={<CompanyLogin />} />
+      <Route path="/plans" element={<Plans />} />
+      <Route
+        path="/profile"
+        element={
+          <AuthMiddleware requireAuth>
+            <Profile />
+          </AuthMiddleware>
+        }
+      />
+      <Route path="/professionals" element={<Professionals />} />
+      <Route path="/expace-partners" element={<ExpacePartners />} />
+      <Route path="/service-details" element={<ServiceDetails />} />
+      <Route path="/products" element={<ProductListing />} />
+      <Route
+        path="/admin/dashboard"
+        element={
+          <AuthMiddleware requireAuth allowedRoles={["admin"]}>
+            <AdminDashboard />
+          </AuthMiddleware>
+        }
+      />
+      <Route path="/unauthorized" element={<Unauthorized />} />
+      <Route path="*" element={<NotFound />} />
+    </RouterRoutes>
+  );
 }
