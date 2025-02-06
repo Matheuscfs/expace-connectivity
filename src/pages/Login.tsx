@@ -1,39 +1,19 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useToast } from "@/components/ui/use-toast";
 import { Separator } from "@/components/ui/separator";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
-  const { toast } = useToast();
+  const { signIn } = useAuth();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate login success
-    localStorage.setItem('user', JSON.stringify({ 
-      email, 
-      name: email.split('@')[0],
-      avatar: `https://api.dicebear.com/7.x/avatars/svg?seed=${email}` 
-    }));
-    toast({
-      title: "Login realizado com sucesso!",
-      description: "Você será redirecionado para a página inicial.",
-    });
-    navigate("/");
-  };
-
-  const handleGovLogin = () => {
-    // TODO: Implement actual Gov.br login logic
-    toast({
-      title: "Login Gov.br",
-      description: "Funcionalidade em desenvolvimento.",
-    });
+    await signIn(email, password);
   };
 
   return (
@@ -41,7 +21,7 @@ const Login = () => {
       <div className="w-full max-w-md space-y-8 bg-white p-8 rounded-lg shadow-lg animate-fade-in">
         <div className="text-center">
           <Link to="/" className="text-2xl font-bold text-primary inline-block">
-            EX<span className="text-secondary">pace</span>
+            The Office
           </Link>
           <h2 className="mt-6 text-3xl font-bold tracking-tight">
             Bem-vindo de volta
@@ -49,31 +29,6 @@ const Login = () => {
           <p className="mt-2 text-sm text-muted-foreground">
             Entre com sua conta para continuar
           </p>
-        </div>
-
-        <Button
-          variant="outline"
-          type="button"
-          className="w-full bg-[#1351B4] hover:bg-[#1351B4]/90 text-white border-none"
-          onClick={handleGovLogin}
-        >
-          <img
-            src="https://www.gov.br/logo-gov.br.png"
-            alt="Gov.br"
-            className="mr-2 h-5 w-5 rounded-sm bg-white p-0.5"
-          />
-          Entrar com Gov.br
-        </Button>
-
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <Separator />
-          </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-white px-2 text-muted-foreground">
-              Ou entre com email
-            </span>
-          </div>
         </div>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-6">
