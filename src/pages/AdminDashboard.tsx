@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -93,12 +92,11 @@ const AdminDashboard = () => {
           table: 'notifications'
         },
         (payload: NotificationPayload) => {
-          const newNotification = payload.new as Notification;
-          // Add type guard to check if newNotification exists and has required properties
-          if (newNotification && typeof newNotification === 'object' && 'title' in newNotification) {
+          // Add type guard to check if payload.new exists and has required properties
+          if (payload.new && typeof payload.new === 'object' && 'title' in payload.new) {
             toast({
               title: "Nova Notificação",
-              description: newNotification.title,
+              description: payload.new.title,
             });
           }
         }
