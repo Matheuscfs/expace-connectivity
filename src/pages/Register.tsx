@@ -1,28 +1,53 @@
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
 import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const { signUp } = useAuth();
+  const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
     if (password !== confirmPassword) {
+      toast({
+        title: "Erro na validação",
+        description: "As senhas não correspondem",
+        variant: "destructive",
+      });
       return;
     }
-    
-    await signUp(email, password, {
-      first_name: name.split(" ")[0],
-      last_name: name.split(" ").slice(1).join(" "),
-    });
+
+    if (password.length < 6) {
+      toast({
+        title: "Erro na validação",
+        description: "A senha deve ter pelo menos 6 caracteres",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await signUp(email, password, {
+        first_name: name.split(" ")[0],
+        last_name: name.split(" ").slice(1).join(" "),
+      });
+    } catch (error) {
+      console.error("Registration error:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -51,6 +76,7 @@ const Register = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
+                disabled={loading}
               />
             </div>
 
@@ -63,6 +89,7 @@ const Register = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                disabled={loading}
               />
             </div>
 
@@ -75,6 +102,7 @@ const Register = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                disabled={loading}
               />
             </div>
 
@@ -87,12 +115,13 @@ const Register = () => {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
+                disabled={loading}
               />
             </div>
           </div>
 
-          <Button type="submit" className="w-full">
-            Criar conta
+          <Button type="submit" className="w-full" disabled={loading}>
+            {loading ? "Criando conta..." : "Criar conta"}
           </Button>
 
           <p className="text-center text-sm text-muted-foreground">
