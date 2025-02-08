@@ -1,9 +1,10 @@
+
 import { CompanyHeader } from "@/components/company/CompanyHeader";
 import { CompanyContent } from "@/components/company/CompanyContent";
 
 // Mock data for demonstration
 const mockCompanyData = {
-  id: 1,
+  id: "1",  // Added ID for the company
   name: "TechSolutions Inovação",
   logo: "https://images.unsplash.com/photo-1460925895917-afdab827c52f",
   banner: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab",
@@ -32,6 +33,7 @@ export default function CompanyPreview() {
         location={mockCompanyData.location}
         status={mockCompanyData.status}
         isOwner={mockCompanyData.isOwner}
+        companyId={mockCompanyData.id}
         onEdit={handleEdit}
         onContact={handleContact}
       />

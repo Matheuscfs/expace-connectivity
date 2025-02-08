@@ -12,6 +12,7 @@ interface CompanyHeaderProps {
   banner?: string;
   location?: string;
   isOwner?: boolean;
+  companyId?: string;
   onEdit?: () => void;
   onContact?: () => void;
 }
@@ -24,6 +25,7 @@ export function CompanyHeader({
   banner,
   location,
   isOwner = false,
+  companyId,
   onEdit,
   onContact,
 }: CompanyHeaderProps) {
@@ -78,7 +80,7 @@ export function CompanyHeader({
           </div>
         </div>
       </div>
-      {showChat && <ChatButton />}
+      {showChat && <ChatButton companyId={companyId} />}
     </div>
   );
 }
