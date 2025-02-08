@@ -46,7 +46,7 @@ const ChatButton = ({ companyId }: ChatButtonProps) => {
             name,
             logo
           ),
-          messages (
+          messages!fk_conversation(
             *
           )
         `)
