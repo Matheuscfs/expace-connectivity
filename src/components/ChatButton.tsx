@@ -38,10 +38,14 @@ const ChatButton = ({ companyId }: ChatButtonProps) => {
 
   const fetchConversations = async () => {
     try {
-      const { data: conversations, error } = await supabase
+      const { data: conversationsData, error } = await supabase
         .from('conversations')
         .select(`
           *,
+          company:companies(
+            name,
+            logo
+          ),
           messages (
             *
           )
@@ -51,7 +55,7 @@ const ChatButton = ({ companyId }: ChatButtonProps) => {
 
       if (error) throw error;
 
-      setConversations(conversations || []);
+      setConversations(conversationsData || []);
     } catch (error: any) {
       console.error('Error fetching conversations:', error);
       toast({
@@ -104,12 +108,24 @@ const ChatButton = ({ companyId }: ChatButtonProps) => {
             user_id: user?.id,
           },
         ])
-        .select()
+        .select(`
+          *,
+          company:companies(
+            name,
+            logo
+          )
+        `)
         .single();
 
       if (error) throw error;
 
-      return data;
+      // Initialize the conversation with an empty messages array
+      const newConversation: Conversation = {
+        ...data,
+        messages: []
+      };
+
+      return newConversation;
     } catch (error: any) {
       console.error('Error creating conversation:', error);
       toast({
@@ -257,3 +273,4 @@ const ChatButton = ({ companyId }: ChatButtonProps) => {
 };
 
 export default ChatButton;
+
