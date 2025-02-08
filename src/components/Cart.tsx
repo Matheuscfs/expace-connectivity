@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { ShoppingCart, X, Minus, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +14,7 @@ import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 interface CartItem {
   id: string;
@@ -28,12 +30,25 @@ const Cart = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [items, setItems] = useState<CartItem[]>([]);
+  const [session, setSession] = useState<any>(null);
 
   useEffect(() => {
+    // Check auth state
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    // Load cart items
     const cartItems = localStorage.getItem('cartItems');
     if (cartItems) {
       setItems(JSON.parse(cartItems));
     }
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const removeItem = (id: string) => {
@@ -57,7 +72,17 @@ const Cart = () => {
 
   const total = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
+    if (!session) {
+      toast({
+        title: "Login necessário",
+        description: "Faça login para continuar com a compra.",
+        variant: "destructive",
+      });
+      navigate('/login');
+      return;
+    }
+
     if (items.length === 0) {
       toast({
         title: "Carrinho vazio",
@@ -66,6 +91,13 @@ const Cart = () => {
       });
       return;
     }
+
+    // Store cart items in localStorage for checkout page
+    localStorage.setItem('checkoutItems', JSON.stringify({
+      items,
+      total
+    }));
+    
     navigate('/checkout');
   };
 

@@ -1,4 +1,5 @@
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -8,6 +9,7 @@ import { CheckoutPayment } from "@/components/checkout/CheckoutPayment";
 import { CheckoutReview } from "@/components/checkout/CheckoutReview";
 import { CheckoutSteps } from "@/components/checkout/CheckoutSteps";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const steps = [
   { id: 1, name: "Endereço", description: "Confirme o endereço de entrega" },
@@ -19,37 +21,97 @@ const Checkout = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState(1);
-  const [orderData, setOrderData] = useState({
+  const [orderData, setOrderData] = useState<any>({
     address: null,
     payment: null,
     items: [],
     total: 0,
   });
+  const [session, setSession] = useState<any>(null);
+
+  useEffect(() => {
+    // Check authentication
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (!session) {
+        navigate('/login');
+        return;
+      }
+      setSession(session);
+
+      // Load checkout items
+      const checkoutData = localStorage.getItem('checkoutItems');
+      if (checkoutData) {
+        const { items, total } = JSON.parse(checkoutData);
+        setOrderData(prev => ({ ...prev, items, total }));
+      } else {
+        navigate('/');
+      }
+    });
+  }, [navigate]);
 
   const handleAddressSubmit = (address: any) => {
-    setOrderData((prev) => ({ ...prev, address }));
+    setOrderData((prev: any) => ({ ...prev, address }));
     setCurrentStep(2);
   };
 
   const handlePaymentSubmit = (payment: any) => {
-    setOrderData((prev) => ({ ...prev, payment }));
+    setOrderData((prev: any) => ({ ...prev, payment }));
     setCurrentStep(3);
   };
 
   const handleOrderSubmit = async () => {
     try {
-      // Here we would integrate with a payment gateway and create the order
+      if (!session?.user?.id) {
+        throw new Error("User not authenticated");
+      }
+
+      // Create order in database
+      const { data: order, error: orderError } = await supabase
+        .from('orders')
+        .insert({
+          user_id: session.user.id,
+          total_amount: orderData.total,
+          payment_method: orderData.payment.method,
+          address_id: orderData.address.id,
+          status: 'pending',
+          payment_status: 'pending'
+        })
+        .select()
+        .single();
+
+      if (orderError) throw orderError;
+
+      // Create order items
+      const orderItems = orderData.items.map((item: any) => ({
+        order_id: order.id,
+        service_id: item.id,
+        quantity: item.quantity,
+        price: item.price,
+        scheduled_date: item.scheduledDate,
+        customizations: item.customizations
+      }));
+
+      const { error: itemsError } = await supabase
+        .from('order_items')
+        .insert(orderItems);
+
+      if (itemsError) throw itemsError;
+
+      // Clear cart after successful order
+      localStorage.removeItem('cartItems');
+      localStorage.removeItem('checkoutItems');
+
       toast({
         title: "Pedido realizado com sucesso!",
         description: "Você receberá um email com os detalhes do pedido.",
       });
-      // Clear cart after successful order
-      localStorage.removeItem('cartItems');
+      
       navigate("/orders");
-    } catch (error) {
+    } catch (error: any) {
+      console.error('Checkout error:', error);
       toast({
         title: "Erro ao processar pedido",
-        description: "Por favor, tente novamente.",
+        description: error.message || "Por favor, tente novamente.",
         variant: "destructive",
       });
     }
@@ -78,13 +140,23 @@ const Checkout = () => {
               {orderData.items.map((item: any) => (
                 <div key={item.id} className="flex justify-between">
                   <span>{item.name}</span>
-                  <span>{item.price}</span>
+                  <span>
+                    {item.price.toLocaleString('pt-BR', {
+                      style: 'currency',
+                      currency: 'BRL'
+                    })}
+                  </span>
                 </div>
               ))}
               <Separator />
               <div className="flex justify-between font-semibold">
                 <span>Total</span>
-                <span>{orderData.total}</span>
+                <span>
+                  {orderData.total.toLocaleString('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                  })}
+                </span>
               </div>
             </div>
           </Card>

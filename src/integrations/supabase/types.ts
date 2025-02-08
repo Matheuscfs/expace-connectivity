@@ -251,6 +251,98 @@ export type Database = {
         }
         Relationships: []
       }
+      order_items: {
+        Row: {
+          created_at: string
+          customizations: Json | null
+          id: string
+          order_id: string | null
+          price: number
+          quantity: number
+          scheduled_date: string | null
+          service_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          customizations?: Json | null
+          id?: string
+          order_id?: string | null
+          price: number
+          quantity: number
+          scheduled_date?: string | null
+          service_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          customizations?: Json | null
+          id?: string
+          order_id?: string | null
+          price?: number
+          quantity?: number
+          scheduled_date?: string | null
+          service_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_items_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_items_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          address_id: string | null
+          created_at: string
+          id: string
+          payment_method: string | null
+          payment_status: string | null
+          status: string
+          total_amount: number
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          address_id?: string | null
+          created_at?: string
+          id?: string
+          payment_method?: string | null
+          payment_status?: string | null
+          status?: string
+          total_amount: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          address_id?: string | null
+          created_at?: string
+          id?: string
+          payment_method?: string | null
+          payment_status?: string | null
+          status?: string
+          total_amount?: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_address_id_fkey"
+            columns: ["address_id"]
+            isOneToOne: false
+            referencedRelation: "addresses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       plans: {
         Row: {
           created_at: string
