@@ -42,7 +42,7 @@ const ChatButton = ({ companyId }: ChatButtonProps) => {
         .from('conversations')
         .select(`
           *,
-          company:companies(
+          company:companies!inner(
             name,
             logo
           ),
@@ -55,7 +55,17 @@ const ChatButton = ({ companyId }: ChatButtonProps) => {
 
       if (error) throw error;
 
-      setConversations(conversationsData || []);
+      if (conversationsData) {
+        const typedConversations: Conversation[] = conversationsData.map(conv => ({
+          ...conv,
+          company: {
+            name: conv.company.name,
+            logo: conv.company.logo || undefined
+          },
+          messages: conv.messages || []
+        }));
+        setConversations(typedConversations);
+      }
     } catch (error: any) {
       console.error('Error fetching conversations:', error);
       toast({
@@ -110,7 +120,7 @@ const ChatButton = ({ companyId }: ChatButtonProps) => {
         ])
         .select(`
           *,
-          company:companies(
+          company:companies!inner(
             name,
             logo
           )
@@ -122,6 +132,10 @@ const ChatButton = ({ companyId }: ChatButtonProps) => {
       // Initialize the conversation with an empty messages array
       const newConversation: Conversation = {
         ...data,
+        company: {
+          name: data.company.name,
+          logo: data.company.logo || undefined
+        },
         messages: []
       };
 
@@ -273,4 +287,3 @@ const ChatButton = ({ companyId }: ChatButtonProps) => {
 };
 
 export default ChatButton;
-
