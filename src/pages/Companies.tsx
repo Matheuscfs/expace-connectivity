@@ -1,131 +1,250 @@
 
 import { useState } from "react";
-import { Search } from "lucide-react";
-import { companies, categories } from "@/data/mockCompanies";
-import { Input } from "@/components/ui/input";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import CompanyCard from "@/components/companies/CompanyCard";
+import { Input } from "@/components/ui/input";
+import { Slider } from "@/components/ui/slider";
+import { Star, Search, Filter, MapPin, MessageCircle } from "lucide-react";
+import { companies, categories } from "@/data/mockCompanies";
+import { toast } from "@/components/ui/use-toast";
 import Header from "@/components/Header";
 
 const Companies = () => {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
+  const [priceRange, setPriceRange] = useState([0, 1000]);
+  const [selectedCategory, setSelectedCategory] = useState("");
 
-  // Filter companies based on search term
-  const filteredCompanies = companies.filter(company => 
-    company.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    company.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    company.location.toLowerCase().includes(searchTerm.toLowerCase())
+  // Get unique categories
+  const uniqueCategories = Array.from(
+    new Set(companies?.map((company) => company.category) || [])
   );
 
-  const categoryIcons = [
-    { id: 1, name: "Ofertas da Semana", icon: "🔥", color: "bg-red-500" },
-    { id: 2, name: "Serviços Rápidos", icon: "⚡", color: "bg-yellow-500" },
-    { id: 3, name: "Consultoria", icon: "💡", color: "bg-blue-500" },
-    { id: 4, name: "Tecnologia", icon: "💻", color: "bg-purple-500" },
-    { id: 5, name: "Marketing", icon: "📢", color: "bg-green-500" },
-    { id: 6, name: "Design", icon: "🎨", color: "bg-pink-500" },
-    { id: 7, name: "Finanças", icon: "💰", color: "bg-indigo-500" },
-    { id: 8, name: "Outros", icon: "🔍", color: "bg-gray-500" },
-  ];
+  const handleRegionClick = (region: string) => {
+    try {
+      navigate(`/search-companies?region=${encodeURIComponent(region)}`);
+    } catch (error) {
+      console.error("Navigation error:", error);
+      toast({
+        title: "Erro",
+        description: "Não foi possível navegar para a região selecionada.",
+        variant: "destructive",
+      });
+    }
+  };
 
-  const promotionalBanners = [
-    {
-      id: 1,
-      image: "/placeholder.svg",
-      title: "Desconto Especial",
-      description: "Até 40% OFF em serviços selecionados",
-      color: "bg-gradient-to-r from-red-500 to-red-600",
-    },
-    {
-      id: 2,
-      image: "/placeholder.svg",
-      title: "Novos Parceiros",
-      description: "20% OFF na primeira contratação",
-      color: "bg-gradient-to-r from-blue-500 to-blue-600",
-    },
-    {
-      id: 3,
-      image: "/placeholder.svg",
-      title: "Consultoria Grátis",
-      description: "Na contratação de serviços premium",
-      color: "bg-gradient-to-r from-green-500 to-green-600",
-    },
-  ];
+  // Filter companies based on category
+  const filteredCompanies = companies?.filter(company => {
+    try {
+      return selectedCategory === "" || company.category === selectedCategory;
+    } catch (error) {
+      console.error("Filter error:", error);
+      return false;
+    }
+  }) || [];
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      toast({
+        title: "Busca realizada",
+        description: `Buscando por: ${searchTerm}`,
+      });
+    } catch (error) {
+      console.error("Search error:", error);
+      toast({
+        title: "Erro na busca",
+        description: "Não foi possível realizar a busca. Tente novamente.",
+        variant: "destructive",
+      });
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
+      {/* Hero Section */}
       <Header />
-      
-      {/* Search Section */}
-      <div className="bg-white shadow-sm sticky top-16 z-40">
-        <div className="container mx-auto px-4 py-4">
-          <div className="relative">
-            <Search className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-            <Input
-              type="text"
-              placeholder="Busque por serviços ou empresas..."
-              className="w-full pl-10 pr-4 py-2 rounded-full border-gray-200"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+      <div className="bg-primary/5 py-12">
+        <div className="container mx-auto px-4">
+          <h1 className="text-4xl font-bold text-center mb-6">
+            Encontre as Melhores Empresas para Seus Projetos
+          </h1>
+          
+          {/* Search Bar */}
+          <div className="max-w-3xl mx-auto">
+            <form onSubmit={handleSearch} className="relative">
+              <Input
+                type="text"
+                placeholder="Busque por empresas ou serviços..."
+                className="w-full pl-12 pr-4 py-3 rounded-lg"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <Search className="absolute left-4 top-3.5 text-gray-400" />
+              <Button 
+                type="submit"
+                variant="default"
+                className="absolute right-2 top-2"
+              >
+                Buscar
+              </Button>
+            </form>
+            
+            {/* Categories */}
+            <div className="flex flex-wrap gap-4 justify-center mt-8">
+              <Button
+                variant="outline"
+                className={`gap-2 ${
+                  selectedCategory === "" ? "bg-primary text-white" : ""
+                }`}
+                onClick={() => setSelectedCategory("")}
+              >
+                <MapPin className="w-4 h-4" />
+                Todas
+              </Button>
+              {uniqueCategories.map((category) => (
+                <Button
+                  key={category}
+                  variant="outline"
+                  className={`gap-2 ${
+                    selectedCategory === category ? "bg-primary text-white" : ""
+                  }`}
+                  onClick={() => setSelectedCategory(category)}
+                >
+                  <MapPin className="w-4 h-4" />
+                  {category}
+                </Button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-6">
-        {/* Categories */}
-        <h2 className="text-xl font-semibold mb-4">
-          Encontre serviços por categoria
-        </h2>
-        <div className="grid grid-cols-4 md:grid-cols-8 gap-4 mb-8">
-          {categoryIcons.map((category) => (
-            <Button
-              key={category.id}
-              variant="ghost"
-              className="flex flex-col items-center p-4 hover:bg-gray-100 rounded-lg transition-colors"
-            >
-              <div className={`w-12 h-12 ${category.color} rounded-full flex items-center justify-center text-2xl mb-2`}>
-                {category.icon}
-              </div>
-              <span className="text-sm text-center">{category.name}</span>
-            </Button>
-          ))}
-        </div>
-
-        {/* Promotional Banners */}
-        <Carousel className="mb-8">
-          <CarouselContent>
-            {promotionalBanners.map((banner) => (
-              <CarouselItem key={banner.id}>
-                <div className={`${banner.color} rounded-lg p-6 text-white h-48 flex flex-col justify-center`}>
-                  <h3 className="text-2xl font-bold mb-2">{banner.title}</h3>
-                  <p className="text-lg">{banner.description}</p>
+      {/* Main Content */}
+      <div className="container mx-auto px-4 py-12">
+        <div className="flex flex-col md:flex-row gap-8">
+          {/* Filters Sidebar */}
+          <aside className="w-full md:w-64 space-y-6">
+            <div className="bg-white rounded-lg shadow p-6">
+              <h3 className="font-medium flex items-center gap-2 mb-4">
+                <Filter className="w-4 h-4" />
+                Filtros
+              </h3>
+              
+              <div className="space-y-6">
+                {/* Location Filter */}
+                <div>
+                  <label className="text-sm font-medium mb-2 block">
+                    Localização
+                  </label>
+                  <Input
+                    type="text"
+                    placeholder="Digite sua cidade"
+                    className="w-full"
+                  />
                 </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
 
-        {/* Companies List */}
-        <div className="space-y-4">
-          <div className="flex justify-between items-center">
-            <h2 className="text-xl font-semibold">Empresas em Destaque</h2>
-            <Button variant="link" className="text-primary">
-              Ver mais
-            </Button>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {filteredCompanies.map((company) => (
-              <CompanyCard
-                key={company.id}
-                company={company}
-                onMessageClick={() => {}}
-              />
-            ))}
-          </div>
+                {/* Price Range Filter */}
+                <div>
+                  <label className="text-sm font-medium mb-2 block">
+                    Faixa de Preço
+                  </label>
+                  <Slider
+                    defaultValue={[0, 1000]}
+                    max={1000}
+                    step={10}
+                    className="my-4"
+                    onValueChange={(value) => setPriceRange(value)}
+                  />
+                  <div className="flex justify-between text-sm text-gray-600">
+                    <span>R$ {priceRange[0]}</span>
+                    <span>R$ {priceRange[1]}</span>
+                  </div>
+                </div>
+
+                {/* Rating Filter */}
+                <div>
+                  <label className="text-sm font-medium mb-2 block">
+                    Avaliação Mínima
+                  </label>
+                  <div className="space-y-2">
+                    {[4, 3, 2].map((rating) => (
+                      <label
+                        key={rating}
+                        className="flex items-center gap-2 cursor-pointer"
+                      >
+                        <input type="radio" name="rating" className="hidden" />
+                        <div className="flex items-center">
+                          {Array.from({ length: rating }).map((_, i) => (
+                            <Star
+                              key={i}
+                              className="w-4 h-4 text-yellow-400 fill-current"
+                            />
+                          ))}
+                          <span className="ml-2">{rating}+ estrelas</span>
+                        </div>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </aside>
+
+          {/* Companies Grid */}
+          <main className="flex-1">
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {filteredCompanies.map((company) => (
+                <div
+                  key={company.id}
+                  className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-6"
+                >
+                  <div className="flex items-start gap-4">
+                    <img
+                      src={company.logo}
+                      alt={company.name}
+                      className="w-16 h-16 rounded-full object-cover"
+                    />
+                    <div>
+                      <h3 className="font-semibold">{company.name}</h3>
+                      <p className="text-sm text-gray-600">
+                        {company.category}
+                      </p>
+                      <div className="flex items-center gap-1 mt-1">
+                        <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                        <span className="text-sm">
+                          {company.rating} ({company.reviews} avaliações)
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p className="mt-4 text-sm text-gray-600 line-clamp-2">
+                    {company.description}
+                  </p>
+
+                  <div className="mt-4 pt-4 border-t flex items-center justify-between">
+                    <div className="flex items-center gap-1 text-sm text-gray-500">
+                      <MapPin className="w-4 h-4" />
+                      <span>{company.location}</span>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button variant="outline" size="sm">
+                        <MessageCircle className="w-4 h-4" />
+                      </Button>
+                      <Button 
+                        variant="default" 
+                        size="sm"
+                        onClick={() => navigate(`/company/${company.id}`)}
+                      >
+                        Ver Perfil
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </main>
         </div>
       </div>
     </div>
