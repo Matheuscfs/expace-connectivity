@@ -15,14 +15,17 @@ interface CompanyCardProps {
     featured?: boolean;
     location: string;
   };
+  featured?: boolean;
   onMessageClick?: (companyId: number) => void;
 }
 
-const CompanyCard = ({ company, onMessageClick }: CompanyCardProps) => {
+const CompanyCard = ({ company, featured, onMessageClick }: CompanyCardProps) => {
   return (
     <Link
       to={`/company/${company.id}`}
-      className="block bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-4"
+      className={`block bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-4 ${
+        featured ? 'border-2 border-primary' : ''
+      }`}
     >
       <div className="flex items-center gap-3 mb-3">
         <img
@@ -67,3 +70,4 @@ const CompanyCard = ({ company, onMessageClick }: CompanyCardProps) => {
 };
 
 export default CompanyCard;
+
