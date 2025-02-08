@@ -26,6 +26,8 @@ import Reports from "@/pages/Reports";
 import Blog from "@/pages/Blog";
 import BlogPost from "@/pages/BlogPost";
 import Resources from "@/pages/Resources";
+import Checkout from "@/pages/Checkout";
+import Orders from "@/pages/Orders";
 
 export function Routes() {
   return (
@@ -64,6 +66,22 @@ export function Routes() {
         element={
           <AuthMiddleware requireAuth allowedRoles={["admin"]}>
             <AdminDashboard />
+          </AuthMiddleware>
+        }
+      />
+      <Route
+        path="/checkout"
+        element={
+          <AuthMiddleware requireAuth>
+            <Checkout />
+          </AuthMiddleware>
+        }
+      />
+      <Route
+        path="/orders"
+        element={
+          <AuthMiddleware requireAuth>
+            <Orders />
           </AuthMiddleware>
         }
       />
