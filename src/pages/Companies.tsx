@@ -8,6 +8,8 @@ import { Star, Search, Filter, MapPin, MessageCircle } from "lucide-react";
 import { companies, categories } from "@/data/mockCompanies";
 import { toast } from "@/components/ui/use-toast";
 import Header from "@/components/Header";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import CompanyCard from "@/components/companies/CompanyCard";
 
 const Companies = () => {
   const navigate = useNavigate();
@@ -19,6 +21,11 @@ const Companies = () => {
   const uniqueCategories = Array.from(
     new Set(companies?.map((company) => company.category) || [])
   );
+
+  // Get featured companies (limit to 9)
+  const featuredCompanies = companies
+    ?.filter(company => company.featured)
+    .slice(0, 9);
 
   const handleRegionClick = (region: string) => {
     try {
@@ -120,6 +127,32 @@ const Companies = () => {
         </div>
       </div>
 
+      {/* Featured Companies Carousel */}
+      <div className="bg-white py-12">
+        <div className="container mx-auto px-4">
+          <h2 className="text-2xl font-bold text-center mb-8">
+            Empresas em Destaque
+          </h2>
+          <Carousel className="w-full max-w-5xl mx-auto">
+            <CarouselContent>
+              {featuredCompanies.map((company) => (
+                <CarouselItem key={company.id} className="basis-1/3 pl-4">
+                  <CompanyCard 
+                    company={company}
+                    featured
+                    onMessageClick={(id) => {
+                      console.log("Message clicked for company:", id);
+                    }}
+                  />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="hidden md:flex" />
+            <CarouselNext className="hidden md:flex" />
+          </Carousel>
+        </div>
+      </div>
+
       {/* Main Content */}
       <div className="container mx-auto px-4 py-12">
         <div className="flex flex-col md:flex-row gap-8">
@@ -195,53 +228,13 @@ const Companies = () => {
           <main className="flex-1">
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {filteredCompanies.map((company) => (
-                <div
+                <CompanyCard
                   key={company.id}
-                  className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-6"
-                >
-                  <div className="flex items-start gap-4">
-                    <img
-                      src={company.logo}
-                      alt={company.name}
-                      className="w-16 h-16 rounded-full object-cover"
-                    />
-                    <div>
-                      <h3 className="font-semibold">{company.name}</h3>
-                      <p className="text-sm text-gray-600">
-                        {company.category}
-                      </p>
-                      <div className="flex items-center gap-1 mt-1">
-                        <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                        <span className="text-sm">
-                          {company.rating} ({company.reviews} avaliações)
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <p className="mt-4 text-sm text-gray-600 line-clamp-2">
-                    {company.description}
-                  </p>
-
-                  <div className="mt-4 pt-4 border-t flex items-center justify-between">
-                    <div className="flex items-center gap-1 text-sm text-gray-500">
-                      <MapPin className="w-4 h-4" />
-                      <span>{company.location}</span>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button variant="outline" size="sm">
-                        <MessageCircle className="w-4 h-4" />
-                      </Button>
-                      <Button 
-                        variant="default" 
-                        size="sm"
-                        onClick={() => navigate(`/company/${company.id}`)}
-                      >
-                        Ver Perfil
-                      </Button>
-                    </div>
-                  </div>
-                </div>
+                  company={company}
+                  onMessageClick={(id) => {
+                    console.log("Message clicked for company:", id);
+                  }}
+                />
               ))}
             </div>
           </main>
@@ -252,3 +245,4 @@ const Companies = () => {
 };
 
 export default Companies;
+
