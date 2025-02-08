@@ -93,12 +93,46 @@ const Header = () => {
 
           {/* Right Icons */}
           <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="icon" className="relative">
-              <Bell className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-                3
-              </span>
-            </Button>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="ghost" size="icon" className="relative">
+                  <Bell className="h-5 w-5" />
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                    3
+                  </span>
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-80 p-4">
+                <div className="space-y-4">
+                  <h3 className="font-medium">Notificações</h3>
+                  <div className="space-y-2">
+                    <div className="flex items-start gap-3 p-2 hover:bg-accent rounded-lg transition-colors">
+                      <div className="h-8 w-8 bg-primary/10 rounded-full flex items-center justify-center">
+                        <Bell className="h-4 w-4 text-primary" />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm font-medium">Nova mensagem recebida</p>
+                        <p className="text-xs text-muted-foreground">Há 5 minutos</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3 p-2 hover:bg-accent rounded-lg transition-colors">
+                      <div className="h-8 w-8 bg-primary/10 rounded-full flex items-center justify-center">
+                        <Settings className="h-4 w-4 text-primary" />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm font-medium">Atualização do sistema</p>
+                        <p className="text-xs text-muted-foreground">Há 1 hora</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="border-t pt-4">
+                    <Button variant="ghost" className="w-full justify-start" asChild>
+                      <Link to="/notifications">Ver todas as notificações</Link>
+                    </Button>
+                  </div>
+                </div>
+              </PopoverContent>
+            </Popover>
             
             <Popover>
               <PopoverTrigger asChild>
