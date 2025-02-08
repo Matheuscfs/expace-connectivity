@@ -15,17 +15,14 @@ interface CompanyCardProps {
     featured?: boolean;
     location: string;
   };
-  featured?: boolean;
   onMessageClick?: (companyId: number) => void;
 }
 
-const CompanyCard = ({ company, featured, onMessageClick }: CompanyCardProps) => {
+const CompanyCard = ({ company, onMessageClick }: CompanyCardProps) => {
   return (
     <Link
       to={`/company/${company.id}`}
-      className={`block bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-4 ${
-        featured ? 'ring-2 ring-primary' : ''
-      }`}
+      className="block bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-4"
     >
       <div className="flex items-center gap-3 mb-3">
         <img
