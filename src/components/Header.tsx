@@ -1,4 +1,5 @@
-import { MapPin, Search, User, LogOut, Settings, List } from "lucide-react";
+
+import { MapPin, Search, User, LogOut, Settings, List, Bell, ShoppingCart } from "lucide-react";
 import { Button } from "./ui/button";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Cart from "./Cart";
@@ -9,6 +10,7 @@ import {
 } from "@/components/ui/popover";
 import { useState, useEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Input } from "./ui/input";
 
 const Header = () => {
   const location = useLocation();
@@ -36,6 +38,7 @@ const Header = () => {
   const menuItems = [
     { path: "/companies", label: "Empresas" },
     { path: "/professionals", label: "Profissionais" },
+    { path: "/search-companies", label: "Procurar Empresas" },
   ];
 
   const profileMenuItems = [
@@ -46,49 +49,55 @@ const Header = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 bg-white shadow-sm z-50">
-      <div className="container mx-auto px-2">
-        <div className="flex items-center h-16 justify-between">
-          <div className="flex items-center space-x-4">
-            <Link to="/" className="pl-2">
-              <span className="text-2xl font-bold bg-gradient-to-r from-blue-700 via-blue-700 to-blue-200 bg-clip-text text-transparent">
-                The Office
-              </span>
-            </Link>
+      <div className="container mx-auto px-4">
+        <div className="flex items-center h-16 justify-between gap-4">
+          {/* Logo */}
+          <Link to="/" className="flex-shrink-0">
+            <span className="text-2xl font-bold bg-gradient-to-r from-blue-700 via-blue-700 to-blue-200 bg-clip-text text-transparent">
+              The Office
+            </span>
+          </Link>
 
-            <nav className="hidden lg:flex space-x-4">
-              {menuItems.map((item) => (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={`text-sm font-medium transition-colors hover:text-primary relative py-4 ${
-                    isActive(item.path)
-                      ? "text-primary after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-primary"
-                      : "text-gray-600"
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
+          {/* Search Bar */}
+          <div className="flex-1 max-w-2xl mx-4">
+            <form onSubmit={(e) => e.preventDefault()} className="relative">
+              <Input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Encontre serviços, empresas ou produtos..."
+                className="w-full pr-10"
+              />
+              <button type="submit" className="absolute right-3 top-2.5">
+                <Search className="text-gray-400 h-5 w-5" />
+              </button>
+            </form>
           </div>
 
-          <form onSubmit={(e) => e.preventDefault()} className="hidden md:flex relative max-w-md w-full mx-4">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Encontre serviços, empresas ou produtos..."
-              className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary"
-            />
-            <button type="submit" className="absolute right-3 top-2.5">
-              <Search className="text-gray-400" />
-            </button>
-          </form>
+          {/* Navigation Links */}
+          <nav className="hidden lg:flex items-center space-x-6">
+            {menuItems.map((item) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`text-sm font-medium transition-colors hover:text-primary ${
+                  isActive(item.path)
+                    ? "text-primary"
+                    : "text-gray-600"
+                }`}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
 
+          {/* Right Icons */}
           <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="icon" className="hidden md:flex items-center gap-2">
-              <MapPin className="h-5 w-5" />
-              <span className="text-sm">São Paulo</span>
+            <Button variant="ghost" size="icon" className="relative">
+              <Bell className="h-5 w-5" />
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                3
+              </span>
             </Button>
             
             <Popover>
@@ -97,7 +106,7 @@ const Header = () => {
                   {user ? (
                     <Avatar className="h-8 w-8">
                       <AvatarImage src={user.avatar} alt={user.name} />
-                      <AvatarFallback>{user.name.charAt(0).toUpperCase()}</AvatarFallback>
+                      <AvatarFallback>{user.name?.charAt(0).toUpperCase()}</AvatarFallback>
                     </Avatar>
                   ) : (
                     <User className="h-5 w-5" />
@@ -110,7 +119,7 @@ const Header = () => {
                     <div className="flex items-center gap-2 p-2">
                       <Avatar className="h-8 w-8">
                         <AvatarImage src={user.avatar} alt={user.name} />
-                        <AvatarFallback>{user.name.charAt(0).toUpperCase()}</AvatarFallback>
+                        <AvatarFallback>{user.name?.charAt(0).toUpperCase()}</AvatarFallback>
                       </Avatar>
                       <div className="text-sm font-medium">{user.name}</div>
                     </div>
