@@ -51,6 +51,7 @@ const CompanyProfile = () => {
         banner={mockCompanyData.banner}
         location={mockCompanyData.location}
         description={mockCompanyData.description}
+        companyId={id || ''}
       />
       
       <div className="container mx-auto px-4 py-8 space-y-8">

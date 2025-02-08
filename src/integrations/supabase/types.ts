@@ -160,24 +160,39 @@ export type Database = {
       }
       companies: {
         Row: {
+          banner: string | null
           created_at: string
+          description: string | null
           id: string
+          location: string | null
           logo: string | null
           name: string
+          owner_id: string | null
+          status: string | null
           updated_at: string
         }
         Insert: {
+          banner?: string | null
           created_at?: string
+          description?: string | null
           id?: string
+          location?: string | null
           logo?: string | null
           name: string
+          owner_id?: string | null
+          status?: string | null
           updated_at?: string
         }
         Update: {
+          banner?: string | null
           created_at?: string
+          description?: string | null
           id?: string
+          location?: string | null
           logo?: string | null
           name?: string
+          owner_id?: string | null
+          status?: string | null
           updated_at?: string
         }
         Relationships: []

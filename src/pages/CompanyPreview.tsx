@@ -5,10 +5,12 @@ import { CompanyHeader } from "@/components/company/CompanyHeader";
 import { CompanyContent } from "@/components/company/CompanyContent";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function CompanyPreview() {
   const { id } = useParams();
   const { toast } = useToast();
+  const { user } = useAuth();
 
   const { data: companyData, isLoading } = useQuery({
     queryKey: ['company', id],
@@ -28,8 +30,13 @@ export default function CompanyPreview() {
         throw error;
       }
 
-      return data;
+      // Add isOwner field based on owner_id comparison
+      return {
+        ...data,
+        isOwner: user?.id === data.owner_id
+      };
     },
+    enabled: !!id // Only run query if we have an id
   });
 
   const handleEdit = () => {
@@ -56,7 +63,7 @@ export default function CompanyPreview() {
         banner={companyData.banner}
         description={companyData.description}
         location={companyData.location}
-        status={companyData.status}
+        status={companyData.status || 'Ativo'}
         isOwner={companyData.isOwner}
         companyId={companyData.id}
         onEdit={handleEdit}
