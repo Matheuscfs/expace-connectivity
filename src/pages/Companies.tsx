@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import CompanyCard from "@/components/companies/CompanyCard";
+import Header from "@/components/Header";
 
 const Companies = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -54,8 +55,10 @@ const Companies = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header with Search */}
-      <div className="bg-white shadow-sm sticky top-0 z-50">
+      <Header />
+      
+      {/* Search Section */}
+      <div className="bg-white shadow-sm sticky top-16 z-40">
         <div className="container mx-auto px-4 py-4">
           <div className="relative">
             <Search className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
