@@ -3,6 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Edit, MessageSquare } from "lucide-react";
 import { useState } from "react";
 import ChatButton from "@/components/ChatButton";
+import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/components/ui/use-toast";
 
 interface CompanyHeaderProps {
   logo: string;
@@ -12,7 +15,7 @@ interface CompanyHeaderProps {
   banner?: string;
   location?: string;
   isOwner?: boolean;
-  companyId?: string;
+  companyId: string;
   onEdit?: () => void;
   onContact?: () => void;
 }
@@ -30,8 +33,20 @@ export function CompanyHeader({
   onContact,
 }: CompanyHeaderProps) {
   const [showChat, setShowChat] = useState(false);
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
 
   const handleContact = () => {
+    if (!user) {
+      toast({
+        title: "Login necessário",
+        description: "Faça login para enviar mensagens",
+      });
+      navigate("/login");
+      return;
+    }
+    
     setShowChat(true);
     onContact?.();
   };

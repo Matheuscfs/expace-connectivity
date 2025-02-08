@@ -1,20 +1,37 @@
 
+import { useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import { CompanyHeader } from "@/components/company/CompanyHeader";
 import { CompanyContent } from "@/components/company/CompanyContent";
-
-// Mock data for demonstration
-const mockCompanyData = {
-  id: "1",  // Added ID for the company
-  name: "TechSolutions Inovação",
-  logo: "https://images.unsplash.com/photo-1460925895917-afdab827c52f",
-  banner: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab",
-  description: "Empresa líder em soluções tecnológicas inovadoras, fornecendo serviços de alta qualidade há mais de 10 anos.",
-  location: "São Paulo, SP",
-  status: "Ativo",
-  isOwner: true
-};
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function CompanyPreview() {
+  const { id } = useParams();
+  const { toast } = useToast();
+
+  const { data: companyData, isLoading } = useQuery({
+    queryKey: ['company', id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('companies')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+      if (error) {
+        toast({
+          title: "Erro ao carregar empresa",
+          description: error.message,
+          variant: "destructive",
+        });
+        throw error;
+      }
+
+      return data;
+    },
+  });
+
   const handleEdit = () => {
     console.log("Edit profile clicked");
   };
@@ -23,17 +40,25 @@ export default function CompanyPreview() {
     console.log("Contact clicked");
   };
 
+  if (isLoading) {
+    return <div className="min-h-screen bg-gray-50 flex items-center justify-center">Carregando...</div>;
+  }
+
+  if (!companyData) {
+    return <div className="min-h-screen bg-gray-50 flex items-center justify-center">Empresa não encontrada</div>;
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <CompanyHeader
-        name={mockCompanyData.name}
-        logo={mockCompanyData.logo}
-        banner={mockCompanyData.banner}
-        description={mockCompanyData.description}
-        location={mockCompanyData.location}
-        status={mockCompanyData.status}
-        isOwner={mockCompanyData.isOwner}
-        companyId={mockCompanyData.id}
+        name={companyData.name}
+        logo={companyData.logo}
+        banner={companyData.banner}
+        description={companyData.description}
+        location={companyData.location}
+        status={companyData.status}
+        isOwner={companyData.isOwner}
+        companyId={companyData.id}
         onEdit={handleEdit}
         onContact={handleContact}
       />

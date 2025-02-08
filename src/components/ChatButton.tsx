@@ -42,7 +42,7 @@ const ChatButton = ({ companyId }: ChatButtonProps) => {
         .from('conversations')
         .select(`
           *,
-          company:companies!inner(
+          company:companies(
             name,
             logo
           ),
