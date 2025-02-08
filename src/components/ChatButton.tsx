@@ -1,6 +1,6 @@
 
 import { MessageCircle } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -10,80 +10,184 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { ChatList } from "./chat/ChatList";
 import { ChatArea } from "./chat/ChatArea";
-import { Conversation } from "./chat/types";
+import { Conversation, Message } from "./chat/types";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/components/ui/use-toast";
 
-// Mock data - replace with real data later
-const mockConversations: Conversation[] = [
-  {
-    id: "1",
-    companyName: "Tech Solutions Ltd",
-    lastMessage: "Obrigado pelo seu contato! Como posso ajudar?",
-    timestamp: "2024-03-10T14:30:00",
-    unread: true,
-    messages: [
-      {
-        id: "m1",
-        content: "Olá! Gostaria de saber mais sobre seus serviços.",
-        timestamp: "2024-03-10T14:25:00",
-        sender: "user",
-      },
-      {
-        id: "m2",
-        content: "Obrigado pelo seu contato! Como posso ajudar?",
-        timestamp: "2024-03-10T14:30:00",
-        sender: "company",
-      },
-    ],
-  },
-  {
-    id: "2",
-    companyName: "Design Masters",
-    lastMessage: "Seu projeto está em andamento...",
-    timestamp: "2024-03-10T13:15:00",
-    unread: false,
-    messages: [
-      {
-        id: "m3",
-        content: "Preciso de um orçamento para design de logo.",
-        timestamp: "2024-03-10T13:10:00",
-        sender: "user",
-      },
-      {
-        id: "m4",
-        content: "Seu projeto está em andamento...",
-        timestamp: "2024-03-10T13:15:00",
-        sender: "company",
-      },
-    ],
-  },
-  {
-    id: "3",
-    companyName: "Marketing Pro",
-    lastMessage: "Podemos agendar uma reunião?",
-    timestamp: "2024-03-10T11:45:00",
-    unread: true,
-    messages: [
-      {
-        id: "m5",
-        content: "Quais são os horários disponíveis para reunião?",
-        timestamp: "2024-03-10T11:40:00",
-        sender: "user",
-      },
-      {
-        id: "m6",
-        content: "Podemos agendar uma reunião?",
-        timestamp: "2024-03-10T11:45:00",
-        sender: "company",
-      },
-    ],
-  },
-];
+interface ChatButtonProps {
+  companyId?: string;
+}
 
-const ChatButton = () => {
+const ChatButton = ({ companyId }: ChatButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [conversations, setConversations] = useState<Conversation[]>([]);
   const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null);
   const [newMessage, setNewMessage] = useState("");
-  const unreadCount = mockConversations.filter((conv) => conv.unread).length;
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    if (user) {
+      fetchConversations();
+      subscribeToMessages();
+    }
+  }, [user]);
+
+  const fetchConversations = async () => {
+    try {
+      const { data: conversations, error } = await supabase
+        .from('conversations')
+        .select(`
+          *,
+          messages (
+            *
+          )
+        `)
+        .eq('user_id', user?.id)
+        .order('updated_at', { ascending: false });
+
+      if (error) throw error;
+
+      setConversations(conversations || []);
+    } catch (error: any) {
+      console.error('Error fetching conversations:', error);
+      toast({
+        title: "Erro ao carregar conversas",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const subscribeToMessages = () => {
+    const channel = supabase
+      .channel('chat_updates')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'messages',
+        },
+        (payload) => {
+          const newMessage = payload.new as Message;
+          setConversations(prevConversations => 
+            prevConversations.map(conv => {
+              if (conv.id === newMessage.conversation_id) {
+                return {
+                  ...conv,
+                  messages: [...(conv.messages || []), newMessage],
+                };
+              }
+              return conv;
+            })
+          );
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  };
+
+  const createConversation = async (companyId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('conversations')
+        .insert([
+          {
+            company_id: companyId,
+            user_id: user?.id,
+          },
+        ])
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      return data;
+    } catch (error: any) {
+      console.error('Error creating conversation:', error);
+      toast({
+        title: "Erro ao criar conversa",
+        description: error.message,
+        variant: "destructive",
+      });
+      return null;
+    }
+  };
+
+  const handleSendMessage = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newMessage.trim() || !selectedConversation) return;
+
+    try {
+      let currentConversation = selectedConversation;
+
+      // If companyId is provided and no conversation exists, create one
+      if (companyId && !currentConversation) {
+        const newConversation = await createConversation(companyId);
+        if (!newConversation) return;
+        currentConversation = newConversation;
+        setSelectedConversation(newConversation);
+      }
+
+      const { error } = await supabase
+        .from('messages')
+        .insert([
+          {
+            conversation_id: currentConversation.id,
+            content: newMessage,
+            sender_id: user?.id,
+          },
+        ]);
+
+      if (error) throw error;
+
+      setNewMessage("");
+    } catch (error: any) {
+      console.error('Error sending message:', error);
+      toast({
+        title: "Erro ao enviar mensagem",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleOpenChat = async () => {
+    if (!user) {
+      toast({
+        title: "Login necessário",
+        description: "Faça login para enviar mensagens",
+      });
+      navigate("/login");
+      return;
+    }
+
+    if (companyId) {
+      // Check if conversation already exists
+      const existingConversation = conversations.find(
+        (conv) => conv.company_id === companyId
+      );
+
+      if (existingConversation) {
+        setSelectedConversation(existingConversation);
+      } else {
+        const newConversation = await createConversation(companyId);
+        if (newConversation) {
+          setSelectedConversation(newConversation);
+          setConversations([newConversation, ...conversations]);
+        }
+      }
+    }
+
+    setIsOpen(true);
+  };
 
   const formatTimestamp = (timestamp: string) => {
     const date = new Date(timestamp);
@@ -93,19 +197,15 @@ const ChatButton = () => {
     }).format(date);
   };
 
-  const handleSendMessage = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newMessage.trim() || !selectedConversation) return;
-
-    // In a real app, this would send the message to the backend
-    console.log("Sending message:", newMessage);
-    setNewMessage("");
-  };
+  const unreadCount = conversations.reduce(
+    (count, conv) => count + (conv.messages?.filter((msg) => !msg.read && msg.sender_id !== user?.id).length || 0),
+    0
+  );
 
   return (
     <>
       <button
-        onClick={() => setIsOpen(true)}
+        onClick={handleOpenChat}
         className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 bg-primary rounded-full shadow-lg hover:bg-primary/90 transition-colors group"
       >
         <MessageCircle className="w-6 h-6 text-white" />
@@ -122,20 +222,18 @@ const ChatButton = () => {
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="sm:max-w-[80vw] sm:h-[70vh] p-0">
           <div className="flex h-full">
-            {/* Conversations List */}
             <div className="w-full sm:w-[30%] border-r">
               <DialogHeader className="p-4 border-b">
                 <DialogTitle>Suas Conversas</DialogTitle>
               </DialogHeader>
               <ChatList
-                conversations={mockConversations}
+                conversations={conversations}
                 selectedConversation={selectedConversation}
                 onSelectConversation={setSelectedConversation}
                 formatTimestamp={formatTimestamp}
               />
             </div>
 
-            {/* Chat Area */}
             <div className="hidden sm:flex flex-col w-[70%] h-full">
               {selectedConversation ? (
                 <ChatArea
