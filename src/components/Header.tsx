@@ -54,7 +54,7 @@ const Header = () => {
           {/* Logo */}
           <Link to="/" className="flex-shrink-0">
             <span className="text-2xl font-bold bg-gradient-to-r from-blue-700 via-blue-700 to-blue-200 bg-clip-text text-transparent">
-              The Office
+              Contratto
             </span>
           </Link>
 
@@ -186,3 +186,4 @@ const Header = () => {
 };
 
 export default Header;
+
