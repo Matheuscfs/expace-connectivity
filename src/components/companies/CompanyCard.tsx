@@ -1,5 +1,5 @@
 
-import { Star, MessageCircle, Clock, MapPin } from "lucide-react";
+import { Star, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
@@ -21,53 +21,51 @@ interface CompanyCardProps {
 
 const CompanyCard = ({ company, featured, onMessageClick }: CompanyCardProps) => {
   return (
-    <Link
-      to={`/company/${company.id}`}
-      className={`block bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-4 ${
+    <div
+      className={`bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow ${
         featured ? 'border-2 border-primary' : ''
       }`}
     >
-      <div className="flex items-center gap-3 mb-3">
-        <img
-          src={company.logo}
-          alt={company.name}
-          className="w-16 h-16 rounded-lg object-cover"
-        />
-        <div>
-          <h3 className="font-semibold text-lg">{company.name}</h3>
-          <div className="flex items-center gap-1 text-yellow-400">
-            <Star className="w-4 h-4 fill-current" />
-            <span className="text-sm text-gray-600">
-              {company.rating} • {company.reviews} avaliações
+      <img
+        src={company.logo}
+        alt={company.name}
+        className="w-full h-48 object-cover"
+      />
+      <div className="p-6">
+        <h3 className="text-xl font-semibold mb-2">{company.name}</h3>
+        <span className="inline-block px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-4">
+          {company.category}
+        </span>
+        <p className="text-gray-600 mb-4 line-clamp-2">{company.description}</p>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center">
+            <Star className="h-5 w-5 text-yellow-400 fill-current" />
+            <span className="ml-1 font-semibold">{company.rating}</span>
+            <span className="ml-1 text-gray-600">
+              ({company.reviews} avaliações)
             </span>
+          </div>
+          <div className="flex items-center gap-2">
+            {onMessageClick && (
+              <Button
+                size="sm"
+                variant="ghost"
+                className="hover:bg-primary/10"
+                onClick={() => onMessageClick(company.id)}
+              >
+                <MessageCircle className="w-4 h-4" />
+              </Button>
+            )}
+            <Link to={`/company/${company.id}`}>
+              <Button>
+                Ver Perfil
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
-      
-      <p className="text-sm text-gray-600 line-clamp-2 mb-3">
-        {company.description}
-      </p>
-      
-      <div className="flex items-center justify-between text-sm text-gray-500">
-        <div className="flex items-center gap-1">
-          <MapPin className="w-4 h-4" />
-          <span>{company.location}</span>
-        </div>
-        <Button
-          size="sm"
-          variant="ghost"
-          className="hover:bg-primary/10"
-          onClick={(e) => {
-            e.preventDefault();
-            onMessageClick?.(company.id);
-          }}
-        >
-          <MessageCircle className="w-4 h-4" />
-        </Button>
-      </div>
-    </Link>
+    </div>
   );
 };
 
 export default CompanyCard;
-
