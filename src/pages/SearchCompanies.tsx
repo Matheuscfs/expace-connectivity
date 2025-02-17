@@ -35,6 +35,9 @@ const transformCompanyLocation = (company: typeof companies[0]) => {
   };
 };
 
+// Define libraries array outside component to prevent reloads
+const libraries: ("places")[] = ["places"];
+
 const SearchCompanies = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [priceRange, setPriceRange] = useState([0, 1000]);
@@ -93,7 +96,7 @@ const SearchCompanies = () => {
       <div className="flex-1 flex">
         {/* Map Container */}
         <div className="flex-1 relative">
-          <LoadScript googleMapsApiKey={googleMapsApiKey} libraries={["places"]}>
+          <LoadScript googleMapsApiKey={googleMapsApiKey} libraries={libraries}>
             <Map companies={companiesWithLocations} />
           </LoadScript>
         </div>

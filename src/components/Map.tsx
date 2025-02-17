@@ -1,3 +1,4 @@
+
 import { useEffect, useState, useCallback } from "react";
 import { GoogleMap, Marker, InfoWindow, StandaloneSearchBox } from "@react-google-maps/api";
 import { MapPin, AlertCircle } from "lucide-react";
@@ -20,8 +21,14 @@ interface Company {
 
 const mapContainerStyle = {
   width: "100%",
-  height: "400px",
-};
+  height: "100%",
+  position: "absolute",
+  top: 0,
+  left: 0,
+} as const;
+
+// Define libraries array outside component to prevent reloads
+const libraries: ("places")[] = ["places"];
 
 const Map = ({ companies = [] }: { companies: Company[] }) => {
   const navigate = useNavigate();
@@ -190,7 +197,7 @@ const Map = ({ companies = [] }: { companies: Company[] }) => {
   }
 
   return (
-    <div className="relative w-full h-[400px]">
+    <div className="relative w-full h-[calc(100vh-80px)]">
       <div className="absolute top-4 left-4 z-10 w-72">
         <StandaloneSearchBox
           onLoad={onLoadSearchBox}
