@@ -32,6 +32,10 @@ const Header = () => {
     navigate('/');
   };
 
+  const handleSearchChange = (query: string) => {
+    setSearchQuery(query);
+  };
+
   const isActive = (path: string) => {
     return location.pathname === path;
   };
@@ -54,7 +58,11 @@ const Header = () => {
         <div className="flex items-center h-16 justify-between gap-4">
           {/* Mobile Menu */}
           <div className="lg:hidden">
-            <MobileMenu menuItems={menuItems} />
+            <MobileMenu 
+              menuItems={menuItems}
+              searchQuery={searchQuery}
+              onSearchChange={handleSearchChange}
+            />
           </div>
 
           {/* Logo */}
@@ -65,12 +73,12 @@ const Header = () => {
           </Link>
 
           {/* Search Bar */}
-          <div className="flex-1 max-w-2xl mx-4 hidden sm:block">
+          <div className="flex-1 max-w-2xl mx-4 hidden lg:block">
             <form onSubmit={(e) => e.preventDefault()} className="relative">
               <Input
                 type="text"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => handleSearchChange(e.target.value)}
                 placeholder="Encontre serviços, empresas ou produtos..."
                 className="w-full pr-10"
               />
