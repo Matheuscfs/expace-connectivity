@@ -1,8 +1,10 @@
 
-import { Hero } from "@/components/Hero";
-import PopularServices from "@/components/PopularServices";
-import FeaturedCompanies from "@/components/FeaturedCompanies";
-import Testimonials from "@/components/Testimonials";
+import { Hero } from "@/components/home/Hero";
+import { ServicesHighlight } from "@/components/home/ServicesHighlight";
+import { PricingPlans } from "@/components/home/PricingPlans";
+import { ClientTestimonials } from "@/components/home/ClientTestimonials";
+import { Footer } from "@/components/home/Footer";
+import { ContactButton } from "@/components/home/ContactButton";
 import Header from "@/components/Header";
 
 const Index = () => {
@@ -10,9 +12,11 @@ const Index = () => {
     <div className="min-h-screen">
       <Header />
       <Hero />
-      <PopularServices />
-      <FeaturedCompanies />
-      <Testimonials />
+      <ServicesHighlight />
+      <PricingPlans />
+      <ClientTestimonials />
+      <Footer />
+      <ContactButton />
     </div>
   );
 };
