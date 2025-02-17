@@ -1,3 +1,4 @@
+
 import { Star } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
