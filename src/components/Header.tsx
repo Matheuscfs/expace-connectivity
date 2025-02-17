@@ -11,6 +11,7 @@ import {
 import { useState, useEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "./ui/input";
+import MobileMenu from "./MobileMenu";
 
 const Header = () => {
   const location = useLocation();
@@ -51,6 +52,11 @@ const Header = () => {
     <header className="fixed top-0 left-0 right-0 bg-white shadow-sm z-50">
       <div className="container mx-auto px-4">
         <div className="flex items-center h-16 justify-between gap-4">
+          {/* Mobile Menu */}
+          <div className="lg:hidden">
+            <MobileMenu menuItems={menuItems} />
+          </div>
+
           {/* Logo */}
           <Link to="/" className="flex-shrink-0">
             <span className="text-2xl font-bold bg-gradient-to-r from-blue-700 via-blue-700 to-blue-200 bg-clip-text text-transparent">
@@ -59,7 +65,7 @@ const Header = () => {
           </Link>
 
           {/* Search Bar */}
-          <div className="flex-1 max-w-2xl mx-4">
+          <div className="flex-1 max-w-2xl mx-4 hidden sm:block">
             <form onSubmit={(e) => e.preventDefault()} className="relative">
               <Input
                 type="text"
@@ -220,4 +226,3 @@ const Header = () => {
 };
 
 export default Header;
-
