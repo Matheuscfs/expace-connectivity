@@ -1,8 +1,11 @@
 
 import { Button } from "@/components/ui/button";
 import { SearchIcon, Briefcase } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 
 export function Hero() {
+  const navigate = useNavigate();
+
   return (
     <div className="relative min-h-[600px] flex items-center justify-center overflow-hidden">
       {/* Video Background */}
@@ -34,6 +37,7 @@ export function Hero() {
               size="lg" 
               variant="secondary"
               className="text-lg group hover:scale-105 transition-transform"
+              onClick={() => navigate('/search-companies')}
             >
               <SearchIcon className="mr-2 h-5 w-5 group-hover:animate-pulse" />
               Buscar Serviços
@@ -42,6 +46,7 @@ export function Hero() {
               size="lg"
               variant="outline"
               className="text-lg border-white/20 bg-white/10 text-white hover:bg-white/20"
+              onClick={() => navigate('/company/register')}
             >
               <Briefcase className="mr-2 h-5 w-5" />
               Oferecer Serviços

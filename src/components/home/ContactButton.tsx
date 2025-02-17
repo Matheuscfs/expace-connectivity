@@ -7,8 +7,11 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useNavigate } from "react-router-dom";
 
 export function ContactButton() {
+  const navigate = useNavigate();
+
   return (
     <TooltipProvider>
       <Tooltip>
@@ -16,6 +19,7 @@ export function ContactButton() {
           <Button
             size="lg"
             className="fixed bottom-8 right-8 rounded-full shadow-lg hover:shadow-xl transition-shadow"
+            onClick={() => navigate('/contact')}
           >
             <MessageCircle className="w-6 h-6 mr-2" />
             Precisa de ajuda?

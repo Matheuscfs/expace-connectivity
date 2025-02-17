@@ -2,6 +2,7 @@
 import { Card } from "@/components/ui/card";
 import { Star, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 import {
   Carousel,
   CarouselContent,
@@ -47,6 +48,16 @@ const featuredServices = [
 ];
 
 export function ServicesHighlight() {
+  const navigate = useNavigate();
+
+  const handleCategoryClick = (category: string) => {
+    navigate(`/search-companies?category=${encodeURIComponent(category)}`);
+  };
+
+  const handleServiceClick = (serviceId: number) => {
+    navigate(`/service-details/${serviceId}`);
+  };
+
   return (
     <section className="py-20 bg-accent">
       <div className="container mx-auto px-4">
@@ -66,6 +77,7 @@ export function ServicesHighlight() {
               key={category}
               variant="outline"
               className="rounded-full hover:bg-primary hover:text-white transition-colors"
+              onClick={() => handleCategoryClick(category)}
             >
               {category}
             </Button>
@@ -83,11 +95,12 @@ export function ServicesHighlight() {
           <CarouselContent>
             {featuredServices.map((service) => (
               <CarouselItem key={service.id} className="md:basis-1/2 lg:basis-1/3">
-                <Card className="p-4 h-full hover:shadow-lg transition-shadow">
+                <Card className="p-4 h-full hover:shadow-lg transition-shadow cursor-pointer">
                   <img
                     src={service.image}
                     alt={service.name}
                     className="w-full h-48 object-cover rounded-lg mb-4"
+                    onClick={() => handleServiceClick(service.id)}
                   />
                   <h3 className="text-lg font-semibold mb-2">{service.name}</h3>
                   <p className="text-gray-600 mb-3">{service.provider}</p>
@@ -99,7 +112,11 @@ export function ServicesHighlight() {
                         ({service.reviews})
                       </span>
                     </div>
-                    <Button variant="ghost" size="sm">
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      onClick={() => handleServiceClick(service.id)}
+                    >
                       Ver Detalhes
                       <ArrowRight className="ml-2 w-4 h-4" />
                     </Button>

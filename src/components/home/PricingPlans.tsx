@@ -2,6 +2,7 @@
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Check, HelpCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import {
   Tooltip,
   TooltipContent,
@@ -70,6 +71,12 @@ const plans = [
 ];
 
 export function PricingPlans() {
+  const navigate = useNavigate();
+
+  const handlePlanSelection = (planName: string) => {
+    navigate('/plans', { state: { selectedPlan: planName } });
+  };
+
   return (
     <section className="py-20 bg-white">
       <div className="container mx-auto px-4">
@@ -112,7 +119,10 @@ export function PricingPlans() {
                     </li>
                   ))}
                 </ul>
-                <Button className="w-full mt-6">
+                <Button 
+                  className="w-full mt-6"
+                  onClick={() => handlePlanSelection(plan.name)}
+                >
                   Assinar Plano
                 </Button>
               </CardContent>
