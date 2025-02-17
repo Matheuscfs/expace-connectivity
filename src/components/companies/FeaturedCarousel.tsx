@@ -18,7 +18,7 @@ const FeaturedCarousel = ({ companies, onMessageClick }: FeaturedCarouselProps) 
         <Carousel className="w-full max-w-5xl mx-auto">
           <CarouselContent>
             {companies.map((company) => (
-              <CarouselItem key={company.id} className="basis-1/3 pl-4">
+              <CarouselItem key={company.id} className="basis-full sm:basis-1/2 md:basis-1/3 pl-4">
                 <CompanyCard 
                   company={company}
                   featured
