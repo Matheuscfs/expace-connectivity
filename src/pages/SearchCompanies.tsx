@@ -102,36 +102,78 @@ const SearchCompanies = () => {
         <div className="w-96 bg-white border-l">
           <ScrollArea className="h-[calc(100vh-80px)]">
             <div className="p-4">
-              <h2 className="text-xl font-semibold mb-4">Empresas Encontradas</h2>
-              <div className="space-y-4">
-                {companies.map((company) => (
-                  <div
-                    key={company.id}
-                    className="bg-accent p-4 rounded-lg hover:shadow-md transition-shadow cursor-pointer"
-                  >
-                    <div className="flex items-start gap-4">
-                      <img
-                        src={company.logo}
-                        alt={company.name}
-                        className="w-16 h-16 rounded-lg object-cover"
-                      />
-                      <div>
-                        <h3 className="font-semibold">{company.name}</h3>
-                        <p className="text-sm text-gray-600">{company.category}</p>
-                        <p className="text-sm text-gray-500">{company.location}</p>
-                        <div className="flex items-center mt-1">
-                          <span className="text-sm font-medium">
-                            {company.rating}
-                          </span>
-                          <span className="text-yellow-400 ml-1">★</span>
-                          <span className="text-sm text-gray-500 ml-1">
-                            ({company.reviews} avaliações)
-                          </span>
+              <h2 className="text-xl font-semibold mb-4">
+                Empresas Encontradas ({companies.length})
+              </h2>
+              <div className="grid grid-cols-1 gap-4">
+                {/* Primeiras 6 empresas visíveis inicialmente */}
+                <div className="space-y-4">
+                  {companies.slice(0, 6).map((company) => (
+                    <div
+                      key={company.id}
+                      className="bg-accent p-4 rounded-lg hover:shadow-md transition-shadow cursor-pointer"
+                    >
+                      <div className="flex items-start gap-4">
+                        <img
+                          src={company.logo}
+                          alt={company.name}
+                          className="w-16 h-16 rounded-lg object-cover"
+                        />
+                        <div>
+                          <h3 className="font-semibold">{company.name}</h3>
+                          <p className="text-sm text-gray-600">{company.category}</p>
+                          <p className="text-sm text-gray-500">{company.location}</p>
+                          <div className="flex items-center mt-1">
+                            <span className="text-sm font-medium">
+                              {company.rating}
+                            </span>
+                            <span className="text-yellow-400 ml-1">★</span>
+                            <span className="text-sm text-gray-500 ml-1">
+                              ({company.reviews} avaliações)
+                            </span>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+                
+                {/* Divisor visual */}
+                {companies.length > 6 && (
+                  <div className="border-t border-gray-200 my-4" />
+                )}
+
+                {/* Empresas restantes */}
+                <div className="space-y-4">
+                  {companies.slice(6).map((company) => (
+                    <div
+                      key={company.id}
+                      className="bg-accent p-4 rounded-lg hover:shadow-md transition-shadow cursor-pointer"
+                    >
+                      <div className="flex items-start gap-4">
+                        <img
+                          src={company.logo}
+                          alt={company.name}
+                          className="w-16 h-16 rounded-lg object-cover"
+                        />
+                        <div>
+                          <h3 className="font-semibold">{company.name}</h3>
+                          <p className="text-sm text-gray-600">{company.category}</p>
+                          <p className="text-sm text-gray-500">{company.location}</p>
+                          <div className="flex items-center mt-1">
+                            <span className="text-sm font-medium">
+                              {company.rating}
+                            </span>
+                            <span className="text-yellow-400 ml-1">★</span>
+                            <span className="text-sm text-gray-500 ml-1">
+                              ({company.reviews} avaliações)
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </ScrollArea>
