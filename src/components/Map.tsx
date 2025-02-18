@@ -1,17 +1,19 @@
 
 import { useEffect, useState, useCallback } from "react";
-import { GoogleMap, Marker, InfoWindow, StandaloneSearchBox } from "@react-google-maps/api";
-import { MapPin, AlertCircle } from "lucide-react";
+import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
+import { MapPin } from "lucide-react";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
 import { Input } from "./ui/input";
 
 interface Company {
   id: number;
   name: string;
   category: string;
+  description?: string;
   location: {
     lat: number;
     lng: number;
@@ -22,23 +24,17 @@ interface Company {
 const mapContainerStyle = {
   width: "100%",
   height: "100%",
-  position: "absolute",
-  top: 0,
-  left: 0,
+  borderRadius: "10px",
+  boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
 } as const;
-
-// Define libraries array outside component to prevent reloads
-const libraries: ("places")[] = ["places"];
 
 const Map = ({ companies = [] }: { companies: Company[] }) => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [map, setMap] = useState<google.maps.Map | null>(null);
-  const [searchBox, setSearchBox] = useState<google.maps.places.SearchBox | null>(null);
   const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
   const [userLocation, setUserLocation] = useState<google.maps.LatLngLiteral | null>(null);
   const [mapError, setMapError] = useState<string | null>(null);
-  const [center, setCenter] = useState<google.maps.LatLngLiteral>({
+  const [center] = useState<google.maps.LatLngLiteral>({
     lat: -23.550520,
     lng: -46.633308,
   });
@@ -50,13 +46,12 @@ const Map = ({ companies = [] }: { companies: Company[] }) => {
       localStorage.setItem('GOOGLE_MAPS_API_KEY', apiKey);
       setShowApiKeyInput(false);
       setMapError(null);
-      // Force reload to reinitialize Google Maps with new API key
       window.location.reload();
     }
   };
 
   const onLoad = useCallback((map: google.maps.Map) => {
-    setMap(map);
+    console.log("Map loaded");
     setMapError(null);
   }, []);
 
@@ -73,32 +68,7 @@ const Map = ({ companies = [] }: { companies: Company[] }) => {
     }
   }, []);
 
-  const onUnmount = useCallback(() => {
-    setMap(null);
-  }, []);
-
-  const onLoadSearchBox = (ref: google.maps.places.SearchBox) => {
-    setSearchBox(ref);
-  };
-
-  const onPlacesChanged = () => {
-    if (searchBox) {
-      const places = searchBox.getPlaces();
-      if (places && places.length > 0) {
-        const place = places[0];
-        if (place.geometry?.location) {
-          setCenter({
-            lat: place.geometry.location.lat(),
-            lng: place.geometry.location.lng(),
-          });
-          map?.panTo(place.geometry.location);
-          map?.setZoom(15);
-        }
-      }
-    }
-  };
-
-  const getUserLocation = () => {
+  useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -107,8 +77,6 @@ const Map = ({ companies = [] }: { companies: Company[] }) => {
             lng: position.coords.longitude,
           };
           setUserLocation(userPos);
-          setCenter(userPos);
-          map?.panTo(userPos);
         },
         () => {
           toast({
@@ -119,39 +87,22 @@ const Map = ({ companies = [] }: { companies: Company[] }) => {
         }
       );
     }
-  };
-
-  useEffect(() => {
-    getUserLocation();
-  }, []);
-
-  const getCategoryColor = (category: string) => {
-    const colors: { [key: string]: string } = {
-      "TI": "#4F46E5",
-      "Design": "#EC4899",
-      "Marketing": "#F59E0B",
-      default: "#6B7280"
-    };
-    return colors[category] || colors.default;
-  };
+  }, [toast]);
 
   const handleMarkerClick = (company: Company) => {
     setSelectedCompany(company);
   };
 
-  const handleInfoWindowClose = () => {
-    setSelectedCompany(null);
-  };
-
-  const handleViewDetails = (companyId: string) => {
+  const handleViewProfile = (companyId: number) => {
     navigate(`/company/${companyId}`);
   };
 
-  const handleGetDirections = (company: Company) => {
-    if (userLocation) {
-      const url = `https://www.google.com/maps/dir/?api=1&origin=${userLocation.lat},${userLocation.lng}&destination=${company.location.lat},${company.location.lng}`;
-      window.open(url, '_blank');
-    }
+  const handleSendMessage = (companyId: number) => {
+    // Implemente a lógica de envio de mensagem aqui
+    toast({
+      title: "Chat",
+      description: "Abrindo chat com a empresa...",
+    });
   };
 
   if (showApiKeyInput) {
@@ -198,30 +149,23 @@ const Map = ({ companies = [] }: { companies: Company[] }) => {
 
   return (
     <div className="relative w-full h-[calc(100vh-80px)]">
-      <div className="absolute top-4 left-4 z-10 w-72">
-        <StandaloneSearchBox
-          onLoad={onLoadSearchBox}
-          onPlacesChanged={onPlacesChanged}
-        >
-          <input
-            type="text"
-            placeholder="Buscar endereço..."
-            className="w-full px-4 py-2 rounded-lg border border-gray-300 shadow-sm focus:ring-2 focus:ring-primary focus:border-transparent"
-          />
-        </StandaloneSearchBox>
-      </div>
-
       <GoogleMap
         mapContainerStyle={mapContainerStyle}
         center={center}
         zoom={13}
         onLoad={onLoad}
-        onUnmount={onUnmount}
         options={{
           zoomControl: true,
           streetViewControl: false,
           mapTypeControl: false,
           fullscreenControl: false,
+          styles: [
+            {
+              featureType: "poi",
+              elementType: "labels",
+              stylers: [{ visibility: "off" }],
+            },
+          ],
         }}
       >
         {companies.map((company) => (
@@ -231,7 +175,7 @@ const Map = ({ companies = [] }: { companies: Company[] }) => {
             onClick={() => handleMarkerClick(company)}
             icon={{
               path: MapPin.toString(),
-              fillColor: getCategoryColor(company.category),
+              fillColor: "#007bff",
               fillOpacity: 1,
               strokeWeight: 1,
               strokeColor: "#FFFFFF",
@@ -252,24 +196,27 @@ const Map = ({ companies = [] }: { companies: Company[] }) => {
         {selectedCompany && (
           <InfoWindow
             position={selectedCompany.location}
-            onCloseClick={handleInfoWindowClose}
+            onCloseClick={() => setSelectedCompany(null)}
           >
-            <div className="p-2">
-              <h3 className="font-semibold mb-1">{selectedCompany.name}</h3>
-              <p className="text-sm text-gray-600 mb-2">{selectedCompany.address}</p>
+            <div className="p-4 bg-white rounded-lg shadow-lg max-w-[300px]">
+              <h3 className="text-lg font-semibold mb-2">{selectedCompany.name}</h3>
+              <p className="text-gray-600 text-sm mb-4">
+                {selectedCompany.description || selectedCompany.category}
+              </p>
+              <p className="text-gray-500 text-sm mb-4">{selectedCompany.address}</p>
               <div className="flex gap-2">
                 <Button
-                  size="sm"
-                  onClick={() => handleViewDetails(selectedCompany.id.toString())}
+                  className="bg-primary hover:bg-primary/90"
+                  onClick={() => handleViewProfile(selectedCompany.id)}
                 >
-                  Ver Detalhes
+                  Ver Perfil
                 </Button>
                 <Button
-                  size="sm"
                   variant="outline"
-                  onClick={() => handleGetDirections(selectedCompany)}
+                  className="bg-[#28a745] text-white hover:bg-[#28a745]/90"
+                  onClick={() => handleSendMessage(selectedCompany.id)}
                 >
-                  Como Chegar
+                  Enviar Mensagem
                 </Button>
               </div>
             </div>
