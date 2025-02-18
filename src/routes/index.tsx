@@ -1,4 +1,3 @@
-
 import { Routes as RouterRoutes, Route } from "react-router-dom";
 import { AuthMiddleware } from "@/components/auth/AuthMiddleware";
 import Index from "@/pages/Index";
@@ -28,6 +27,7 @@ import BlogPost from "@/pages/BlogPost";
 import Resources from "@/pages/Resources";
 import Checkout from "@/pages/Checkout";
 import Orders from "@/pages/Orders";
+import ProfessionalProfile from "@/pages/ProfessionalProfile";
 
 export function Routes() {
   return (
@@ -86,7 +86,6 @@ export function Routes() {
         }
       />
 
-      {/* New Routes */}
       <Route path="/advanced-search" element={<AdvancedSearch />} />
       <Route
         path="/dashboard"
@@ -115,6 +114,7 @@ export function Routes() {
       <Route path="/blog" element={<Blog />} />
       <Route path="/blog/:id" element={<BlogPost />} />
       <Route path="/resources" element={<Resources />} />
+      <Route path="/professional/:id" element={<ProfessionalProfile />} />
 
       <Route path="/unauthorized" element={<Unauthorized />} />
       <Route path="*" element={<NotFound />} />
