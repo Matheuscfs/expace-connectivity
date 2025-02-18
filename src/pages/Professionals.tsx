@@ -59,6 +59,10 @@ const Professionals = () => {
     }
   };
 
+  const handleViewProfile = (professionalId: number) => {
+    navigate(`/professional/${professionalId}`);
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -229,7 +233,11 @@ const Professionals = () => {
                       <Button variant="outline" size="sm">
                         <MessageCircle className="w-4 h-4" />
                       </Button>
-                      <Button variant="default" size="sm">
+                      <Button 
+                        variant="default" 
+                        size="sm"
+                        onClick={() => handleViewProfile(professional.id)}
+                      >
                         Ver Perfil
                       </Button>
                     </div>
