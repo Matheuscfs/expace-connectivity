@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -20,6 +19,8 @@ import { useToast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Plus, X, Upload } from "lucide-react";
+import Header from "@/components/Header";
+import { Footer } from "@/components/home/Footer";
 
 const formSchema = z.object({
   fullName: z.string().min(3, "Nome deve ter pelo menos 3 caracteres"),
@@ -140,7 +141,6 @@ export default function ProfessionalRegister() {
       return;
     }
 
-    // Aqui será implementada a integração com o Supabase
     try {
       toast({
         title: "Sucesso!",
@@ -157,14 +157,14 @@ export default function ProfessionalRegister() {
   };
 
   return (
-    <div className="min-h-screen bg-background py-8">
-      <div className="container mx-auto px-4">
+    <div className="min-h-screen bg-background">
+      <Header />
+      <div className="container mx-auto px-4 py-8 pt-24">
         <Card className="p-6">
           <h1 className="text-2xl font-bold mb-6">Criar Perfil Profissional</h1>
 
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              {/* Foto de Perfil */}
               <div className="space-y-2">
                 <FormLabel>Foto de Perfil</FormLabel>
                 <div className="flex items-center gap-4">
@@ -188,7 +188,6 @@ export default function ProfessionalRegister() {
                 </div>
               </div>
 
-              {/* Informações Pessoais */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <FormField
                   control={form.control}
@@ -264,7 +263,6 @@ export default function ProfessionalRegister() {
                 />
               </div>
 
-              {/* Contato */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <FormField
                   control={form.control}
@@ -309,7 +307,6 @@ export default function ProfessionalRegister() {
                 />
               </div>
 
-              {/* Serviços */}
               <div className="space-y-4">
                 <FormLabel>Serviços Oferecidos</FormLabel>
                 <div className="flex gap-4">
@@ -358,7 +355,6 @@ export default function ProfessionalRegister() {
                 </ScrollArea>
               </div>
 
-              {/* Certificações */}
               <div className="space-y-4">
                 <FormLabel>Certificações</FormLabel>
                 <div className="flex gap-4">
@@ -388,7 +384,6 @@ export default function ProfessionalRegister() {
                 </div>
               </div>
 
-              {/* Disponibilidade */}
               <div className="space-y-4">
                 <FormLabel>Disponibilidade</FormLabel>
                 <div className="flex flex-wrap gap-2">
@@ -414,6 +409,7 @@ export default function ProfessionalRegister() {
           </Form>
         </Card>
       </div>
+      <Footer />
     </div>
   );
 }

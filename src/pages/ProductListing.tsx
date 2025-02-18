@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { ProductList } from "@/components/product/ProductList";
 import { useToast } from "@/hooks/use-toast";
+import Header from "@/components/Header";
+import { Footer } from "@/components/home/Footer";
 
 // Mock data - replace with actual data fetching
 const mockProducts = [
@@ -50,9 +52,13 @@ const ProductListing = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Produtos e Serviços</h1>
-      <ProductList products={products} onAddToCart={handleAddToCart} />
+    <div className="min-h-screen bg-background">
+      <Header />
+      <div className="container mx-auto px-4 py-8 pt-24">
+        <h1 className="text-3xl font-bold mb-8">Produtos e Serviços</h1>
+        <ProductList products={products} onAddToCart={handleAddToCart} />
+      </div>
+      <Footer />
     </div>
   );
 };
