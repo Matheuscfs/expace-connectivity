@@ -489,6 +489,144 @@ export type Database = {
         }
         Relationships: []
       }
+      professional_availability: {
+        Row: {
+          created_at: string
+          id: string
+          period: string
+          professional_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          period: string
+          professional_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          period?: string
+          professional_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "professional_availability_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      professional_certifications: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          professional_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          professional_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          professional_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "professional_certifications_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      professional_services: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          price: number
+          professional_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          price: number
+          professional_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          price?: number
+          professional_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "professional_services_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      professionals: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          description: string | null
+          experience_years: number
+          hourly_rate: number
+          id: string
+          location: string
+          name: string
+          profession: string
+          rating: number | null
+          review_count: number | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          description?: string | null
+          experience_years: number
+          hourly_rate: number
+          id?: string
+          location: string
+          name: string
+          profession: string
+          rating?: number | null
+          review_count?: number | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          description?: string | null
+          experience_years?: number
+          hourly_rate?: number
+          id?: string
+          location?: string
+          name?: string
+          profession?: string
+          rating?: number | null
+          review_count?: number | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           address_id: string | null
