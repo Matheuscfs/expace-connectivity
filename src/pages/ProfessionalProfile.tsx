@@ -19,7 +19,7 @@ const mockProfessional = {
   bio: "Profissional com mais de 10 anos de experiência em instalações elétricas residenciais e comerciais.",
   location: "São Paulo, SP",
   rating: 4.8,
-  reviews: 156,
+  reviewCount: 156,
   hourlyRate: 120,
   experience: 10,
   availability: ["Manhã", "Tarde"],
@@ -111,7 +111,7 @@ const ProfessionalProfile = () => {
                     <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
                     <span className="font-medium">{mockProfessional.rating}</span>
                     <span className="text-muted-foreground">
-                      ({mockProfessional.reviews} avaliações)
+                      ({mockProfessional.reviewCount} avaliações)
                     </span>
                   </div>
                 </div>
