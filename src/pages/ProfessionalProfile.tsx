@@ -1,6 +1,6 @@
 
 import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -46,28 +46,46 @@ interface Availability {
   period: string;
 }
 
+// Função auxiliar para validar UUID
+const isValidUUID = (uuid: string) => {
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  return uuidRegex.test(uuid);
+};
+
 const ProfessionalProfile = () => {
   const { id } = useParams();
   const { toast } = useToast();
   const [isFavorite, setIsFavorite] = useState(false);
 
-  const { data: professional, isLoading } = useQuery({
+  // Validar se o ID é um UUID válido
+  const isValidId = id && isValidUUID(id);
+
+  const { data: professional, isLoading, error: professionalError } = useQuery({
     queryKey: ["professional", id],
     queryFn: async () => {
+      if (!isValidId) {
+        throw new Error("ID inválido");
+      }
+
       const { data, error } = await supabase
         .from("professionals")
         .select("*")
         .eq("id", id)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
+      if (!data) throw new Error("Profissional não encontrado");
+      
       return data as Professional;
     },
+    enabled: isValidId,
   });
 
   const { data: services } = useQuery({
     queryKey: ["professional-services", id],
     queryFn: async () => {
+      if (!isValidId) return [];
+
       const { data, error } = await supabase
         .from("professional_services")
         .select("*")
@@ -76,11 +94,14 @@ const ProfessionalProfile = () => {
       if (error) throw error;
       return data as Service[];
     },
+    enabled: isValidId,
   });
 
   const { data: certifications } = useQuery({
     queryKey: ["professional-certifications", id],
     queryFn: async () => {
+      if (!isValidId) return [];
+
       const { data, error } = await supabase
         .from("professional_certifications")
         .select("*")
@@ -89,11 +110,14 @@ const ProfessionalProfile = () => {
       if (error) throw error;
       return data as Certification[];
     },
+    enabled: isValidId,
   });
 
   const { data: availability } = useQuery({
     queryKey: ["professional-availability", id],
     queryFn: async () => {
+      if (!isValidId) return [];
+
       const { data, error } = await supabase
         .from("professional_availability")
         .select("*")
@@ -102,7 +126,16 @@ const ProfessionalProfile = () => {
       if (error) throw error;
       return data as Availability[];
     },
+    enabled: isValidId,
   });
+
+  if (!isValidId) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">ID inválido</div>
+      </div>
+    );
+  }
 
   if (isLoading) {
     return (
@@ -112,7 +145,7 @@ const ProfessionalProfile = () => {
     );
   }
 
-  if (!professional) {
+  if (professionalError || !professional) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">Profissional não encontrado</div>
