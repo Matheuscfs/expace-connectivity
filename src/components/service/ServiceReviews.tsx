@@ -13,6 +13,12 @@ interface ServiceReviewsProps {
   professionalId?: string;
 }
 
+interface Profile {
+  first_name: string | null;
+  last_name: string | null;
+  avatar_url: string | null;
+}
+
 interface Review {
   id: string;
   user_id: string;
@@ -20,11 +26,7 @@ interface Review {
   comment: string | null;
   created_at: string;
   professional_id: string;
-  profiles?: {
-    first_name: string | null;
-    last_name: string | null;
-    avatar_url: string | null;
-  } | null;
+  profiles: Profile | null;
 }
 
 export function ServiceReviews({ serviceId, professionalId }: ServiceReviewsProps) {
@@ -36,11 +38,11 @@ export function ServiceReviews({ serviceId, professionalId }: ServiceReviewsProp
   const { data: reviews, isLoading, refetch } = useQuery({
     queryKey: ["reviews", professionalId],
     queryFn: async () => {
-      const { data: reviews, error } = await supabase
+      const { data, error } = await supabase
         .from("professional_reviews")
         .select(`
           *,
-          profiles (
+          profiles:profiles(
             first_name,
             last_name,
             avatar_url
@@ -50,7 +52,7 @@ export function ServiceReviews({ serviceId, professionalId }: ServiceReviewsProp
         .order("created_at", { ascending: false });
 
       if (error) throw error;
-      return reviews as Review[];
+      return data as Review[];
     },
     enabled: !!professionalId,
   });
