@@ -20,11 +20,11 @@ interface Review {
   comment: string | null;
   created_at: string;
   professional_id: string;
-  user?: {
-    first_name: string;
-    last_name: string;
-    avatar_url: string;
-  };
+  profiles?: {
+    first_name: string | null;
+    last_name: string | null;
+    avatar_url: string | null;
+  } | null;
 }
 
 export function ServiceReviews({ serviceId, professionalId }: ServiceReviewsProps) {
@@ -40,7 +40,7 @@ export function ServiceReviews({ serviceId, professionalId }: ServiceReviewsProp
         .from("professional_reviews")
         .select(`
           *,
-          user:profiles(
+          profiles (
             first_name,
             last_name,
             avatar_url
@@ -152,17 +152,17 @@ export function ServiceReviews({ serviceId, professionalId }: ServiceReviewsProp
               <div className="flex items-center gap-2">
                 <Avatar>
                   <AvatarImage
-                    src={review.user?.avatar_url}
-                    alt={`${review.user?.first_name} ${review.user?.last_name}`}
+                    src={review.profiles?.avatar_url ?? undefined}
+                    alt={`${review.profiles?.first_name} ${review.profiles?.last_name}`}
                   />
                   <AvatarFallback>
-                    {review.user?.first_name?.[0]}
-                    {review.user?.last_name?.[0]}
+                    {review.profiles?.first_name?.[0]}
+                    {review.profiles?.last_name?.[0]}
                   </AvatarFallback>
                 </Avatar>
                 <div>
                   <div className="font-medium">
-                    {review.user?.first_name} {review.user?.last_name}
+                    {review.profiles?.first_name} {review.profiles?.last_name}
                   </div>
                   <div className="flex items-center gap-1">
                     {Array.from({ length: 5 }).map((_, i) => (
