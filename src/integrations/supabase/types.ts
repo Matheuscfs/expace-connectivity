@@ -82,15 +82,7 @@ export type Database = {
           updated_at?: string
           user_id?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "applications_service_id_fkey"
-            columns: ["service_id"]
-            isOneToOne: false
-            referencedRelation: "services"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       blog_posts: {
         Row: {
@@ -129,30 +121,6 @@ export type Database = {
           id?: string
           published?: boolean | null
           tags?: string[] | null
-          title?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      categories: {
-        Row: {
-          created_at: string
-          description: string | null
-          id: string
-          title: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          description?: string | null
-          id?: string
-          title: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          description?: string | null
-          id?: string
           title?: string
           updated_at?: string
         }
@@ -331,39 +299,6 @@ export type Database = {
           },
         ]
       }
-      notifications: {
-        Row: {
-          created_at: string
-          data: Json | null
-          id: string
-          message: string
-          read: boolean | null
-          title: string
-          type: string
-          user_id: string | null
-        }
-        Insert: {
-          created_at?: string
-          data?: Json | null
-          id?: string
-          message: string
-          read?: boolean | null
-          title: string
-          type: string
-          user_id?: string | null
-        }
-        Update: {
-          created_at?: string
-          data?: Json | null
-          id?: string
-          message?: string
-          read?: boolean | null
-          title?: string
-          type?: string
-          user_id?: string | null
-        }
-        Relationships: []
-      }
       order_items: {
         Row: {
           created_at: string
@@ -395,66 +330,7 @@ export type Database = {
           scheduled_date?: string | null
           service_id?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "order_items_order_id_fkey"
-            columns: ["order_id"]
-            isOneToOne: false
-            referencedRelation: "orders"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "order_items_service_id_fkey"
-            columns: ["service_id"]
-            isOneToOne: false
-            referencedRelation: "services"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      orders: {
-        Row: {
-          address_id: string | null
-          created_at: string
-          id: string
-          payment_method: string | null
-          payment_status: string | null
-          status: string
-          total_amount: number
-          updated_at: string
-          user_id: string | null
-        }
-        Insert: {
-          address_id?: string | null
-          created_at?: string
-          id?: string
-          payment_method?: string | null
-          payment_status?: string | null
-          status?: string
-          total_amount: number
-          updated_at?: string
-          user_id?: string | null
-        }
-        Update: {
-          address_id?: string | null
-          created_at?: string
-          id?: string
-          payment_method?: string | null
-          payment_status?: string | null
-          status?: string
-          total_amount?: number
-          updated_at?: string
-          user_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "orders_address_id_fkey"
-            columns: ["address_id"]
-            isOneToOne: false
-            referencedRelation: "addresses"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       plans: {
         Row: {
@@ -766,53 +642,6 @@ export type Database = {
           },
         ]
       }
-      services: {
-        Row: {
-          category_id: string | null
-          created_at: string
-          created_by: string | null
-          description: string | null
-          id: string
-          location: string | null
-          price: number | null
-          requirements: string[] | null
-          title: string
-          updated_at: string
-        }
-        Insert: {
-          category_id?: string | null
-          created_at?: string
-          created_by?: string | null
-          description?: string | null
-          id?: string
-          location?: string | null
-          price?: number | null
-          requirements?: string[] | null
-          title: string
-          updated_at?: string
-        }
-        Update: {
-          category_id?: string | null
-          created_at?: string
-          created_by?: string | null
-          description?: string | null
-          id?: string
-          location?: string | null
-          price?: number | null
-          requirements?: string[] | null
-          title?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "services_category_id_fkey"
-            columns: ["category_id"]
-            isOneToOne: false
-            referencedRelation: "categories"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       system_logs: {
         Row: {
           created_at: string
@@ -865,15 +694,7 @@ export type Database = {
           updated_at?: string
           user_id?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "testimonials_service_id_fkey"
-            columns: ["service_id"]
-            isOneToOne: false
-            referencedRelation: "services"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       transactions: {
         Row: {
@@ -1009,15 +830,7 @@ export type Database = {
           status?: Database["public"]["Enums"]["user_status"]
           updated_at?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "users_provider_id_fkey"
-            columns: ["provider_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
     }
     Views: {
