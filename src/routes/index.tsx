@@ -30,6 +30,7 @@ import Checkout from "@/pages/Checkout";
 import Orders from "@/pages/Orders";
 import ProfessionalProfile from "@/pages/ProfessionalProfile";
 import ProfessionalRegister from "@/pages/ProfessionalRegister";
+import Notifications from "@/pages/Notifications";
 
 export function Routes() {
   return (
@@ -70,6 +71,14 @@ export function Routes() {
         element={
           <AuthMiddleware requireAuth allowedRoles={["admin"]}>
             <AdminDashboard />
+          </AuthMiddleware>
+        }
+      />
+      <Route
+        path="/notifications"
+        element={
+          <AuthMiddleware requireAuth>
+            <Notifications />
           </AuthMiddleware>
         }
       />
