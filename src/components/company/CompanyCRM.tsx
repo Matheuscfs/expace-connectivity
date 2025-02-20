@@ -5,13 +5,16 @@ import { useParams } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { supabase } from "@/integrations/supabase/client";
 import { KanbanColumn } from "./crm/KanbanColumn";
+import { LeadDetails } from "./crm/LeadDetails";
 
 export function CompanyCRM() {
   const { id: companyId } = useParams();
   const { toast } = useToast();
   const [leads, setLeads] = useState<any[]>([]);
+  const [selectedLead, setSelectedLead] = useState<any>(null);
 
   useEffect(() => {
     fetchLeads();
@@ -21,7 +24,10 @@ export function CompanyCRM() {
     try {
       const { data, error } = await supabase
         .from('crm_leads')
-        .select('*')
+        .select(`
+          *,
+          crm_activities(*)
+        `)
         .eq('company_id', companyId)
         .order('column_order', { ascending: true });
 
@@ -57,6 +63,14 @@ export function CompanyCRM() {
         .eq('id', draggableId);
 
       if (error) throw error;
+
+      // Log the activity
+      await supabase.from('crm_activities').insert({
+        lead_id: draggableId,
+        company_id: companyId,
+        activity_type: 'status_change',
+        description: `Lead movido para ${destination.droppableId}`,
+      });
     } catch (error) {
       toast({
         title: "Erro ao atualizar lead",
@@ -86,24 +100,39 @@ export function CompanyCRM() {
             id="new"
             title="Novos Leads"
             leads={getColumnLeads('new')}
+            onLeadClick={setSelectedLead}
           />
           <KanbanColumn
             id="in_progress"
             title="Em Andamento"
             leads={getColumnLeads('in_progress')}
+            onLeadClick={setSelectedLead}
           />
           <KanbanColumn
             id="closed"
             title="Fechados"
             leads={getColumnLeads('closed')}
+            onLeadClick={setSelectedLead}
           />
           <KanbanColumn
             id="lost"
             title="Perdidos"
             leads={getColumnLeads('lost')}
+            onLeadClick={setSelectedLead}
           />
         </div>
       </DragDropContext>
+
+      <Sheet open={!!selectedLead} onOpenChange={() => setSelectedLead(null)}>
+        <SheetContent side="right" className="w-[400px] sm:w-[540px]">
+          {selectedLead && (
+            <LeadDetails 
+              lead={selectedLead} 
+              onClose={() => setSelectedLead(null)} 
+            />
+          )}
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }

@@ -1,8 +1,9 @@
 
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Phone, Mail, Star } from "lucide-react";
+import { Phone, Mail, Calendar, DollarSign } from "lucide-react";
 import { Draggable } from "@hello-pangea/dnd";
+import { format } from "date-fns";
 
 interface LeadCardProps {
   lead: {
@@ -13,11 +14,16 @@ interface LeadCardProps {
     service_name: string;
     description?: string;
     priority: 'low' | 'medium' | 'high';
+    expected_value?: number;
+    next_follow_up?: string;
+    tags?: string[];
+    lead_source?: string;
   };
   index: number;
+  onClick: () => void;
 }
 
-export function LeadCard({ lead, index }: LeadCardProps) {
+export function LeadCard({ lead, index, onClick }: LeadCardProps) {
   const priorityColors = {
     low: "bg-blue-100 text-blue-800",
     medium: "bg-yellow-100 text-yellow-800",
@@ -31,8 +37,9 @@ export function LeadCard({ lead, index }: LeadCardProps) {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
+          onClick={onClick}
         >
-          <Card className="p-4 mb-3 hover:shadow-md transition-shadow">
+          <Card className="p-4 mb-3 hover:shadow-md transition-shadow cursor-pointer">
             <div className="space-y-3">
               <div className="flex justify-between items-start">
                 <h4 className="font-medium">{lead.client_name}</h4>
@@ -44,10 +51,21 @@ export function LeadCard({ lead, index }: LeadCardProps) {
               <div className="text-sm text-muted-foreground">
                 {lead.service_name}
               </div>
-              
-              {lead.description && (
-                <p className="text-sm text-gray-600">{lead.description}</p>
+
+              {lead.expected_value && (
+                <div className="flex items-center gap-1 text-sm text-green-600">
+                  <DollarSign className="h-4 w-4" />
+                  R$ {lead.expected_value}
+                </div>
               )}
+              
+              <div className="flex flex-wrap gap-2">
+                {lead.tags?.map((tag) => (
+                  <Badge key={tag} variant="secondary" className="text-xs">
+                    {tag}
+                  </Badge>
+                ))}
+              </div>
 
               <div className="flex gap-3 text-sm text-gray-500">
                 {lead.client_email && (
@@ -63,6 +81,13 @@ export function LeadCard({ lead, index }: LeadCardProps) {
                   </div>
                 )}
               </div>
+
+              {lead.next_follow_up && (
+                <div className="flex items-center gap-1 text-sm text-gray-500">
+                  <Calendar className="h-4 w-4" />
+                  {format(new Date(lead.next_follow_up), 'dd/MM/yyyy HH:mm')}
+                </div>
+              )}
             </div>
           </Card>
         </div>

@@ -262,8 +262,63 @@ export type Database = {
           },
         ]
       }
+      crm_activities: {
+        Row: {
+          activity_type: string
+          company_id: string | null
+          completed_at: string | null
+          created_at: string
+          description: string | null
+          id: string
+          lead_id: string | null
+          metadata: Json | null
+          scheduled_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          activity_type: string
+          company_id?: string | null
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          lead_id?: string | null
+          metadata?: Json | null
+          scheduled_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          activity_type?: string
+          company_id?: string | null
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          lead_id?: string | null
+          metadata?: Json | null
+          scheduled_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_activities_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_activities_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "crm_leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       crm_leads: {
         Row: {
+          assigned_to: string | null
           client_email: string | null
           client_name: string
           client_phone: string | null
@@ -271,14 +326,21 @@ export type Database = {
           company_id: string | null
           created_at: string
           description: string | null
+          expected_value: number | null
           id: string
+          last_contact: string | null
+          lead_source: Database["public"]["Enums"]["lead_source"] | null
           metadata: Json | null
+          next_follow_up: string | null
+          notes: string[] | null
           priority: Database["public"]["Enums"]["lead_priority"] | null
           service_name: string
           status: Database["public"]["Enums"]["lead_status"] | null
+          tags: string[] | null
           updated_at: string
         }
         Insert: {
+          assigned_to?: string | null
           client_email?: string | null
           client_name: string
           client_phone?: string | null
@@ -286,14 +348,21 @@ export type Database = {
           company_id?: string | null
           created_at?: string
           description?: string | null
+          expected_value?: number | null
           id?: string
+          last_contact?: string | null
+          lead_source?: Database["public"]["Enums"]["lead_source"] | null
           metadata?: Json | null
+          next_follow_up?: string | null
+          notes?: string[] | null
           priority?: Database["public"]["Enums"]["lead_priority"] | null
           service_name: string
           status?: Database["public"]["Enums"]["lead_status"] | null
+          tags?: string[] | null
           updated_at?: string
         }
         Update: {
+          assigned_to?: string | null
           client_email?: string | null
           client_name?: string
           client_phone?: string | null
@@ -301,11 +370,17 @@ export type Database = {
           company_id?: string | null
           created_at?: string
           description?: string | null
+          expected_value?: number | null
           id?: string
+          last_contact?: string | null
+          lead_source?: Database["public"]["Enums"]["lead_source"] | null
           metadata?: Json | null
+          next_follow_up?: string | null
+          notes?: string[] | null
           priority?: Database["public"]["Enums"]["lead_priority"] | null
           service_name?: string
           status?: Database["public"]["Enums"]["lead_status"] | null
+          tags?: string[] | null
           updated_at?: string
         }
         Relationships: [
@@ -1316,6 +1391,12 @@ export type Database = {
     Enums: {
       application_status: "pending" | "approved" | "rejected"
       lead_priority: "low" | "medium" | "high"
+      lead_source:
+        | "website"
+        | "referral"
+        | "social_media"
+        | "advertising"
+        | "other"
       lead_status: "new" | "in_progress" | "closed" | "lost"
       notification_status: "pending" | "sent" | "failed" | "read"
       notification_type: "email" | "push" | "sms"
