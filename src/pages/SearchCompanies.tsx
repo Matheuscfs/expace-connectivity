@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { MapPin, Search, Sliders } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -15,7 +14,6 @@ import {
 import CompanyFilters from "@/components/companies/CompanyFilters";
 import { companies, categories } from "@/data/mockCompanies";
 import Map from "@/components/Map";
-import { LoadScript } from "@react-google-maps/api";
 
 // Mock coordinates for different cities
 const cityCoordinates: { [key: string]: { lat: number; lng: number } } = {
@@ -31,33 +29,17 @@ const transformCompanyLocation = (company: typeof companies[0]) => {
   return {
     ...company,
     location: coordinates,
-    address: company.address || `${company.name} - ${company.location}` // Ensure address is always present
+    address: company.address || `${company.name} - ${company.location}`
   };
 };
-
-// Define libraries array outside component to prevent reloads
-const libraries: ("places")[] = ["places"];
 
 const SearchCompanies = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [priceRange, setPriceRange] = useState([0, 1000]);
-  const [mapError, setMapError] = useState<string | null>(null);
-  const googleMapsApiKey = localStorage.getItem('GOOGLE_MAPS_API_KEY') || '';
   const { toast } = useToast();
 
   // Transform companies data to include proper location coordinates
   const companiesWithLocations = companies.map(transformCompanyLocation);
-
-  // Handle Google Maps error
-  const handleMapError = (error: Error) => {
-    console.error("Google Maps Error:", error);
-    setMapError(error.message);
-    toast({
-      variant: "destructive",
-      title: "Erro ao carregar o mapa",
-      description: "Por favor, verifique sua chave de API do Google Maps",
-    });
-  };
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -109,27 +91,7 @@ const SearchCompanies = () => {
       <div className="flex-1 flex">
         {/* Map Container */}
         <div className="flex-1 relative">
-          {mapError ? (
-            <div className="h-full flex items-center justify-center bg-gray-100">
-              <div className="text-center p-4">
-                <p className="text-gray-600 mb-2">Não foi possível carregar o mapa</p>
-                <Button 
-                  variant="outline" 
-                  onClick={() => setMapError(null)}
-                >
-                  Tentar novamente
-                </Button>
-              </div>
-            </div>
-          ) : (
-            <LoadScript 
-              googleMapsApiKey={googleMapsApiKey} 
-              libraries={libraries}
-              onError={handleMapError}
-            >
-              <Map companies={companiesWithLocations} />
-            </LoadScript>
-          )}
+          <Map companies={companiesWithLocations} />
         </div>
 
         {/* Results Sidebar */}
