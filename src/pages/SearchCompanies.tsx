@@ -4,6 +4,7 @@ import { MapPin, Search, Sliders } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useToast } from "@/components/ui/use-toast";
 import {
   Sheet,
   SheetContent,
@@ -23,7 +24,6 @@ const cityCoordinates: { [key: string]: { lat: number; lng: number } } = {
   "Curitiba-PR": { lat: -25.428954, lng: -49.267137 },
   "Florianópolis-SC": { lat: -27.594870, lng: -48.548219 },
   "Cascavel-PR": { lat: -24.955781, lng: -53.455109 },
-  // Add more cities as needed
 };
 
 const transformCompanyLocation = (company: typeof companies[0]) => {
@@ -41,10 +41,23 @@ const libraries: ("places")[] = ["places"];
 const SearchCompanies = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [priceRange, setPriceRange] = useState([0, 1000]);
+  const [mapError, setMapError] = useState<string | null>(null);
   const googleMapsApiKey = localStorage.getItem('GOOGLE_MAPS_API_KEY') || '';
+  const { toast } = useToast();
 
   // Transform companies data to include proper location coordinates
   const companiesWithLocations = companies.map(transformCompanyLocation);
+
+  // Handle Google Maps error
+  const handleMapError = (error: Error) => {
+    console.error("Google Maps Error:", error);
+    setMapError(error.message);
+    toast({
+      variant: "destructive",
+      title: "Erro ao carregar o mapa",
+      description: "Por favor, verifique sua chave de API do Google Maps",
+    });
+  };
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -96,9 +109,27 @@ const SearchCompanies = () => {
       <div className="flex-1 flex">
         {/* Map Container */}
         <div className="flex-1 relative">
-          <LoadScript googleMapsApiKey={googleMapsApiKey} libraries={libraries}>
-            <Map companies={companiesWithLocations} />
-          </LoadScript>
+          {mapError ? (
+            <div className="h-full flex items-center justify-center bg-gray-100">
+              <div className="text-center p-4">
+                <p className="text-gray-600 mb-2">Não foi possível carregar o mapa</p>
+                <Button 
+                  variant="outline" 
+                  onClick={() => setMapError(null)}
+                >
+                  Tentar novamente
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <LoadScript 
+              googleMapsApiKey={googleMapsApiKey} 
+              libraries={libraries}
+              onError={handleMapError}
+            >
+              <Map companies={companiesWithLocations} />
+            </LoadScript>
+          )}
         </div>
 
         {/* Results Sidebar */}
@@ -109,7 +140,7 @@ const SearchCompanies = () => {
                 Empresas Encontradas ({companies.length})
               </h2>
               <div className="grid grid-cols-1 gap-4">
-                {/* Primeiras 6 empresas visíveis inicialmente */}
+                {/* First 6 companies visible initially */}
                 <div className="space-y-4">
                   {companies.slice(0, 6).map((company) => (
                     <div
@@ -141,12 +172,12 @@ const SearchCompanies = () => {
                   ))}
                 </div>
                 
-                {/* Divisor visual */}
+                {/* Visual divider */}
                 {companies.length > 6 && (
                   <div className="border-t border-gray-200 my-4" />
                 )}
 
-                {/* Empresas restantes */}
+                {/* Remaining companies */}
                 <div className="space-y-4">
                   {companies.slice(6).map((company) => (
                     <div
