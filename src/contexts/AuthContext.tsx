@@ -1,7 +1,9 @@
+
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/lib/supabase";
 import { useToast } from "@/hooks/use-toast";
+import { Toaster } from "@/components/ui/toaster";
 
 interface AuthContextType {
   user: any;
@@ -110,6 +112,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   return (
     <AuthContext.Provider value={{ user, signIn, signUp, signOut, loading }}>
       {children}
+      <Toaster />
     </AuthContext.Provider>
   );
 }
