@@ -50,17 +50,10 @@ const Index = () => {
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
         <div 
-          className="absolute inset-0 z-0 bg-gradient-to-r from-blue-900 to-purple-900"
+          className="absolute inset-0 z-0"
           style={{
+            background: 'linear-gradient(135deg, #6e8efb, #a777e3)',
             transform: `translateY(${scrollPosition * 0.5}px)`,
-          }}
-        />
-        <div className="absolute inset-0 opacity-30"
-          style={{
-            backgroundImage: 'url("https://cdn.coverr.co/videos/coverr-typing-on-computer-1584/preview")',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            transform: `translateY(${scrollPosition * 0.3}px)`,
           }}
         />
         <div className="container mx-auto px-4 relative z-10">
@@ -75,7 +68,7 @@ const Index = () => {
               <div className="flex flex-col sm:flex-row gap-4 animate-fade-in delay-300">
                 <Button 
                   size="lg"
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg font-semibold transition-all"
+                  className="bg-white text-[#6e8efb] hover:bg-white/90 px-8 py-4 text-lg font-semibold transition-all"
                   onClick={() => navigate('/company/register')}
                 >
                   Cadastrar Empresa
@@ -83,7 +76,7 @@ const Index = () => {
                 <Button 
                   size="lg"
                   variant="outline"
-                  className="bg-white text-blue-900 hover:bg-blue-50 px-8 py-4 text-lg font-semibold transition-all"
+                  className="border-white text-white hover:bg-white/10 px-8 py-4 text-lg font-semibold transition-all"
                   onClick={() => navigate('/search-companies')}
                 >
                   Buscar Serviços
@@ -128,6 +121,27 @@ const Index = () => {
             <h2 className="text-4xl font-bold mb-4">Como Funciona</h2>
             <p className="text-xl text-gray-600">Veja como é fácil encontrar o serviço ideal para sua empresa</p>
           </div>
+          
+          <div className="relative rounded-2xl overflow-hidden shadow-2xl mx-auto max-w-4xl mb-16">
+            <div 
+              className="aspect-video bg-gray-900 cursor-pointer"
+              onClick={() => setIsVideoPlaying(!isVideoPlaying)}
+            >
+              {!isVideoPlaying ? (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center">
+                    <div className="w-0 h-0 border-t-8 border-b-8 border-l-12 border-transparent border-l-[#6e8efb] ml-1" />
+                  </div>
+                </div>
+              ) : null}
+              <img 
+                src="https://cdn.coverr.co/videos/coverr-typing-on-computer-1584/preview"
+                alt="Video thumbnail"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
             {[
               {
@@ -155,7 +169,7 @@ const Index = () => {
                 }}
               >
                 <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <step.icon className="w-8 h-8 text-blue-600" />
+                  <step.icon className="w-8 h-8 text-[#6e8efb]" />
                 </div>
                 <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
                 <p className="text-gray-600">{step.description}</p>
@@ -232,7 +246,7 @@ const Index = () => {
             ].map((plan, index) => (
               <div 
                 key={index}
-                className={`bg-white rounded-2xl shadow-lg p-8 ${index === 1 ? 'border-2 border-blue-500 transform scale-105' : ''}`}
+                className={`bg-white rounded-2xl shadow-lg p-8 ${index === 1 ? 'border-2 border-[#6e8efb] transform scale-105' : ''}`}
                 style={{
                   transform: `translateY(${(scrollPosition - 1200) * 0.1}px) ${index === 1 ? 'scale(1.05)' : 'scale(1)'}`,
                 }}
@@ -258,7 +272,7 @@ const Index = () => {
                 <Button 
                   className={`w-full py-6 rounded-lg font-semibold transition-all ${
                     index === 1 
-                      ? 'bg-blue-600 hover:bg-blue-700 text-white' 
+                      ? 'bg-[#6e8efb] hover:bg-[#5d7dea] text-white' 
                       : 'bg-gray-100 hover:bg-gray-200 text-gray-800'
                   }`}
                 >
@@ -323,7 +337,7 @@ const Index = () => {
                 </div>
                 <div className="flex mb-4">
                   {Array(testimonial.rating).fill(null).map((_, i) => (
-                    <Star key={i} className="w-5 h-5 text-yellow-400" />
+                    <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
                   ))}
                 </div>
                 <p className="text-gray-700">{testimonial.text}</p>
