@@ -10,40 +10,74 @@ import { supabase } from "@/integrations/supabase/client";
 import { KanbanColumn } from "./crm/KanbanColumn";
 import { LeadDetails } from "./crm/LeadDetails";
 
+interface Lead {
+  id: string;
+  client_name: string;
+  client_email?: string;
+  client_phone?: string;
+  service_name: string;
+  description?: string;
+  status: 'new' | 'in_progress' | 'closed' | 'lost';
+  priority: 'low' | 'medium' | 'high';
+  expected_value?: number;
+  next_follow_up?: string;
+  tags?: string[];
+  lead_source?: string;
+  column_order: number;
+  company_id: string;
+  crm_activities?: any[];
+}
+
 export function CompanyCRM() {
   const { id: companyId } = useParams();
   const { toast } = useToast();
-  const [leads, setLeads] = useState<any[]>([]);
-  const [selectedLead, setSelectedLead] = useState<any>(null);
+  const [leads, setLeads] = useState<Lead[]>([]);
+  const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchLeads();
-  }, []);
+    if (companyId) {
+      fetchLeads();
+    }
+  }, [companyId]);
 
   const fetchLeads = async () => {
+    if (!companyId) return;
+
     try {
+      setLoading(true);
+      console.log("Fetching leads for company:", companyId);
+      
       const { data, error } = await supabase
         .from('crm_leads')
         .select(`
           *,
-          crm_activities(*)
+          crm_activities (*)
         `)
         .eq('company_id', companyId)
         .order('column_order', { ascending: true });
 
-      if (error) throw error;
+      if (error) {
+        console.error("Error fetching leads:", error);
+        throw error;
+      }
+
+      console.log("Fetched leads:", data);
       setLeads(data || []);
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: "Erro ao carregar leads",
         description: "Não foi possível carregar os leads. Tente novamente.",
         variant: "destructive",
       });
+      console.error("Error in fetchLeads:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleDragEnd = async (result: any) => {
-    if (!result.destination) return;
+    if (!result.destination || !companyId) return;
 
     const { draggableId, source, destination } = result;
     
@@ -54,7 +88,7 @@ export function CompanyCRM() {
     setLeads(newLeads);
 
     try {
-      const { error } = await supabase
+      const { error: updateError } = await supabase
         .from('crm_leads')
         .update({
           status: destination.droppableId,
@@ -62,16 +96,25 @@ export function CompanyCRM() {
         })
         .eq('id', draggableId);
 
-      if (error) throw error;
+      if (updateError) throw updateError;
 
-      // Log the activity
-      await supabase.from('crm_activities').insert({
-        lead_id: draggableId,
-        company_id: companyId,
-        activity_type: 'status_change',
-        description: `Lead movido para ${destination.droppableId}`,
+      const { error: activityError } = await supabase
+        .from('crm_activities')
+        .insert({
+          lead_id: draggableId,
+          company_id: companyId,
+          activity_type: 'status_change',
+          description: `Lead movido para ${destination.droppableId}`,
+        });
+
+      if (activityError) throw activityError;
+
+      toast({
+        title: "Lead atualizado",
+        description: "Status do lead atualizado com sucesso.",
       });
-    } catch (error) {
+    } catch (error: any) {
+      console.error("Error updating lead:", error);
       toast({
         title: "Erro ao atualizar lead",
         description: "Não foi possível atualizar o status do lead. Tente novamente.",
@@ -80,7 +123,7 @@ export function CompanyCRM() {
     }
   };
 
-  const getColumnLeads = (status: string) => {
+  const getColumnLeads = (status: Lead['status']) => {
     return leads.filter(lead => lead.status === status);
   };
 
@@ -94,34 +137,44 @@ export function CompanyCRM() {
         </Button>
       </div>
 
-      <DragDropContext onDragEnd={handleDragEnd}>
-        <div className="flex gap-4 overflow-x-auto pb-4">
-          <KanbanColumn
-            id="new"
-            title="Novos Leads"
-            leads={getColumnLeads('new')}
-            onLeadClick={setSelectedLead}
-          />
-          <KanbanColumn
-            id="in_progress"
-            title="Em Andamento"
-            leads={getColumnLeads('in_progress')}
-            onLeadClick={setSelectedLead}
-          />
-          <KanbanColumn
-            id="closed"
-            title="Fechados"
-            leads={getColumnLeads('closed')}
-            onLeadClick={setSelectedLead}
-          />
-          <KanbanColumn
-            id="lost"
-            title="Perdidos"
-            leads={getColumnLeads('lost')}
-            onLeadClick={setSelectedLead}
-          />
+      {loading ? (
+        <div className="text-center py-8 text-muted-foreground">
+          Carregando leads...
         </div>
-      </DragDropContext>
+      ) : leads.length === 0 ? (
+        <div className="text-center py-8 text-muted-foreground">
+          Nenhum lead encontrado. Comece adicionando um novo lead!
+        </div>
+      ) : (
+        <DragDropContext onDragEnd={handleDragEnd}>
+          <div className="flex gap-4 overflow-x-auto pb-4">
+            <KanbanColumn
+              id="new"
+              title="Novos Leads"
+              leads={getColumnLeads('new')}
+              onLeadClick={setSelectedLead}
+            />
+            <KanbanColumn
+              id="in_progress"
+              title="Em Andamento"
+              leads={getColumnLeads('in_progress')}
+              onLeadClick={setSelectedLead}
+            />
+            <KanbanColumn
+              id="closed"
+              title="Fechados"
+              leads={getColumnLeads('closed')}
+              onLeadClick={setSelectedLead}
+            />
+            <KanbanColumn
+              id="lost"
+              title="Perdidos"
+              leads={getColumnLeads('lost')}
+              onLeadClick={setSelectedLead}
+            />
+          </div>
+        </DragDropContext>
+      )}
 
       <Sheet open={!!selectedLead} onOpenChange={() => setSelectedLead(null)}>
         <SheetContent side="right" className="w-[400px] sm:w-[540px]">
