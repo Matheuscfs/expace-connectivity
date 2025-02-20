@@ -69,33 +69,35 @@ const Checkout = () => {
       const { data: order, error: orderError } = await supabase
         .from('orders')
         .insert({
-          user_id: session.user.id,
+          customer_id: session.user.id,
+          provider_id: orderData.items[0].providerId, // Assuming all items are from the same provider
+          service_id: orderData.items[0].id,
           total_amount: orderData.total,
-          payment_method: orderData.payment.method,
-          address_id: orderData.address.id,
+          payment_status: 'pending',
           status: 'pending',
-          payment_status: 'pending'
+          notes: orderData.items[0].customizations?.notes || null,
+          scheduled_date: orderData.items[0].scheduledDate || null
         })
         .select()
         .single();
 
       if (orderError) throw orderError;
 
-      // Create order items
-      const orderItems = orderData.items.map((item: any) => ({
-        order_id: order.id,
-        service_id: item.id,
-        quantity: item.quantity,
-        price: item.price,
-        scheduled_date: item.scheduledDate,
-        customizations: item.customizations
-      }));
+      // Create payment record
+      const { error: paymentError } = await supabase
+        .from('payments')
+        .insert({
+          order_id: order.id,
+          amount: orderData.total,
+          payment_method: orderData.payment.method,
+          status: 'pending',
+          payment_details: {
+            method: orderData.payment.method,
+            ...orderData.payment.details
+          }
+        });
 
-      const { error: itemsError } = await supabase
-        .from('order_items')
-        .insert(orderItems);
-
-      if (itemsError) throw itemsError;
+      if (paymentError) throw paymentError;
 
       // Clear cart after successful order
       localStorage.removeItem('cartItems');
