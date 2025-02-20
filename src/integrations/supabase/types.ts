@@ -987,7 +987,26 @@ export type Database = {
     }
     Enums: {
       application_status: "pending" | "approved" | "rejected"
-      user_role: "client" | "professional" | "admin"
+      notification_status: "pending" | "sent" | "failed" | "read"
+      notification_type: "email" | "push" | "sms"
+      order_status:
+        | "pending"
+        | "confirmed"
+        | "in_progress"
+        | "completed"
+        | "cancelled"
+      payment_method: "credit_card" | "debit_card" | "pix" | "boleto"
+      payment_status:
+        | "pending"
+        | "processing"
+        | "completed"
+        | "failed"
+        | "refunded"
+      report_status: "processing" | "completed" | "failed"
+      report_type: "sales" | "services" | "users" | "reviews"
+      service_status: "draft" | "pending" | "approved" | "rejected" | "inactive"
+      user_role: "admin" | "customer" | "provider"
+      user_status: "active" | "inactive" | "suspended" | "pending"
     }
     CompositeTypes: {
       [_ in never]: never
