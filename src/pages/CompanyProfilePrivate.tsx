@@ -12,6 +12,7 @@ import { CompanyMarketing } from "@/components/company/CompanyMarketing";
 import { CompanySEO } from "@/components/company/CompanySEO";
 import { CompanyNotifications } from "@/components/company/CompanyNotifications";
 import { CompanySettings } from "@/components/company/settings/CompanySettings";
+import { CompanyCRM } from "@/components/company/CompanyCRM";
 import { ProfileSidebar } from "@/components/ProfileSidebar";
 import { Card } from "@/components/ui/card";
 import { Avatar } from "@/components/ui/avatar";
@@ -30,7 +31,6 @@ const CompanyProfilePrivate = () => {
     });
   };
 
-  // Mock data for development
   const companyData = {
     id: 1,
     name: "TechSolutions Brasil LTDA",
@@ -71,15 +71,7 @@ const CompanyProfilePrivate = () => {
   const renderContent = () => {
     switch (activeTab) {
       case "about":
-        return (
-          <CompanyAbout
-            description={companyData.about}
-            address={companyData.contact.address}
-            workingHours={companyData.workingHours}
-            contact={companyData.contact}
-            socialMedia={companyData.socialMedia}
-          />
-        );
+        return <CompanyAbout description={companyData.about} address={companyData.contact.address} workingHours={companyData.workingHours} contact={companyData.contact} socialMedia={companyData.socialMedia} />;
       case "portfolio":
         return <CompanyPortfolio />;
       case "services":
@@ -98,6 +90,8 @@ const CompanyProfilePrivate = () => {
         return <CompanyNotifications />;
       case "settings":
         return <CompanySettings />;
+      case "crm":
+        return <CompanyCRM />;
       default:
         return <CompanyStats />;
     }
@@ -106,7 +100,6 @@ const CompanyProfilePrivate = () => {
   return (
     <SidebarProvider>
       <div className="min-h-screen bg-background flex w-full">
-        {/* Left Sidebar */}
         <div className="w-64 min-h-screen bg-white border-r">
           <div className="p-4 border-b">
             <div className="flex items-center space-x-3">
@@ -122,17 +115,14 @@ const CompanyProfilePrivate = () => {
           <ProfileSidebar onTabChange={setActiveTab} activeTab={activeTab} />
         </div>
 
-        {/* Main Content */}
         <div className="flex-1 min-h-screen">
           <div className="container mx-auto p-6">
             {renderContent()}
           </div>
         </div>
 
-        {/* Right Sidebar */}
         <div className="w-80 min-h-screen bg-white border-l p-4">
           <div className="space-y-6">
-            {/* Notifications */}
             <Card className="p-4">
               <h3 className="font-medium flex items-center gap-2 mb-4">
                 <Bell className="w-4 h-4" />
@@ -150,7 +140,6 @@ const CompanyProfilePrivate = () => {
               </div>
             </Card>
 
-            {/* Messages */}
             <Card className="p-4">
               <h3 className="font-medium flex items-center gap-2 mb-4">
                 <MessageSquare className="w-4 h-4" />

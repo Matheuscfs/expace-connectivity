@@ -262,6 +262,62 @@ export type Database = {
           },
         ]
       }
+      crm_leads: {
+        Row: {
+          client_email: string | null
+          client_name: string
+          client_phone: string | null
+          column_order: number | null
+          company_id: string | null
+          created_at: string
+          description: string | null
+          id: string
+          metadata: Json | null
+          priority: Database["public"]["Enums"]["lead_priority"] | null
+          service_name: string
+          status: Database["public"]["Enums"]["lead_status"] | null
+          updated_at: string
+        }
+        Insert: {
+          client_email?: string | null
+          client_name: string
+          client_phone?: string | null
+          column_order?: number | null
+          company_id?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          metadata?: Json | null
+          priority?: Database["public"]["Enums"]["lead_priority"] | null
+          service_name: string
+          status?: Database["public"]["Enums"]["lead_status"] | null
+          updated_at?: string
+        }
+        Update: {
+          client_email?: string | null
+          client_name?: string
+          client_phone?: string | null
+          column_order?: number | null
+          company_id?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          metadata?: Json | null
+          priority?: Database["public"]["Enums"]["lead_priority"] | null
+          service_name?: string
+          status?: Database["public"]["Enums"]["lead_status"] | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_leads_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       educational_resources: {
         Row: {
           author_id: string | null
@@ -1259,6 +1315,8 @@ export type Database = {
     }
     Enums: {
       application_status: "pending" | "approved" | "rejected"
+      lead_priority: "low" | "medium" | "high"
+      lead_status: "new" | "in_progress" | "closed" | "lost"
       notification_status: "pending" | "sent" | "failed" | "read"
       notification_type: "email" | "push" | "sms"
       order_status:

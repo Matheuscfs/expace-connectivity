@@ -10,7 +10,8 @@ import {
   BarChart,
   Megaphone,
   Search,
-  Bell
+  Bell,
+  ClipboardList
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -35,6 +36,7 @@ const menuItems = [
   { icon: Home, label: "Serviços", value: "services" },
   { icon: Star, label: "Avaliações", value: "reviews" },
   { icon: Users, label: "Equipe", value: "team" },
+  { icon: ClipboardList, label: "CRM", value: "crm" },
   { icon: Megaphone, label: "Marketing", value: "marketing" },
   { icon: Search, label: "SEO", value: "seo" },
   { icon: Bell, label: "Notificações", value: "notifications" },
