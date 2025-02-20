@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { MapPin, Search, Sliders } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -14,6 +15,8 @@ import {
 import CompanyFilters from "@/components/companies/CompanyFilters";
 import { companies, categories } from "@/data/mockCompanies";
 import Map from "@/components/Map";
+import Header from "@/components/Header";
+import { Footer } from "@/components/home/Footer";
 
 // Mock coordinates for different cities
 const cityCoordinates: { [key: string]: { lat: number; lng: number } } = {
@@ -38,73 +41,76 @@ const SearchCompanies = () => {
   const [priceRange, setPriceRange] = useState([0, 1000]);
   const { toast } = useToast();
 
-  // Transform companies data to include proper location coordinates
   const companiesWithLocations = companies.map(transformCompanyLocation);
+  const initialVisibleCompanies = companiesWithLocations.slice(0, 5);
+  const remainingCompanies = companiesWithLocations.slice(5);
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      {/* Search Header */}
-      <div className="bg-white shadow-sm sticky top-0 z-10">
-        <div className="container mx-auto py-4">
-          <div className="flex flex-col md:flex-row gap-4 items-center">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-              <Input
-                placeholder="O que você procura?"
-                className="pl-10"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
+      <Header />
+      
+      <div className="flex-grow flex flex-col">
+        {/* Search Header */}
+        <div className="bg-white shadow-sm sticky top-0 z-10">
+          <div className="container mx-auto py-4">
+            <div className="flex flex-col md:flex-row gap-4 items-center">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                <Input
+                  placeholder="O que você procura?"
+                  className="pl-10"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+              <div className="relative flex-1">
+                <MapPin className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                <Input
+                  placeholder="Digite sua cidade ou use sua localização atual"
+                  className="pl-10"
+                />
+              </div>
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="outline" className="gap-2 whitespace-nowrap">
+                    <Sliders className="h-4 w-4" />
+                    Filtros
+                  </Button>
+                </SheetTrigger>
+                <SheetContent>
+                  <SheetHeader>
+                    <SheetTitle>Filtros</SheetTitle>
+                  </SheetHeader>
+                  <div className="mt-4">
+                    <CompanyFilters
+                      categories={categories}
+                      priceRange={priceRange}
+                      setPriceRange={setPriceRange}
+                    />
+                  </div>
+                </SheetContent>
+              </Sheet>
             </div>
-            <div className="relative flex-1">
-              <MapPin className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-              <Input
-                placeholder="Digite sua cidade ou use sua localização atual"
-                className="pl-10"
-              />
-            </div>
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="outline" className="gap-2 whitespace-nowrap">
-                  <Sliders className="h-4 w-4" />
-                  Filtros
-                </Button>
-              </SheetTrigger>
-              <SheetContent>
-                <SheetHeader>
-                  <SheetTitle>Filtros</SheetTitle>
-                </SheetHeader>
-                <div className="mt-4">
-                  <CompanyFilters
-                    categories={categories}
-                    priceRange={priceRange}
-                    setPriceRange={setPriceRange}
-                  />
-                </div>
-              </SheetContent>
-            </Sheet>
           </div>
         </div>
-      </div>
 
-      {/* Map and Results */}
-      <div className="flex-1 flex">
-        {/* Map Container */}
-        <div className="flex-1 relative">
-          <Map companies={companiesWithLocations} />
-        </div>
+        {/* Map and Results */}
+        <div className="flex-1 flex">
+          {/* Map Container */}
+          <div className="flex-1 relative">
+            <Map companies={companiesWithLocations} />
+          </div>
 
-        {/* Results Sidebar */}
-        <div className="w-96 bg-white border-l">
-          <ScrollArea className="h-[calc(100vh-80px)]">
-            <div className="p-4">
-              <h2 className="text-xl font-semibold mb-4">
-                Empresas Encontradas ({companies.length})
-              </h2>
-              <div className="grid grid-cols-1 gap-4">
-                {/* First 6 companies visible initially */}
+          {/* Results Sidebar */}
+          <div className="w-96 bg-white border-l">
+            <ScrollArea className="h-[calc(100vh-80px)]">
+              <div className="p-4">
+                <h2 className="text-xl font-semibold mb-4">
+                  Empresas Encontradas ({companies.length})
+                </h2>
                 <div className="space-y-4">
-                  {companies.slice(0, 6).map((company) => (
+                  {/* First 5 companies visible initially */}
+                  {initialVisibleCompanies.map((company) => (
                     <div
                       key={company.id}
                       className="bg-accent p-4 rounded-lg hover:shadow-md transition-shadow cursor-pointer"
@@ -118,7 +124,7 @@ const SearchCompanies = () => {
                         <div>
                           <h3 className="font-semibold">{company.name}</h3>
                           <p className="text-sm text-gray-600">{company.category}</p>
-                          <p className="text-sm text-gray-500">{company.location}</p>
+                          <p className="text-sm text-gray-500">{company.address}</p>
                           <div className="flex items-center mt-1">
                             <span className="text-sm font-medium">
                               {company.rating}
@@ -132,16 +138,14 @@ const SearchCompanies = () => {
                       </div>
                     </div>
                   ))}
-                </div>
-                
-                {/* Visual divider */}
-                {companies.length > 6 && (
-                  <div className="border-t border-gray-200 my-4" />
-                )}
+                  
+                  {/* Visual divider */}
+                  {remainingCompanies.length > 0 && (
+                    <div className="border-t border-gray-200 my-4" />
+                  )}
 
-                {/* Remaining companies */}
-                <div className="space-y-4">
-                  {companies.slice(6).map((company) => (
+                  {/* Remaining companies */}
+                  {remainingCompanies.map((company) => (
                     <div
                       key={company.id}
                       className="bg-accent p-4 rounded-lg hover:shadow-md transition-shadow cursor-pointer"
@@ -155,7 +159,7 @@ const SearchCompanies = () => {
                         <div>
                           <h3 className="font-semibold">{company.name}</h3>
                           <p className="text-sm text-gray-600">{company.category}</p>
-                          <p className="text-sm text-gray-500">{company.location}</p>
+                          <p className="text-sm text-gray-500">{company.address}</p>
                           <div className="flex items-center mt-1">
                             <span className="text-sm font-medium">
                               {company.rating}
@@ -171,10 +175,12 @@ const SearchCompanies = () => {
                   ))}
                 </div>
               </div>
-            </div>
-          </ScrollArea>
+            </ScrollArea>
+          </div>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 };
