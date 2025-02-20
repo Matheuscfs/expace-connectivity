@@ -47,9 +47,26 @@ const Header = () => {
   ];
 
   const profileMenuItems = [
-    { icon: User, label: "Perfil", path: "/profile" },
-    { icon: Settings, label: "Configurações", path: "/settings" },
-    { icon: List, label: "Pedidos", path: "/orders" },
+    { path: "/profile", label: "Perfil", icon: User },
+    { path: "/settings", label: "Configurações", icon: Settings },
+    { path: "/orders", label: "Pedidos", icon: List },
+  ];
+
+  const notifications = [
+    {
+      id: 1,
+      title: "Nova mensagem recebida",
+      message: "Há 5 minutos",
+      icon: Bell,
+      type: "primary"
+    },
+    {
+      id: 2,
+      title: "Atualização do sistema",
+      message: "Há 1 hora",
+      icon: Settings,
+      type: "primary"
+    }
   ];
 
   return (
@@ -112,7 +129,7 @@ const Header = () => {
                 <Button variant="ghost" size="icon" className="relative">
                   <Bell className="h-5 w-5" />
                   <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-                    3
+                    {notifications.length}
                   </span>
                 </Button>
               </PopoverTrigger>
@@ -120,24 +137,17 @@ const Header = () => {
                 <div className="space-y-4">
                   <h3 className="font-medium">Notificações</h3>
                   <div className="space-y-2">
-                    <div className="flex items-start gap-3 p-2 hover:bg-accent rounded-lg transition-colors">
-                      <div className="h-8 w-8 bg-primary/10 rounded-full flex items-center justify-center">
-                        <Bell className="h-4 w-4 text-primary" />
+                    {notifications.map((notification) => (
+                      <div key={notification.id} className="flex items-start gap-3 p-2 hover:bg-accent rounded-lg transition-colors">
+                        <div className="h-8 w-8 bg-primary/10 rounded-full flex items-center justify-center">
+                          <notification.icon className="h-4 w-4 text-primary" />
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm font-medium">{notification.title}</p>
+                          <p className="text-xs text-muted-foreground">{notification.message}</p>
+                        </div>
                       </div>
-                      <div className="flex-1">
-                        <p className="text-sm font-medium">Nova mensagem recebida</p>
-                        <p className="text-xs text-muted-foreground">Há 5 minutos</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3 p-2 hover:bg-accent rounded-lg transition-colors">
-                      <div className="h-8 w-8 bg-primary/10 rounded-full flex items-center justify-center">
-                        <Settings className="h-4 w-4 text-primary" />
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-sm font-medium">Atualização do sistema</p>
-                        <p className="text-xs text-muted-foreground">Há 1 hora</p>
-                      </div>
-                    </div>
+                    ))}
                   </div>
                   <div className="border-t pt-4">
                     <Button variant="ghost" className="w-full justify-start" asChild>
