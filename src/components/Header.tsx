@@ -226,7 +226,7 @@ const Header = () => {
                       </div>
                     </div>
                     <Link
-                      to="/company-register"
+                      to="/company/register"
                       className="flex w-full items-center gap-2 rounded-md border border-input bg-background px-4 py-2 hover:bg-accent hover:text-accent-foreground"
                     >
                       Cadastrar empresa

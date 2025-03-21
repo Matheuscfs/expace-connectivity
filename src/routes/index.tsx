@@ -51,6 +51,7 @@ export function Routes() {
       />
       <Route path="/company/register" element={<CompanyRegister />} />
       <Route path="/company/login" element={<CompanyLogin />} />
+      <Route path="/company-login" element={<CompanyLogin />} /> {/* Added this new route to match the URL you're trying to access */}
       <Route path="/plans" element={<Plans />} />
       <Route
         path="/profile"
