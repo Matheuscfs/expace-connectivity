@@ -55,6 +55,17 @@ export function Routes() {
       <Route path="/registro da empresa" element={<Navigate to="/company/register" replace />} />
       <Route path="/company/login" element={<CompanyLogin />} />
       <Route path="/company-login" element={<CompanyLogin />} />
+      
+      {/* Adicionar redirecionamento para o dashboard da empresa após login */}
+      <Route 
+        path="/company-dashboard" 
+        element={
+          <AuthMiddleware requireAuth>
+            <CompanyProfilePrivate />
+          </AuthMiddleware>
+        } 
+      />
+      
       <Route path="/plans" element={<Plans />} />
       <Route
         path="/profile"

@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { Separator } from "@/components/ui/separator";
 
 const CompanyLogin = () => {
@@ -18,13 +18,16 @@ const CompanyLogin = () => {
     localStorage.setItem('company', JSON.stringify({ 
       cnpj,
       name: "Empresa Exemplo",
-      logo: `https://api.dicebear.com/7.x/initials/svg?seed=${cnpj}` 
+      logo: `https://api.dicebear.com/7.x/initials/svg?seed=${cnpj}`,
+      id: "1" // Adicionando um ID simulado
     }));
     toast({
       title: "Login realizado com sucesso!",
       description: "Você será redirecionado para o painel da empresa.",
     });
-    navigate("/company-dashboard");
+    
+    // Redirecionar para o dashboard da empresa com o ID simulado
+    navigate("/company/private/1");
   };
 
   const handleGovLogin = () => {
