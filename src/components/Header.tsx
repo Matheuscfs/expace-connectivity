@@ -1,4 +1,3 @@
-
 import { MapPin, Search, User, LogOut, Settings, List, Bell, ShoppingCart } from "lucide-react";
 import { Button } from "./ui/button";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -73,7 +72,6 @@ const Header = () => {
     <header className="fixed top-0 left-0 right-0 bg-white shadow-sm z-50">
       <div className="container mx-auto px-4">
         <div className="flex items-center h-16 justify-between gap-4">
-          {/* Mobile Menu */}
           <div className="lg:hidden">
             <MobileMenu 
               menuItems={menuItems}
@@ -82,14 +80,12 @@ const Header = () => {
             />
           </div>
 
-          {/* Logo */}
           <Link to="/" className="flex-shrink-0">
             <span className="text-2xl font-bold bg-gradient-to-r from-blue-700 via-blue-700 to-blue-200 bg-clip-text text-transparent">
               Contratto
             </span>
           </Link>
 
-          {/* Search Bar */}
           <div className="flex-1 max-w-2xl mx-4 hidden lg:block">
             <form onSubmit={(e) => e.preventDefault()} className="relative">
               <Input
@@ -105,7 +101,6 @@ const Header = () => {
             </form>
           </div>
 
-          {/* Navigation Links */}
           <nav className="hidden lg:flex items-center space-x-6">
             {menuItems.map((item) => (
               <Link
@@ -122,7 +117,6 @@ const Header = () => {
             ))}
           </nav>
 
-          {/* Right Icons */}
           <div className="flex items-center space-x-4">
             <Popover>
               <PopoverTrigger asChild>

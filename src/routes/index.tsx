@@ -1,5 +1,4 @@
-
-import { Routes as RouterRoutes, Route } from "react-router-dom";
+import { Routes as RouterRoutes, Route, Navigate } from "react-router-dom";
 import { AuthMiddleware } from "@/components/auth/AuthMiddleware";
 import Index from "@/pages/Index";
 import Companies from "@/pages/Companies";
@@ -50,8 +49,9 @@ export function Routes() {
         }
       />
       <Route path="/company/register" element={<CompanyRegister />} />
+      <Route path="/registro-da-empresa" element={<Navigate to="/company/register" replace />} />
       <Route path="/company/login" element={<CompanyLogin />} />
-      <Route path="/company-login" element={<CompanyLogin />} /> {/* Added this new route to match the URL you're trying to access */}
+      <Route path="/company-login" element={<CompanyLogin />} />
       <Route path="/plans" element={<Plans />} />
       <Route
         path="/profile"
