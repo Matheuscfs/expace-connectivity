@@ -1,4 +1,3 @@
-
 import { Routes as RouterRoutes, Route, Navigate } from "react-router-dom";
 import { AuthMiddleware } from "@/components/auth/AuthMiddleware";
 import Index from "@/pages/Index";
@@ -51,12 +50,10 @@ export function Routes() {
       />
       <Route path="/company/register" element={<CompanyRegister />} />
       <Route path="/registro-da-empresa" element={<Navigate to="/company/register" replace />} />
-      {/* Add this route to handle the URL with spaces */}
       <Route path="/registro da empresa" element={<Navigate to="/company/register" replace />} />
       <Route path="/company/login" element={<CompanyLogin />} />
       <Route path="/company-login" element={<CompanyLogin />} />
       
-      {/* Adicionar redirecionamento para o dashboard da empresa após login */}
       <Route 
         path="/company-dashboard" 
         element={
