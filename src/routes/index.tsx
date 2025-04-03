@@ -1,3 +1,4 @@
+
 import { Routes as RouterRoutes, Route, Navigate } from "react-router-dom";
 import { AuthMiddleware } from "@/components/auth/AuthMiddleware";
 import Index from "@/pages/Index";
@@ -77,6 +78,7 @@ export function Routes() {
       <Route path="/professional/:id" element={<ProfessionalProfile />} />
       <Route path="/expace-partners" element={<ExpacePartners />} />
       <Route path="/service-details" element={<ServiceDetails />} />
+      <Route path="/service/:id" element={<ServiceDetails />} />
       <Route path="/products" element={<ProductListing />} />
       <Route
         path="/admin/dashboard"

@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { ProductList } from "@/components/product/ProductList";
 import { useToast } from "@/hooks/use-toast";
@@ -21,6 +22,7 @@ const mockProducts = [
       duration: "3 meses",
       includes: "Análise, Planejamento, Execução",
     },
+    serviceType: "fixed" as const,
   },
   {
     productId: "2",
@@ -37,7 +39,25 @@ const mockProducts = [
       duration: "1 mês",
       includes: "Design, Desenvolvimento, SEO básico",
     },
+    serviceType: "fixed" as const,
   },
+  {
+    productId: "3",
+    sellerId: "seller3",
+    name: "Suporte Técnico",
+    description: "Suporte técnico especializado para problemas de TI",
+    price: 99.99,
+    category: "Suporte",
+    images: ["/placeholder.svg"],
+    status: "active" as const,
+    rating: 4.2,
+    stock: 999,
+    specifications: {
+      duration: "1 hora",
+      includes: "Diagnóstico, Resolução de problemas",
+    },
+    serviceType: "hourly" as const,
+  }
 ];
 
 const ProductListing = () => {

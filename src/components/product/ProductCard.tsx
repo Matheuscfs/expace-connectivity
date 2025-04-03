@@ -1,7 +1,9 @@
+
 import { Product } from "@/types/marketplace";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Star } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface ProductCardProps {
   product: Product;
@@ -9,6 +11,8 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, onAddToCart }: ProductCardProps) {
+  const isService = product.serviceType !== undefined;
+  
   return (
     <Card className="overflow-hidden transition-all hover:shadow-lg">
       <CardHeader className="p-0">
@@ -21,7 +25,15 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
         </div>
       </CardHeader>
       <CardContent className="p-4">
-        <h3 className="font-semibold truncate">{product.name}</h3>
+        <h3 className="font-semibold truncate">
+          {isService ? (
+            <Link to={`/service/${product.productId}`} className="hover:text-primary hover:underline">
+              {product.name}
+            </Link>
+          ) : (
+            product.name
+          )}
+        </h3>
         <div className="flex items-center gap-1 mt-1">
           <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
           <span className="text-sm text-muted-foreground">
