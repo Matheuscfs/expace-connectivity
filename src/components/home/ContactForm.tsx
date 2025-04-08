@@ -2,14 +2,13 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import Image from "@/components/ui/image";
 
 export const ContactForm = () => {
   return (
     <section className="py-16">
       <h2 className="text-2xl font-bold text-center mb-8">Contact Us</h2>
       <div className="grid grid-cols-2 gap-8">
-        <Image 
+        <img 
           src="/placeholder.svg" 
           alt="Contact" 
           className="w-full"

@@ -1,5 +1,5 @@
 
-import { Header } from "@/components/Header";
+import Header from "@/components/Header";
 import { Footer } from "@/components/home/Footer";
 import { HeroBanner } from "@/components/home/HeroBanner";
 import { FeaturedCompanies } from "@/components/home/FeaturedCompanies";

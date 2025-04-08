@@ -1,6 +1,5 @@
 
 import { Button } from "@/components/ui/button";
-import Image from "@/components/ui/image";
 
 export const HeroBanner = () => {
   return (
@@ -13,12 +12,12 @@ export const HeroBanner = () => {
         <Button variant="outline">Oferecer Serviços</Button>
       </div>
       <div className="flex justify-center space-x-4">
-        <Image 
+        <img 
           src="/lovable-uploads/3e233e46-7ffb-47f3-9abf-4d41ee87a957.png" 
           alt="Professional Team" 
           className="w-1/3 rounded-lg shadow-md"
         />
-        <Image 
+        <img 
           src="/lovable-uploads/3e233e46-7ffb-47f3-9abf-4d41ee87a957.png" 
           alt="Professional Team" 
           className="w-1/3 rounded-lg shadow-md"

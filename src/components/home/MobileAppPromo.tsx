@@ -1,6 +1,5 @@
 
 import { Button } from "@/components/ui/button";
-import Image from "@/components/ui/image";
 
 export const MobileAppPromo = () => {
   return (
@@ -16,7 +15,7 @@ export const MobileAppPromo = () => {
             <Button variant="outline">Google Play</Button>
           </div>
         </div>
-        <Image 
+        <img 
           src="/placeholder.svg" 
           alt="Mobile App" 
           className="w-1/3"
